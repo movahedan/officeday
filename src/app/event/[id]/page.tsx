@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useCopyToClipboard, useTimeoutFn } from "react-use";
 import useSWR from "swr";
 
-import { envs, routes } from "@/libs/constants";
+import { routes } from "@/libs/constants";
 import { Button, Loading, Text } from "@/libs/ui/atoms";
 import { EditRoomForm } from "@/libs/ui/molecules/EditRoomForm/EditRoomForm";
 import { classNames, dateFormatter, fetcher } from "@/libs/utilities";
@@ -34,7 +34,7 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
   const roomUrl = useMemo(
     () =>
       officeDayEvent?.id
-        ? `${envs().baseUrl}/event/${officeDayEvent?.id}`
+        ? `${window.location.origin}/event/${officeDayEvent?.id}`
         : null,
     [officeDayEvent?.id],
   );
