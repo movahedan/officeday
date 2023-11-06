@@ -8,9 +8,9 @@ import { dateFormatter, fetcher } from "@/libs/utilities";
 import { errorHandlerApi } from "@/libs/utilities/error-handlers";
 
 import type {
-  EditOfficeDayEventSuggestedOptions,
-  OfficeDayEvent,
-} from "@/app/api/events.type";
+  EditGroupEventSuggestedOptions,
+  GroupEvent,
+} from "@/libs/prisma/types";
 import type { SubmitHandler } from "react-hook-form";
 
 export type InitRoomFormData = {
@@ -24,8 +24,8 @@ export type EditRoomFormProps = {
 export const EditRoomForm = ({ id }: EditRoomFormProps) => {
   const router = useRouter();
 
-  const { data: officeDayEvent, mutate } = useSWR<OfficeDayEvent>(
-    routes.backend.room.get(id),
+  const { data: groupEvent, mutate } = useSWR<GroupEvent>(
+    routes.backend.groupEvent.get(id),
     fetcher,
   );
 
@@ -36,7 +36,7 @@ export const EditRoomForm = ({ id }: EditRoomFormProps) => {
     formState: { errors },
   } = useForm<InitRoomFormData>({
     defaultValues: {
-      dates: officeDayEvent?.suggestedOptions.map((option) => ({
+      dates: groupEvent?.suggestedOptions.map((option) => ({
         date: dateFormatter(new Date(option.date)),
       })),
     },
@@ -48,14 +48,14 @@ export const EditRoomForm = ({ id }: EditRoomFormProps) => {
   });
 
   const onSubmit: SubmitHandler<InitRoomFormData> = async (data) => {
-    const body: EditOfficeDayEventSuggestedOptions = {
+    const body: EditGroupEventSuggestedOptions = {
       id,
       suggestedOptions: data.dates.map((dateObj) => ({
         date: new Date(dateObj.date),
       })),
     };
 
-    const response = await fetch(routes.backend.room.get(id), {
+    const response = await fetch(routes.backend.groupEvent.get(id), {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -65,9 +65,9 @@ export const EditRoomForm = ({ id }: EditRoomFormProps) => {
 
     mutate();
 
-    const responseBody = (await response.json()) as OfficeDayEvent;
+    const responseBody = (await response.json()) as GroupEvent;
     if (response.ok) {
-      router.push(routes.frontend.event.room(responseBody.id));
+      router.push(routes.frontend.event.groupEvent(responseBody.id));
     } else {
       errorHandlerApi(body);
     }

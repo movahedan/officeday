@@ -9,7 +9,7 @@ import { Button, Loading, Text } from "@/libs/ui/atoms";
 import { EditRoomForm } from "@/libs/ui/molecules/EditRoomForm/EditRoomForm";
 import { classNames, dateFormatter, fetcher } from "@/libs/utilities";
 
-import type { OfficeDayEvent } from "@/app/api/events.type";
+import type { GroupEvent } from "@/libs/prisma/types";
 
 interface EventRoomProps {
   params: { id: string };
@@ -17,11 +17,11 @@ interface EventRoomProps {
 
 export default function EventRoom({ params: { id } }: EventRoomProps) {
   const {
-    data: officeDayEvent,
+    data: groupEvent,
     error,
     isLoading,
     isValidating,
-  } = useSWR<OfficeDayEvent>(routes.backend.room.get(id), fetcher, {
+  } = useSWR<GroupEvent>(routes.backend.groupEvent.get(id), fetcher, {
     refreshInterval: 1000,
   });
 
@@ -31,12 +31,12 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
     setCopyButtonDisabled((prev) => (prev ? !prev : prev));
   }, 2000);
 
-  const roomUrl = useMemo(
+  const groupEventUrl = useMemo(
     () =>
-      officeDayEvent?.id
-        ? `${window.location.origin}/event/${officeDayEvent?.id}`
+      groupEvent?.id
+        ? `${window.location.origin}/event/${groupEvent?.id}`
         : null,
-    [officeDayEvent?.id],
+    [groupEvent?.id],
   );
 
   return (
@@ -48,21 +48,21 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
             href={routes.frontend.event.create()}
             className="px-12 py-8 mx-auto mt-16 bg-green-400 rounded-md"
           >
-            Create a room
+            Create an event
           </Link>
         </div>
       )}
 
-      {!!roomUrl && !error && (
+      {!!groupEventUrl && !error && (
         <div>
           <div className="flex">
             <Text className="px-24 py-8 bg-gray-100 border border-r-0 border-gray-400 border-dotted rounded-r-none rounded-l-md">
-              {roomUrl}
+              {groupEventUrl}
             </Text>
 
             <Button
               onClick={() => {
-                copy(roomUrl);
+                copy(groupEventUrl);
                 setCopyButtonDisabled(true);
                 reset();
               }}
@@ -91,10 +91,10 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
           <div className="flex">
             <EditRoomForm id={id} />
             <ul>
-              {officeDayEvent?.suggestedOptions.map((option) => (
+              {groupEvent?.suggestedOptions.map((option) => (
                 <li key={option.id}>
                   {dateFormatter(new Date(option.date))}:{" "}
-                  {officeDayEvent.invitees
+                  {groupEvent.invitees
                     .filter((invitee) =>
                       invitee.possibleOptions.includes(option.id),
                     )

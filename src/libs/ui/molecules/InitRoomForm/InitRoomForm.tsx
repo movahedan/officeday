@@ -5,7 +5,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { routes } from "@/libs/constants";
 import { errorHandlerApi } from "@/libs/utilities/error-handlers";
 
-import type { NewOfficeDayEvent, OfficeDayEvent } from "@/app/api/events.type";
+import type { NewGroupEvent, GroupEvent } from "@/libs/prisma/types";
 import type { SubmitHandler } from "react-hook-form";
 
 export type InitRoomFormData = {
@@ -34,7 +34,7 @@ export const InitRoomForm = () => {
 
   const onSubmit: SubmitHandler<InitRoomFormData> = async (data) => {
     console.log({ data });
-    const body: NewOfficeDayEvent = {
+    const body: NewGroupEvent = {
       owner: {
         name: data.name,
       },
@@ -43,7 +43,7 @@ export const InitRoomForm = () => {
       })),
     };
 
-    const response = await fetch(routes.backend.room.create(), {
+    const response = await fetch(routes.backend.groupEvent.create(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,9 +51,9 @@ export const InitRoomForm = () => {
       body: JSON.stringify(body),
     });
 
-    const responseBody = (await response.json()) as OfficeDayEvent;
+    const responseBody = (await response.json()) as GroupEvent;
     if (response.ok) {
-      router.push(routes.frontend.event.room(responseBody.id));
+      router.push(routes.frontend.event.groupEvent(responseBody.id));
     } else {
       errorHandlerApi(body);
     }

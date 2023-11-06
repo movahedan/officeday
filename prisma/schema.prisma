@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Person {
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  name              String              @unique
+  ownedGroupEvents  GroupEvent[]        @relation("groupEventOwner")
+  GroupEventInvitee GroupEventInvitee[]
+}
+
+model GroupEventOption {
+  id                  String             @id @default(auto()) @map("_id") @db.ObjectId
+  date                DateTime
+  event               GroupEvent         @relation(fields: [eventId], references: [id])
+  eventId             String             @db.ObjectId
+  GroupEventInvitee   GroupEventInvitee? @relation(fields: [groupEventInviteeId], references: [id])
+  groupEventInviteeId String?            @db.ObjectId
+}
+
+model GroupEvent {
+  id               String              @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId          String              @db.ObjectId
+  owner            Person              @relation(name: "groupEventOwner", fields: [ownerId], references: [id])
+  suggestedOptions GroupEventOption[]
+  invitees         GroupEventInvitee[]
+}
+
+model GroupEventInvitee {
+  id              String             @id @default(auto()) @map("_id") @db.ObjectId
+  personId        String             @db.ObjectId
+  person          Person             @relation(fields: [personId], references: [id])
+  groupEventId    String             @db.ObjectId
+  groupEvent      GroupEvent         @relation(fields: [groupEventId], references: [id])
+  possibleOptions GroupEventOption[]
+}
