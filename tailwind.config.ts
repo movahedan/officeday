@@ -61,6 +61,7 @@ const config: Config = {
       180: toRem(180),
       200: toRem(200),
       208: toRem(208),
+      320: toRem(320),
       419: toRem(419),
       525: toRem(525),
     },

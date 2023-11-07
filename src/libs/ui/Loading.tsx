@@ -21,7 +21,6 @@ export const Loading: FC<LoadingProps> = ({
     viewBox="0 0 100 100"
     preserveAspectRatio="xMidYMid"
     style={{
-      margin: "auto",
       background: "none",
       display: "block",
       shapeRendering: "auto",
