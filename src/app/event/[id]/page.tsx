@@ -34,7 +34,9 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
   const groupEventUrl = useMemo(
     () =>
       groupEvent?.id
-        ? `${window.location.origin}/event/${groupEvent?.id}`
+        ? `${window.location.origin}${routes.frontend.event.groupEvent(
+            groupEvent?.id,
+          )}`
         : null,
     [groupEvent?.id],
   );
@@ -54,9 +56,9 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
       )}
 
       {!!groupEventUrl && !error && (
-        <div>
-          <div className="flex">
-            <p className="px-24 py-8 bg-gray-100 border border-r-0 border-gray-400 border-dotted rounded-r-none rounded-l-md">
+        <div className="w-full max-w-764">
+          <div className="flex w-full">
+            <p className="flex-1 px-24 py-8 bg-gray-100 border border-r-0 border-gray-400 border-dotted rounded-r-none rounded-l-md">
               {groupEventUrl}
             </p>
 
@@ -85,27 +87,55 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
             </p>
           )}
 
-          <Loading
-            width="64"
-            height="64"
-            className={!(isLoading || isValidating) ? "opacity-0" : ""}
-          />
+          <div className="flex w-full mt-16">
+            <div className="w-320">
+              <h3 className="mb-8 text-lg">Edit suggestions</h3>
+              <GroupEventEditForm id={id} />
 
-          <div className="flex">
-            <GroupEventEditForm id={id} />
-            <ul>
-              {groupEvent?.suggestedOptions.map((option) => (
-                <li key={option.id}>
-                  {dateFormatter(new Date(option.date))}:{" "}
-                  {groupEvent.invitees
-                    .filter((invitee) =>
-                      invitee.possibleOptions.includes(option.id),
-                    )
-                    .map((invitee) => invitee.name)
-                    .join("-")}
-                </li>
-              ))}
-            </ul>
+              {!groupEvent?.invitees.length ? null : (
+                <>
+                  <h3 className="my-8 text-lg">Invitees</h3>
+                  <ul>
+                    {groupEvent.invitees.map((invitee) => (
+                      <li key={invitee.name} className="w-full">
+                        {invitee.name}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+
+            <div className="w-full ml-16">
+              <div className="flex mb-8">
+                <h3 className="mr-auto text-lg">Suggested dates </h3>
+                <Loading
+                  width="32"
+                  height="32"
+                  className={classNames([
+                    "ml-auto mr-0",
+                    !(isLoading || isValidating) ? "opacity-0" : "",
+                  ])}
+                />
+              </div>
+              <ul className="w-full overflow-hidden [&>*:nth-child(odd)]:bg-slate-200 [&>*:nth-child(even)]:bg-slate-100 rounded-md">
+                {groupEvent?.suggestedOptions.map((option) => (
+                  <li key={option.id} className="w-full p-8 last:mb-0">
+                    <span className="mr-4">
+                      {dateFormatter(new Date(option.date))}:
+                    </span>
+                    <span>
+                      {groupEvent.invitees
+                        .filter((invitee) =>
+                          invitee.possibleOptions.includes(option.id),
+                        )
+                        .map((invitee) => invitee.name)
+                        .join("-")}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       )}
