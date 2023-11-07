@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 import useSWR from "swr";
 
-import { routes } from "@/libs/constants";
+import { routes } from "@/libs/constants/routes";
 import { dateFormatter, fetcher } from "@/libs/utilities";
 import { errorHandlerApi } from "@/libs/utilities/error-handlers";
 
@@ -13,15 +13,15 @@ import type {
 } from "@/libs/prisma/types";
 import type { SubmitHandler } from "react-hook-form";
 
-export type InitRoomFormData = {
+export type GroupEventEditFormData = {
   dates: { date: string }[];
 };
 
-export type EditRoomFormProps = {
+export type GroupEventEditFormProps = {
   id: string;
 };
 
-export const EditRoomForm = ({ id }: EditRoomFormProps) => {
+export const GroupEventEditForm = ({ id }: GroupEventEditFormProps) => {
   const router = useRouter();
 
   const { data: groupEvent, mutate } = useSWR<GroupEvent>(
@@ -34,7 +34,7 @@ export const EditRoomForm = ({ id }: EditRoomFormProps) => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<InitRoomFormData>({
+  } = useForm<GroupEventEditFormData>({
     defaultValues: {
       dates: groupEvent?.suggestedOptions.map((option) => ({
         date: dateFormatter(new Date(option.date)),
@@ -47,7 +47,7 @@ export const EditRoomForm = ({ id }: EditRoomFormProps) => {
     name: "dates",
   });
 
-  const onSubmit: SubmitHandler<InitRoomFormData> = async (data) => {
+  const onSubmit: SubmitHandler<GroupEventEditFormData> = async (data) => {
     const body: EditGroupEventSuggestedOptions = {
       id,
       suggestedOptions: data.dates.map((dateObj) => ({

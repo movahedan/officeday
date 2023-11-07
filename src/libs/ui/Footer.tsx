@@ -1,4 +1,3 @@
-import { Text } from "@/ui/atoms";
 import { classNames } from "@/utilities";
 
 import type { CSSProperties, ReactNode } from "react";
@@ -18,9 +17,7 @@ export const Footer = ({ style, className, children }: FooterProps) => (
       className,
     ])}
   >
-    <Text as="p" className="prose-badge">
-      Created as a demo project © 2023.
-    </Text>
+    <p>Created as a demo project © 2023.</p>
 
     {children}
   </footer>

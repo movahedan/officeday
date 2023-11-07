@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 
-import { routes } from "@/libs/constants";
+import { routes } from "@/libs/constants/routes";
 
 export default function Home() {
   return (

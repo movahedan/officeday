@@ -4,9 +4,9 @@ import { useMemo, useState } from "react";
 import { useCopyToClipboard, useTimeoutFn } from "react-use";
 import useSWR from "swr";
 
-import { routes } from "@/libs/constants";
-import { Button, Loading, Text } from "@/libs/ui/atoms";
-import { EditRoomForm } from "@/libs/ui/molecules/EditRoomForm/EditRoomForm";
+import { routes } from "@/libs/constants/routes";
+import { Loading } from "@/libs/ui/Loading";
+import { GroupEventEditForm } from "@/libs/ui/forms/GroupEventEditForm";
 import { classNames, dateFormatter, fetcher } from "@/libs/utilities";
 
 import type { GroupEvent } from "@/libs/prisma/types";
@@ -43,7 +43,7 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
     <main className="flex flex-col items-center h-full p-24">
       {!!error && (
         <div className="flex flex-col my-auto">
-          <Text>{error}</Text>
+          <p>{error}</p>
           <Link
             href={routes.frontend.event.create()}
             className="px-12 py-8 mx-auto mt-16 bg-green-400 rounded-md"
@@ -56,11 +56,11 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
       {!!groupEventUrl && !error && (
         <div>
           <div className="flex">
-            <Text className="px-24 py-8 bg-gray-100 border border-r-0 border-gray-400 border-dotted rounded-r-none rounded-l-md">
+            <p className="px-24 py-8 bg-gray-100 border border-r-0 border-gray-400 border-dotted rounded-r-none rounded-l-md">
               {groupEventUrl}
-            </Text>
+            </p>
 
-            <Button
+            <button
               onClick={() => {
                 copy(groupEventUrl);
                 setCopyButtonDisabled(true);
@@ -68,12 +68,15 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
               }}
               disabled={copyButtonDisabled}
               className={classNames([
-                "py-8 rounded-l-none",
+                "w-128",
+                "px-40 py-8 border outline-0",
+                "rounded-md rounded-l-none",
+                "transition-all duration-300",
                 copyButtonDisabled && "bg-green-300 border-green-300",
               ])}
             >
               {copyButtonDisabled ? "Copied" : "Copy"}
-            </Button>
+            </button>
           </div>
 
           {!!copyState.error && (
@@ -89,7 +92,7 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
           />
 
           <div className="flex">
-            <EditRoomForm id={id} />
+            <GroupEventEditForm id={id} />
             <ul>
               {groupEvent?.suggestedOptions.map((option) => (
                 <li key={option.id}>

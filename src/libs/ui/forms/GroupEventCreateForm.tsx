@@ -2,18 +2,18 @@
 import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 
-import { routes } from "@/libs/constants";
+import { routes } from "@/libs/constants/routes";
 import { errorHandlerApi } from "@/libs/utilities/error-handlers";
 
 import type { NewGroupEvent, GroupEvent } from "@/libs/prisma/types";
 import type { SubmitHandler } from "react-hook-form";
 
-export type InitRoomFormData = {
+export type GroupEventCreateFormData = {
   name: string;
   dates: { date: string }[];
 };
 
-export const InitRoomForm = () => {
+export const GroupEventCreateForm = () => {
   const router = useRouter();
 
   const {
@@ -21,7 +21,7 @@ export const InitRoomForm = () => {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<InitRoomFormData>({
+  } = useForm<GroupEventCreateFormData>({
     defaultValues: {
       dates: [{ date: "" }],
     },
@@ -32,7 +32,7 @@ export const InitRoomForm = () => {
     name: "dates",
   });
 
-  const onSubmit: SubmitHandler<InitRoomFormData> = async (data) => {
+  const onSubmit: SubmitHandler<GroupEventCreateFormData> = async (data) => {
     console.log({ data });
     const body: NewGroupEvent = {
       owner: {

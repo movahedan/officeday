@@ -5,8 +5,8 @@ import {
   websiteBaseUrl,
   websiteDescription,
   websiteName,
-} from "@/libs/contents/website";
-import { Footer } from "@/libs/ui/molecules";
+} from "@/libs/constants/website";
+import { Footer } from "@/libs/ui/Footer";
 import { classNames } from "@/libs/utilities";
 
 import type { Metadata } from "next";
