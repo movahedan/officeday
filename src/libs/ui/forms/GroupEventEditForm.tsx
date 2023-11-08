@@ -81,7 +81,7 @@ export const GroupEventEditForm = ({ id }: GroupEventEditFormProps) => {
 
     const responseBody = (await response.json()) as GroupEvent;
     if (response.ok) {
-      router.push(routes.frontend.event.groupEvent(responseBody.id));
+      router.push(routes.frontend.groupEvent.groupEvent(responseBody.id));
     } else {
       errorHandlerApi(body);
     }

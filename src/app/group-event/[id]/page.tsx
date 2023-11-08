@@ -15,7 +15,9 @@ interface EventRoomProps {
   params: { id: string };
 }
 
-export default function EventRoom({ params: { id } }: EventRoomProps) {
+export default function GroupEventOwnerPage({
+  params: { id },
+}: EventRoomProps) {
   const {
     data: groupEvent,
     error,
@@ -34,7 +36,7 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
   const groupEventUrl = useMemo(
     () =>
       groupEvent?.id
-        ? `${window.location.origin}${routes.frontend.event.groupEvent(
+        ? `${window.location.origin}${routes.frontend.groupEvent.groupEvent(
             groupEvent?.id,
           )}`
         : null,
@@ -47,7 +49,7 @@ export default function EventRoom({ params: { id } }: EventRoomProps) {
         <div className="flex flex-col my-auto">
           <p>{error}</p>
           <Link
-            href={routes.frontend.event.create()}
+            href={routes.frontend.groupEvent.create()}
             className="px-12 py-8 mx-auto mt-16 bg-green-400 rounded-md"
           >
             Create an event

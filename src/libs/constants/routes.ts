@@ -1,15 +1,23 @@
 export const routes = {
   backend: {
     groupEvent: {
-      create: () => "/api/group-event",
+      post: () => "/api/group-event",
       get: (id: string) => `/api/group-event/${id}`,
+      join: {
+        post: (id: string) => `/api/group-event/${id}/join`,
+        put: (id: string, name: string) =>
+          `/api/group-event/${id}/join/${name}`,
+      },
     },
   },
   frontend: {
     index: () => "/",
-    event: {
-      create: () => "/event/create",
-      groupEvent: (id: string) => `/event/${id}`,
+    groupEvent: {
+      create: () => "/group-event",
+      groupEvent: (id: string) => `/group-event/${id}`,
+      join: (id: string) => `/group-event/${id}/join`,
+      selectDate: (id: string, name: string) =>
+        `/group-event/${id}/join/${name}`,
     },
   },
 };

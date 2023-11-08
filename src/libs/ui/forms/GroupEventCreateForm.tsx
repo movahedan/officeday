@@ -43,7 +43,7 @@ export const GroupEventCreateForm = () => {
       })),
     };
 
-    const response = await fetch(routes.backend.groupEvent.create(), {
+    const response = await fetch(routes.backend.groupEvent.post(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export const GroupEventCreateForm = () => {
 
     const responseBody = (await response.json()) as GroupEvent;
     if (response.ok) {
-      router.push(routes.frontend.event.groupEvent(responseBody.id));
+      router.push(routes.frontend.groupEvent.groupEvent(responseBody.id));
     } else {
       errorHandlerApi(body);
     }
