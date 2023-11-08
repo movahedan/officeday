@@ -1,50 +1,57 @@
-import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { prisma } from "@/libs/prisma/client";
 
 import type { Person } from "@/libs/prisma/types";
-import type { NextRequest } from "next/server";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-// Instantiate Prisma Client
-const prisma = new PrismaClient();
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  switch (req.method) {
+    case "POST":
+      return handlePOST(req, res);
+    default:
+      res.setHeader("Allow", ["POST"]);
 
-// This function could also be imported from another file if you prefer
-async function createPerson(data: Person) {
-  const person = await prisma.person.create({
-    data,
-  });
-
-  return person;
+      return res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 }
 
-export default async function handler(req: NextRequest) {
-  if (req.method === "POST") {
-    try {
-      const { person } = req.body as any;
-      const newPerson = await createPerson(person);
+async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const { id } = req.query as { id: string };
+    const {
+      person: { name },
+    } = req.body as unknown as { person: Person };
 
-      return new NextResponse(JSON.stringify(newPerson), {
-        status: 201,
-        headers: {
-          "Content-Type": "application/json",
-        },
+    let person = await prisma.person.findUnique({
+      where: {
+        name,
+      },
+    });
+
+    if (!person) {
+      person = await prisma.person.create({
+        data: { name },
       });
-    } catch (e) {
-      console.error(e);
-
-      return new NextResponse(
-        JSON.stringify({
-          error: "An error occurred while creating the person.",
-        }),
-        {
-          status: 500,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
     }
-  } else {
-    // Handle any other HTTP methods as you wish
-    return new NextResponse(null, { status: 405 });
+
+    const newInvitee = await prisma.groupEventInvitee.create({
+      data: {
+        personId: person.id,
+        groupEventId: id,
+      },
+      include: {
+        person: true,
+      },
+    });
+
+    return res.status(201).json(newInvitee.person);
+  } catch (e) {
+    console.error(e);
+
+    return res
+      .status(500)
+      .json({ error: "An error occurred while creating the person." });
   }
 }

@@ -99,8 +99,8 @@ export default function GroupEventOwnerPage({
                   <h3 className="my-8 text-lg">Invitees</h3>
                   <ul>
                     {groupEvent.invitees.map((invitee) => (
-                      <li key={invitee.name} className="w-full">
-                        {invitee.name}
+                      <li key={invitee.person.name} className="w-full">
+                        {invitee.person.name}
                       </li>
                     ))}
                   </ul>
@@ -121,21 +121,28 @@ export default function GroupEventOwnerPage({
                 />
               </div>
               <ul className="w-full overflow-hidden [&>*:nth-child(odd)]:bg-slate-200 [&>*:nth-child(even)]:bg-slate-100 rounded-md">
-                {groupEvent?.suggestedOptions.map((option) => (
-                  <li key={option.id} className="w-full p-8 last:mb-0">
-                    <span className="mr-4">
-                      {dateFormatter(new Date(option.date))}:
-                    </span>
-                    <span>
-                      {groupEvent.invitees
-                        .filter((invitee) =>
-                          invitee.possibleOptions.includes(option.id),
-                        )
-                        .map((invitee) => invitee.name)
-                        .join("-")}
-                    </span>
-                  </li>
-                ))}
+                {groupEvent?.suggestedOptions.map((option) => {
+                  const votedPeople = groupEvent.invitees
+                    .filter((invitee) =>
+                      invitee.possibleOptions
+                        .map((option) => option.id)
+                        .includes(option.id),
+                    )
+                    .map((invitee) => invitee.person.name);
+
+                  return (
+                    <li key={option.id} className="w-full p-8 last:mb-0">
+                      <span className="mr-4">
+                        {dateFormatter(new Date(option.date))}:
+                      </span>
+                      <span>
+                        {votedPeople.length === 0
+                          ? "Not possible"
+                          : votedPeople.join("-")}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>

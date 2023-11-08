@@ -5,7 +5,6 @@ import useSWR from "swr";
 
 import { routes } from "@/libs/constants/routes";
 import { classNames, dateFormatter, fetcher } from "@/libs/utilities";
-import { errorHandlerApi } from "@/libs/utilities/error-handlers";
 
 import type {
   EditGroupEventSuggestedOptions,
@@ -69,22 +68,13 @@ export const GroupEventEditForm = ({ id }: GroupEventEditFormProps) => {
       })),
     };
 
-    const response = await fetch(routes.backend.groupEvent.get(id), {
+    const response = await fetcher(routes.backend.groupEvent.get(id), {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(body),
     });
 
     mutate();
-
-    const responseBody = (await response.json()) as GroupEvent;
-    if (response.ok) {
-      router.push(routes.frontend.groupEvent.groupEvent(responseBody.id));
-    } else {
-      errorHandlerApi(body);
-    }
+    router.push(routes.frontend.groupEvent.groupEvent(response.id));
   };
 
   return (

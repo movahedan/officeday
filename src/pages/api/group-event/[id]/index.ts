@@ -39,6 +39,7 @@ async function handleGET(
         invitees: {
           include: {
             person: true,
+            possibleOptions: true,
           },
         },
       },

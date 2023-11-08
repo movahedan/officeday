@@ -11,7 +11,10 @@ export default function GroupEventJoinPage({
 }: GroupEventJoinPageProps) {
   return (
     <main className="flex flex-col items-center justify-between h-full p-24">
-      <GroupEventJoinForm id={id} />
+      <div className="m-auto max-w-400">
+        <h1 className="text-xl text-center">Join the office day</h1>
+        <GroupEventJoinForm id={id} />
+      </div>
     </main>
   );
 }

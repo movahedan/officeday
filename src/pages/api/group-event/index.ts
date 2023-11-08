@@ -25,7 +25,6 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
       include: {
         owner: true,
         suggestedOptions: true,
-        // Assuming invitees are to be included
         invitees: {
           include: {
             person: true,

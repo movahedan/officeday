@@ -5,8 +5,8 @@ export const routes = {
       get: (id: string) => `/api/group-event/${id}`,
       join: {
         post: (id: string) => `/api/group-event/${id}/join`,
-        put: (id: string, name: string) =>
-          `/api/group-event/${id}/join/${name}`,
+        put: (id: string, personId: string) =>
+          `/api/group-event/${id}/join/${personId}`,
       },
     },
   },
@@ -16,8 +16,8 @@ export const routes = {
       create: () => "/group-event",
       groupEvent: (id: string) => `/group-event/${id}`,
       join: (id: string) => `/group-event/${id}/join`,
-      selectDate: (id: string, name: string) =>
-        `/group-event/${id}/join/${name}`,
+      selectDate: (id: string, personId: string) =>
+        `/group-event/${id}/join/${personId}`,
     },
   },
 };

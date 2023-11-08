@@ -1,12 +1,15 @@
 export type Person = {
+  id: string;
   name: string;
 };
 
-export type Invitee = Person & {
-  possibleOptions: string[]; // reference to option id
+export type Invitee = {
+  id: string;
+  person: Person;
+  possibleOptions: GroupEventOption[]; // reference to option id
 };
 
-export type GroupEventOptions = {
+export type GroupEventOption = {
   id: string;
   date: Date;
 };
@@ -14,16 +17,21 @@ export type GroupEventOptions = {
 export type GroupEvent = {
   id: string;
   owner: Person;
-  suggestedOptions: GroupEventOptions[];
+  suggestedOptions: GroupEventOption[];
   invitees: Invitee[];
 };
 
 export type NewGroupEvent = {
-  owner: Person;
-  suggestedOptions: Omit<GroupEventOptions, "id">[];
+  owner: Omit<Person, "id">;
+  suggestedOptions: Omit<GroupEventOption, "id">[];
 };
 
 export type EditGroupEventSuggestedOptions = {
   id: string;
-  suggestedOptions: Omit<GroupEventOptions, "id">[];
+  suggestedOptions: Omit<GroupEventOption, "id">[];
+};
+
+export type GroupEventSelectOptions = {
+  id: string;
+  possibleOptions: GroupEventOption["id"][];
 };
