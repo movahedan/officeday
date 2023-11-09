@@ -6,7 +6,8 @@ export type Person = {
 export type Invitee = {
   id: string;
   person: Person;
-  possibleOptions: GroupEventOption[]; // reference to option id
+  possibleOptions: GroupEventOption[];
+  possibleOptionIds: string[];
 };
 
 export type GroupEventOption = {

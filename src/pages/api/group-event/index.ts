@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma/client";
+import { errorHandlerApiRoute } from "@/libs/utilities/error-handlers";
 
 import type { NewGroupEvent } from "@/libs/prisma/types";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -8,37 +9,12 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   switch (req.method) {
-    case "GET":
-      return handleGET(req, res);
     case "POST":
       return handlePOST(req, res);
     default:
       res.setHeader("Allow", ["GET", "POST"]);
 
       return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
-}
-
-async function handleGET(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const events = await prisma.groupEvent.findMany({
-      include: {
-        owner: true,
-        suggestedOptions: true,
-        invitees: {
-          include: {
-            person: true,
-            possibleOptions: true,
-          },
-        },
-      },
-    });
-
-    return res.status(200).json(events);
-  } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({ error: "Failed to retrieve group events" });
   }
 }
 
@@ -76,7 +52,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     return res.status(201).json(groupEvent);
   } catch (error) {
-    console.error(error);
+    errorHandlerApiRoute(error);
 
     return res.status(500).json({ error: "Failed to create group event" });
   }

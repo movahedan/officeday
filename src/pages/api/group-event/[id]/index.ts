@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma/client";
+import { errorHandlerApiRoute } from "@/libs/utilities/error-handlers";
 
 import type { EditGroupEventSuggestedOptions } from "@/libs/prisma/types";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -39,7 +40,6 @@ async function handleGET(
         invitees: {
           include: {
             person: true,
-            possibleOptions: true,
           },
         },
       },
@@ -49,9 +49,28 @@ async function handleGET(
       return res.status(404).json({ error: "No event with this ID exists." });
     }
 
-    return res.status(200).json(groupEvent);
+    const suggestedOptions = await prisma.groupEventOption.findMany({
+      where: {
+        eventId: id,
+      },
+    });
+
+    const invitees = await Promise.all(
+      groupEvent.invitees.map(async (invitee) => {
+        const inviteeOptions = suggestedOptions.filter(
+          (option) => invitee.possibleOptionIds?.some((id) => id === option.id),
+        );
+
+        return {
+          ...invitee,
+          possibleOptions: inviteeOptions,
+        };
+      }),
+    );
+
+    return res.status(200).json({ ...groupEvent, invitees });
   } catch (error) {
-    console.error(error);
+    errorHandlerApiRoute(error);
 
     return res.status(500).json({ error: "Failed to retrieve the event." });
   }
@@ -89,14 +108,12 @@ async function handlePUT(
 
     const updatedGroupEvent = await prisma.groupEvent.findUnique({
       where: { id },
-      include: {
-        suggestedOptions: true,
-      },
+      include: { suggestedOptions: true },
     });
 
     return res.status(200).json(updatedGroupEvent);
   } catch (error) {
-    console.error(error);
+    errorHandlerApiRoute(error);
 
     return res.status(500).json({ error: "Failed to update the event." });
   }

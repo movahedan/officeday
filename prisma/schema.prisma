@@ -18,12 +18,11 @@ model Person {
 }
 
 model GroupEventOption {
-  id                  String             @id @default(auto()) @map("_id") @db.ObjectId
-  date                DateTime
-  event               GroupEvent         @relation(fields: [eventId], references: [id])
-  eventId             String             @db.ObjectId
-  GroupEventInvitee   GroupEventInvitee? @relation(fields: [groupEventInviteeId], references: [id])
-  groupEventInviteeId String?            @db.ObjectId
+  id       String               @id @default(auto()) @map("_id") @db.ObjectId
+  date     DateTime
+  event    GroupEvent           @relation(fields: [eventId], references: [id])
+  eventId  String               @db.ObjectId
+  invitees String[]
 }
 
 model GroupEvent {
@@ -40,5 +39,5 @@ model GroupEventInvitee {
   person          Person             @relation(fields: [personId], references: [id])
   groupEventId    String             @db.ObjectId
   groupEvent      GroupEvent         @relation(fields: [groupEventId], references: [id])
-  possibleOptions GroupEventOption[]
+  possibleOptionIds String[]         // Store the IDs of GroupEventOptions
 }

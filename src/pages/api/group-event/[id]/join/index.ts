@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma/client";
+import { errorHandlerApiRoute } from "@/libs/utilities/error-handlers";
 
 import type { Person } from "@/libs/prisma/types";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -25,9 +26,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     } = req.body as unknown as { person: Person };
 
     let person = await prisma.person.findUnique({
-      where: {
-        name,
-      },
+      where: { name },
     });
 
     if (!person) {
@@ -41,14 +40,12 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
         personId: person.id,
         groupEventId: id,
       },
-      include: {
-        person: true,
-      },
+      include: { person: true },
     });
 
     return res.status(201).json(newInvitee.person);
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    errorHandlerApiRoute(error);
 
     return res
       .status(500)

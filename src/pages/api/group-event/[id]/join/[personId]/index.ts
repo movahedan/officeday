@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/prisma/client";
+import { errorHandlerApiRoute } from "@/libs/utilities/error-handlers";
 
 import type { GroupEventSelectOptions } from "@/libs/prisma/types";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -41,43 +42,22 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
         personId: personId,
         groupEventId: id,
       },
-      include: {
-        possibleOptions: true,
-      },
     });
 
     if (!invitee) {
       return res.status(400).json({ message: "Invitee not found" });
     }
 
-    await prisma.groupEventInvitee.update({
-      where: {
-        id: invitee.id,
-      },
-      data: {
-        possibleOptions: {
-          set: [],
-        },
-      },
-    });
-
     const updatedInvitee = await prisma.groupEventInvitee.update({
-      where: {
-        id: invitee.id,
-      },
+      where: { id: invitee.id },
       data: {
-        possibleOptions: {
-          connect: possibleOptionsIds.map((id) => ({ id })),
-        },
-      },
-      include: {
-        possibleOptions: true,
+        possibleOptionIds: { set: possibleOptionsIds.map((id) => id) },
       },
     });
 
     return res.status(201).json(updatedInvitee);
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    errorHandlerApiRoute(error);
 
     return res
       .status(500)
