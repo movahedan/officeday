@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 
 import { routes } from "@/libs/constants/routes";
-import { fetcher } from "@/libs/utilities";
+import { fetcher } from "@/libs/utilities/fetcher";
 
 import type { NewGroupEvent } from "@/libs/prisma/types";
 import type { SubmitHandler } from "react-hook-form";

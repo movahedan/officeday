@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCopyToClipboard, useTimeoutFn } from "react-use";
 
-import { classNames } from "../utilities";
+import { classNames } from "../utilities/string";
 
 export type CopyUrlProps = {
   url: string;

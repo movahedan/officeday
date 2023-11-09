@@ -8,7 +8,8 @@ import { ErrorComponent } from "@/libs/ui/ErrorComponent";
 import { Loading } from "@/libs/ui/Loading";
 import { SuggestedOptionsStatus } from "@/libs/ui/SuggestedOptionStatus";
 import { GroupEventEditForm } from "@/libs/ui/forms/GroupEventEditForm";
-import { classNames, fetcher } from "@/libs/utilities";
+import { fetcher } from "@/libs/utilities/fetcher";
+import { classNames } from "@/libs/utilities/string";
 
 import type { GroupEvent } from "@/libs/prisma/types";
 

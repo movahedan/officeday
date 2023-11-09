@@ -1,4 +1,4 @@
-import { classNames } from "@/utilities";
+import { classNames } from "../utilities/string";
 
 import type { CSSProperties, ReactNode } from "react";
 

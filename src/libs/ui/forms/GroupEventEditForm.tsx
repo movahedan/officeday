@@ -4,7 +4,9 @@ import { useForm, useFieldArray } from "react-hook-form";
 import useSWR from "swr";
 
 import { routes } from "@/libs/constants/routes";
-import { classNames, dateFormatter, fetcher } from "@/libs/utilities";
+import { dateFormatter } from "@/libs/utilities/date";
+import { fetcher } from "@/libs/utilities/fetcher";
+import { classNames } from "@/libs/utilities/string";
 
 import type {
   EditGroupEventSuggestedOptions,

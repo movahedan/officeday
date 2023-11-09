@@ -1,4 +1,5 @@
-import { classNames, dateFormatter } from "../utilities";
+import { dateFormatter } from "../utilities/date";
+import { classNames } from "../utilities/string";
 
 import type { GroupEventOption, Invitee } from "../prisma/types";
 

@@ -7,7 +7,7 @@ import {
   websiteName,
 } from "@/libs/constants/website";
 import { Footer } from "@/libs/ui/Footer";
-import { classNames } from "@/libs/utilities";
+import { classNames } from "@/libs/utilities/string";
 
 import type { Metadata } from "next";
 

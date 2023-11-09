@@ -2,7 +2,8 @@
 import { useForm } from "react-hook-form";
 
 import { routes } from "@/libs/constants/routes";
-import { dateFormatter, fetcher } from "@/libs/utilities";
+import { dateFormatter } from "@/libs/utilities/date";
+import { fetcher } from "@/libs/utilities/fetcher";
 
 import type {
   GroupEventOption,
