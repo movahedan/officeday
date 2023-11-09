@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCopyToClipboard, useTimeoutFn } from "react-use";
 import { twMerge } from "tailwind-merge";
 
-import { classNames } from "../utilities/string";
+import { classNames } from "@/libs/utilities/string";
 
 export type CopyUrlProps = {
   url: string;

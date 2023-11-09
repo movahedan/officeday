@@ -1,9 +1,11 @@
 "use client";
 import { useForm } from "react-hook-form";
 
-import { routes } from "@/libs/constants/routes";
+import { routes } from "@/libs/constants";
 import { dateFormatter } from "@/libs/utilities/date";
 import { fetcher } from "@/libs/utilities/fetcher";
+
+import { Button } from "../client-side/Button";
 
 import type {
   GroupEventOption,
@@ -79,12 +81,9 @@ export const GroupEventSelectOptionsForm = ({
         </p>
       )}
 
-      <button
-        type="submit"
-        className="px-12 py-6 text-base text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-500"
-      >
+      <Button type="submit" variant="green" className="w-full">
         Submit
-      </button>
+      </Button>
     </form>
   );
 };

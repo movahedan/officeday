@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { routes } from "@/libs/constants/routes";
+import { routes } from "@/libs/constants";
 
 export type ErrorComponentProps = {
   error?: string;

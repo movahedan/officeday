@@ -2,8 +2,10 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { routes } from "@/libs/constants/routes";
+import { routes } from "@/libs/constants";
 import { fetcher } from "@/libs/utilities/fetcher";
+
+import { Button } from "../client-side/Button";
 
 import type { SubmitHandler } from "react-hook-form";
 
@@ -60,12 +62,9 @@ export const GroupEventJoinForm = ({ id }: GroupEventJoinFormProps) => {
         )}
       </div>
 
-      <button
-        type="submit"
-        className="w-full px-4 py-2 text-lg text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-500"
-      >
+      <Button type="submit" variant="green" className="w-full text-lg">
         Submit
-      </button>
+      </Button>
     </form>
   );
 };

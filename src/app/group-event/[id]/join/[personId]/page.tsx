@@ -1,13 +1,13 @@
 "use client";
 import useSWR from "swr";
 
-import { routes } from "@/libs/constants/routes";
-import { ErrorComponent } from "@/libs/ui/ErrorComponent";
-import { Loading } from "@/libs/ui/Loading";
-import { SuggestedOptionsStatus } from "@/libs/ui/SuggestedOptionStatus";
+import { routes } from "@/libs/constants";
 import { GroupEventSelectOptionsForm } from "@/libs/ui/forms/GroupEventSelectOptions";
 import { fetcher } from "@/libs/utilities/fetcher";
 import { classNames } from "@/libs/utilities/string";
+
+import { IconLoading } from "@/libs/ui/icons";
+import { ErrorComponent, SuggestedOptionsStatus } from "@/libs/ui/server-side";
 
 import type { GroupEvent } from "@/libs/prisma/types";
 
@@ -58,9 +58,9 @@ export default function GroupEventSelectOptionsPage({
           <div className="flex-1 mt-20 md:mt-0 md:ml-16">
             <div className="flex mb-8">
               <h3 className="mr-auto text-lg">Status of suggested options</h3>
-              <Loading
-                width="32"
-                height="32"
+              <IconLoading
+                width={32}
+                height={32}
                 className={classNames([
                   "ml-auto mr-0",
                   !(isLoading || isValidating) ? "opacity-0" : "",

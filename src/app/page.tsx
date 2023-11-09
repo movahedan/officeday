@@ -1,12 +1,7 @@
-"use client";
 import Link from "next/link";
 
-import { routes } from "@/libs/constants/routes";
+import { routes } from "@/libs/constants";
 
 export default function Home() {
-  return (
-    <main className="flex flex-col items-center justify-between h-full p-24">
-      <Link href={routes.frontend.groupEvent.create()}>Start</Link>
-    </main>
-  );
+  return <Link href={routes.frontend.groupEvent.create()}>Start</Link>;
 }

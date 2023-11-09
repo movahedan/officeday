@@ -5,9 +5,10 @@ import {
   websiteBaseUrl,
   websiteDescription,
   websiteName,
-} from "@/libs/constants/website";
-import { Footer } from "@/libs/ui/Footer";
+} from "@/libs/constants";
 import { classNames } from "@/libs/utilities/string";
+
+import { Footer } from "@/libs/ui/server-side";
 
 import type { Metadata } from "next";
 

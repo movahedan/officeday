@@ -1,13 +1,13 @@
 import type { CSSProperties, FC } from "react";
 
-export type LoadingProps = {
-  width: string;
-  height: string;
+export type IconLoadingProps = {
+  width: number;
+  height: number;
   style?: CSSProperties;
   className?: string;
 };
 
-export const Loading: FC<LoadingProps> = ({
+export const IconLoading: FC<IconLoadingProps> = ({
   width,
   height,
   style = {},
