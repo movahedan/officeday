@@ -36,7 +36,7 @@ export default function GroupEventOwnerPage({
   const groupEventUrl = useMemo(
     () =>
       groupEvent?.id
-        ? `${window.location.origin}${routes.frontend.groupEvent.groupEvent(
+        ? `${window.location.origin}${routes.frontend.groupEvent.join(
             groupEvent?.id,
           )}`
         : null,
