@@ -27,8 +27,10 @@ export default function RootLayout({
           crossOrigin="use-credentials"
         />
       </head>
-      <body className={classNames(["flex flex-col", inter.className])}>
-        <main className="flex flex-col items-center justify-between flex-1 h-full p-24">
+      <body
+        className={classNames(["flex flex-col min-h-screen", inter.className])}
+      >
+        <main className="flex flex-col items-center justify-between flex-1 p-24">
           {children}
         </main>
         <Footer />

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCopyToClipboard, useTimeoutFn } from "react-use";
+import { twMerge } from "tailwind-merge";
 
 import { classNames } from "../utilities/string";
 
@@ -36,13 +37,17 @@ export const CopyUrl = ({ url, className }: CopyUrlProps) => {
           reset();
         }}
         disabled={copyButtonDisabled}
-        className={classNames([
-          "w-full md:w-128",
-          "px-40 py-6 border outline-0",
-          "rounded-l-md rounded-b-md rounded-t-none md:rounded-md md:rounded-l-none",
-          copyState.error && "bg-red-500 border-red-500 text-white",
-          copyButtonDisabled && "bg-green-500 border-green-500 text-white",
-        ])}
+        className={twMerge(
+          classNames([
+            "w-full md:w-128",
+            "px-40 py-6 border outline-0",
+            "hover:bg-slate-100 hover:shadow-sm",
+            "rounded-l-md rounded-b-md rounded-t-none md:rounded-md md:rounded-l-none",
+            copyState.error && "bg-red-500 border-red-500 text-white",
+            copyButtonDisabled &&
+              "bg-green-500 border-green-500 hover:bg-green-600 hover:border-green-600 text-white",
+          ]),
+        )}
       >
         {copyState.error ? "Error!" : copyButtonDisabled ? "Copied" : "Copy"}
       </button>
