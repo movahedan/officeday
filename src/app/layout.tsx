@@ -28,7 +28,9 @@ export default function RootLayout({
         />
       </head>
       <body className={classNames(["flex flex-col", inter.className])}>
-        <div className="flex flex-col flex-1">{children}</div>
+        <main className="flex flex-col items-center justify-between flex-1 h-full p-24">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
