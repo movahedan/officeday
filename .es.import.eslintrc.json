@@ -36,6 +36,11 @@
             "pattern": "@/",
             "group": "internal",
             "position": "after"
+          },
+          {
+            "pattern": "@/libs/ui/*",
+            "group": "internal",
+            "position": "after"
           }
         ],
         "pathGroupsExcludedImportTypes": ["builtin", "external"],
