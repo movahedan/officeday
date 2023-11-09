@@ -58,9 +58,15 @@ export default function GroupEventOwnerPage({
       )}
 
       {!!groupEventUrl && !error && (
-        <div className="w-full max-w-764">
-          <div className="flex w-full">
-            <p className="flex-1 px-24 py-8 bg-gray-100 border border-r-0 border-gray-400 border-dotted rounded-r-none rounded-l-md">
+        <div className="w-full max-w-400 md:max-w-764">
+          <div className="flex flex-col w-full md:flex-row">
+            <p
+              className={classNames([
+                "flex-1 px-24 py-8 break-words bg-gray-100 ",
+                "border border-gray-400 border-dotted border-b-0 rounded-b-none rounded-t-md",
+                "md:border-b md:border-r-0 md:rounded-r-none md:rounded-l-md",
+              ])}
+            >
               {groupEventUrl}
             </p>
 
@@ -72,11 +78,11 @@ export default function GroupEventOwnerPage({
               }}
               disabled={copyButtonDisabled}
               className={classNames([
-                "w-128",
-                "px-40 py-8 border outline-0",
-                "rounded-md rounded-l-none",
-                "transition-all duration-300",
-                copyButtonDisabled && "bg-green-300 border-green-300",
+                "w-full md:w-128",
+                "px-40 py-6 border outline-0",
+                "rounded-l-md rounded-b-md rounded-t-none md:rounded-md md:rounded-l-none",
+                copyButtonDisabled &&
+                  "bg-green-500 border-green-500 text-white",
               ])}
             >
               {copyButtonDisabled ? "Copied" : "Copy"}
@@ -89,17 +95,17 @@ export default function GroupEventOwnerPage({
             </p>
           )}
 
-          <div className="flex w-full mt-16">
-            <div className="w-320">
+          <div className="flex flex-col w-full mt-24 md:flex-row">
+            <div className="w-full md:w-320">
               <h3 className="mb-8 text-lg">Edit suggestions</h3>
               <GroupEventEditForm id={id} />
 
               {!groupEvent?.invitees.length ? null : (
                 <>
-                  <h3 className="my-8 text-lg">Invitees</h3>
-                  <ul>
+                  <h3 className="mt-20 mb-8 text-lg md:mt-8">Invitees</h3>
+                  <ul className="overflow-hidden [&>*:nth-child(odd)]:bg-slate-200 [&>*:nth-child(even)]:bg-slate-100 rounded-md">
                     {groupEvent.invitees.map((invitee) => (
-                      <li key={invitee.person.name} className="w-full">
+                      <li key={invitee.person.name} className="w-full p-8">
                         {invitee.person.name}
                       </li>
                     ))}
@@ -108,9 +114,9 @@ export default function GroupEventOwnerPage({
               )}
             </div>
 
-            <div className="w-full ml-16">
+            <div className="w-full mt-20 md:mt-0 md:ml-16">
               <div className="flex mb-8">
-                <h3 className="mr-auto text-lg">Suggested dates </h3>
+                <h3 className="mr-auto text-lg">Suggested dates</h3>
                 <Loading
                   width="32"
                   height="32"
@@ -120,7 +126,8 @@ export default function GroupEventOwnerPage({
                   ])}
                 />
               </div>
-              <ul className="w-full overflow-hidden [&>*:nth-child(odd)]:bg-slate-200 [&>*:nth-child(even)]:bg-slate-100 rounded-md">
+
+              <ul className="overflow-hidden [&>*:nth-child(odd)]:bg-slate-200 [&>*:nth-child(even)]:bg-slate-100 rounded-md">
                 {groupEvent?.suggestedOptions.map((option) => {
                   const votedPeople = groupEvent.invitees
                     .filter((invitee) =>
@@ -131,7 +138,7 @@ export default function GroupEventOwnerPage({
                     .map((invitee) => invitee.person.name);
 
                   return (
-                    <li key={option.id} className="w-full p-8 last:mb-0">
+                    <li key={option.id} className="w-full p-8">
                       <span className="mr-4">
                         {dateFormatter(new Date(option.date))}:
                       </span>

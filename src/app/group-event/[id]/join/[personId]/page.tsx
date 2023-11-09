@@ -41,8 +41,8 @@ export default function GroupEventSelectOptionsPage({
           </Link>
         </div>
       ) : (
-        <div className="flex w-full max-w-764">
-          <div className="m-auto w-320">
+        <div className="flex flex-col w-full md:flex-row max-w-400 md:max-w-764">
+          <div className="w-full m-auto md:w-320">
             {!!groupEvent && (
               <>
                 <h3 className="mb-16 text-lg">Select possible options</h3>
@@ -61,7 +61,7 @@ export default function GroupEventSelectOptionsPage({
             )}
           </div>
 
-          <div className="flex-1 ml-16">
+          <div className="flex-1 mt-20 md:mt-0 md:ml-16">
             <div className="flex mb-8">
               <h3 className="mr-auto text-lg">Status of suggested options</h3>
               <Loading
