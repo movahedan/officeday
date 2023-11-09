@@ -33,7 +33,7 @@
         ],
         "pathGroups": [
           {
-            "pattern": "@officeday",
+            "pattern": "@/",
             "group": "internal",
             "position": "after"
           }
