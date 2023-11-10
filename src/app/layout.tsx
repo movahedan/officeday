@@ -8,6 +8,7 @@ import {
 } from "@/libs/constants";
 import { classNames } from "@/libs/utilities/string";
 
+import { WebVitals } from "@/libs/ui/client-side";
 import { Footer } from "@/libs/ui/server-side";
 
 import type { Metadata } from "next";
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={classNames(["flex flex-col min-h-screen", inter.className])}
       >
+        <WebVitals />
         <main className="flex flex-col items-center justify-between flex-1 p-24">
           {children}
         </main>
