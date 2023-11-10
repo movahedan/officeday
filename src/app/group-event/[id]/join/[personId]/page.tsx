@@ -1,4 +1,5 @@
 "use client";
+import dynamic from "next/dynamic";
 import useSWR from "swr";
 
 import { routes } from "@/libs/constants";
@@ -7,9 +8,19 @@ import { fetcher } from "@/libs/utilities/fetcher";
 import { classNames } from "@/libs/utilities/string";
 
 import { IconLoading } from "@/libs/ui/icons";
-import { ErrorComponent, SuggestedOptionsStatus } from "@/libs/ui/server-side";
+import { SuggestedOptionsStatus } from "@/libs/ui/server-side";
 
 import type { GroupEvent } from "@/libs/prisma/types";
+
+const ErrorComponent = dynamic(
+  () =>
+    import("@/libs/ui/server-side/ErrorComponent").then(
+      (module) => module.ErrorComponent,
+    ),
+  {
+    loading: () => <IconLoading width={32} height={32} />,
+  },
+);
 
 export type GroupEventSelectOptionsPageProps = {
   params: {

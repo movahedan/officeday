@@ -1,29 +1,35 @@
 "use client";
+import dynamic from "next/dynamic";
 import useSWR from "swr";
 
 import { routes } from "@/libs/constants";
-import { Button } from "@/libs/ui/client-side/Button";
-import { CopyUrl } from "@/libs/ui/client-side/CopyUrl";
 import { GroupEventEditForm } from "@/libs/ui/forms/GroupEventEditForm";
 import { fetcher } from "@/libs/utilities/fetcher";
 import { classNames } from "@/libs/utilities/string";
 
+import { CopyUrl, Button } from "@/libs/ui/client-side";
 import { IconLoading, IconRefresh } from "@/libs/ui/icons";
-import {
-  ErrorComponent,
-  List,
-  SuggestedOptionsStatus,
-} from "@/libs/ui/server-side";
+import { List, SuggestedOptionsStatus } from "@/libs/ui/server-side";
 
 import type { GroupEvent } from "@/libs/prisma/types";
 
-interface EventRoomProps {
+const ErrorComponent = dynamic(
+  () =>
+    import("@/libs/ui/server-side/ErrorComponent").then(
+      (module) => module.ErrorComponent,
+    ),
+  {
+    loading: () => <IconLoading width={32} height={32} />,
+  },
+);
+
+export interface GroupEventOwnerPageProps {
   params: { id: string };
 }
 
 export default function GroupEventOwnerPage({
   params: { id },
-}: EventRoomProps) {
+}: GroupEventOwnerPageProps) {
   const {
     data: groupEvent,
     error,
