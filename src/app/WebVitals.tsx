@@ -7,5 +7,5 @@ export const WebVitals = () => {
     console.log(metric);
   });
 
-  return <></>;
+  return null;
 };
