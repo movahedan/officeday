@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { routes } from "@/libs/constants";
-import { fetcher } from "@/libs/utilities/fetcher";
+import { postApiGroupEventIdJoin } from "@/libs/data/default";
 
 import { Button } from "../client-side/Button";
 
@@ -27,18 +27,13 @@ export const GroupEventJoinForm = ({ id }: GroupEventJoinFormProps) => {
   } = useForm<GroupEventJoinFormData>();
 
   const onSubmit: SubmitHandler<GroupEventJoinFormData> = async (data) => {
-    const body = {
+    const person = await postApiGroupEventIdJoin(id, {
       person: {
         name: data.name,
       },
-    };
-
-    const person = await fetcher(routes.backend.groupEvent.join.post(id), {
-      method: "POST",
-      body: JSON.stringify(body),
     });
 
-    router.push(routes.frontend.groupEvent.selectDate(id, person.id));
+    router.push(routes.groupEvent.selectDate(id, person.id));
   };
 
   return (

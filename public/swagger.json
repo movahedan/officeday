@@ -1,0 +1,789 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Next Swagger API Example",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/group-event/{id}": {
+      "get": {
+        "summary": "Get a specific group event",
+        "description": "Retrieves a group event based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the group event"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group event retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "ownerId",
+                    "owner",
+                    "suggestedOptions",
+                    "invitees"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Unique identifier of the group event"
+                    },
+                    "ownerId": {
+                      "type": "string",
+                      "description": "Identifier of the owner of the group event"
+                    },
+                    "owner": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "name"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the owner"
+                        }
+                      }
+                    },
+                    "suggestedOptions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "date",
+                          "eventId",
+                          "invitees"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Unique identifier of the group event option"
+                          },
+                          "date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Suggested date for the event"
+                          },
+                          "eventId": {
+                            "type": "string",
+                            "description": "Identifier of the related group event"
+                          },
+                          "invitees": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "invitees": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "personId",
+                          "groupEventId",
+                          "possibleOptionIds",
+                          "person",
+                          "possibleOptions"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Identifier of the invitee"
+                          },
+                          "personId": {
+                            "type": "string",
+                            "description": "Identifier of the person invited"
+                          },
+                          "groupEventId": {
+                            "type": "string",
+                            "description": "Identifier of the related group event"
+                          },
+                          "possibleOptionIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Array of IDs for the possible options for this invitee"
+                          },
+                          "person": {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Name of the invited person"
+                              }
+                            }
+                          },
+                          "possibleOptions": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "id",
+                                "date",
+                                "eventId"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "date": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "eventId": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Event ID is required"
+          },
+          "404": {
+            "description": "No event with this ID exists"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a group event's suggested options",
+        "description": "Updates the suggested options for a group event based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the group event"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "suggestedOptions"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Unique identifier of the group event"
+                  },
+                  "ownerId": {
+                    "type": "string",
+                    "description": "Identifier of the owner of the group event"
+                  },
+                  "owner": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Name of the owner"
+                      }
+                    }
+                  },
+                  "suggestedOptions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "date"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Unique identifier of the group event option"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Suggested date for the event"
+                        },
+                        "eventId": {
+                          "type": "string",
+                          "description": "Identifier of the related group event"
+                        },
+                        "invitees": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "invitees": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "personId",
+                        "groupEventId",
+                        "possibleOptionIds",
+                        "person",
+                        "possibleOptions"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Identifier of the invitee"
+                        },
+                        "personId": {
+                          "type": "string",
+                          "description": "Identifier of the person invited"
+                        },
+                        "groupEventId": {
+                          "type": "string",
+                          "description": "Identifier of the related group event"
+                        },
+                        "possibleOptionIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "description": "Array of IDs for the possible options for this invitee"
+                        },
+                        "person": {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Name of the invited person"
+                            }
+                          }
+                        },
+                        "possibleOptions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "date",
+                              "eventId"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "date": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "eventId": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Group event updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "ownerId",
+                    "owner",
+                    "suggestedOptions",
+                    "invitees"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Unique identifier of the group event"
+                    },
+                    "ownerId": {
+                      "type": "string",
+                      "description": "Identifier of the owner of the group event"
+                    },
+                    "owner": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "name"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the owner"
+                        }
+                      }
+                    },
+                    "suggestedOptions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "date",
+                          "eventId",
+                          "invitees"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Unique identifier of the group event option"
+                          },
+                          "date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Suggested date for the event"
+                          },
+                          "eventId": {
+                            "type": "string",
+                            "description": "Identifier of the related group event"
+                          },
+                          "invitees": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "invitees": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "personId",
+                          "groupEventId",
+                          "possibleOptionIds",
+                          "person",
+                          "possibleOptions"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Identifier of the invitee"
+                          },
+                          "personId": {
+                            "type": "string",
+                            "description": "Identifier of the person invited"
+                          },
+                          "groupEventId": {
+                            "type": "string",
+                            "description": "Identifier of the related group event"
+                          },
+                          "possibleOptionIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "description": "Array of IDs for the possible options for this invitee"
+                          },
+                          "person": {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Name of the invited person"
+                              }
+                            }
+                          },
+                          "possibleOptions": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "id",
+                                "date",
+                                "eventId"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "date": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "eventId": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/group-event/{id}/join/{personId}": {
+      "put": {
+        "summary": "Update participation options for a person in a group event",
+        "description": "Updates the possible options for a person's participation in a specific group event.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the group event"
+          },
+          {
+            "in": "path",
+            "name": "personId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the person (invitee)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "possibleOptions"
+                ],
+                "properties": {
+                  "possibleOptions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Array of possible option IDs that the person is interested in"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Participation options updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "personId",
+                    "possibleOptionIds"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Identifier of the updated invitee"
+                    },
+                    "personId": {
+                      "type": "string",
+                      "description": "Identifier of the person (invitee)"
+                    },
+                    "possibleOptionIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Updated array of possible option IDs for the invitee"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, object invalid or invitee not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/group-event/{id}/join": {
+      "post": {
+        "summary": "Join a group event",
+        "description": "Allows a person to join a group event using the event ID and person's name.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the group event to join"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "person"
+                ],
+                "properties": {
+                  "person": {
+                    "type": "object",
+                    "description": "The person joining the event",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Name of the person"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Person joined the event successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Id of the person who joined"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the person who joined"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/group-event": {
+      "post": {
+        "summary": "Create a new group event",
+        "description": "Creates a new group event with provided owner and suggested options.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "owner",
+                  "suggestedOptions"
+                ],
+                "properties": {
+                  "owner": {
+                    "type": "object",
+                    "description": "The owner of the event",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Name of the event owner"
+                      }
+                    }
+                  },
+                  "suggestedOptions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "date"
+                      ],
+                      "properties": {
+                        "date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Suggested date for the event"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Group event created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "ownerId",
+                    "owner",
+                    "suggestedOptions"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Unique identifier of the group event"
+                    },
+                    "ownerId": {
+                      "type": "string",
+                      "description": "Identifier of the owner of the group event"
+                    },
+                    "owner": {
+                      "type": "object",
+                      "required": [
+                        "name"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Name of the owner"
+                        }
+                      }
+                    },
+                    "suggestedOptions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "date"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Unique identifier of the group event option"
+                          },
+                          "date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Suggested date for the event"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, object invalid"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

@@ -1,0 +1,10 @@
+{
+    "apiFolder": "src/pages/api",
+    "definition": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "Next Swagger API Example",
+        "version": "1.0"
+      }
+    }
+}

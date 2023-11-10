@@ -12,8 +12,9 @@
       "files": ["*.{js,jsx,ts,tsx}"],
       "extends": [
         ".es.import.eslintrc.json",
-        ".es.react.eslintrc",
-        ".es.next.eslintrc"
+        ".es.react.eslintrc.json",
+        ".es.next.eslintrc.json",
+        ".es.api.eslintrc.json"
       ],
       "rules": {
         "newline-before-return": "error",

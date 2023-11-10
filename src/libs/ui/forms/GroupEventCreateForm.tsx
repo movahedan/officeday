@@ -3,12 +3,11 @@ import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 
 import { routes } from "@/libs/constants";
-import { fetcher } from "@/libs/utilities/fetcher";
+import { postApiGroupEvent } from "@/libs/data/default";
 
 import { Button } from "../client-side/Button";
 import { IconRemove } from "../icons";
 
-import type { NewGroupEvent } from "@/libs/prisma/types";
 import type { SubmitHandler } from "react-hook-form";
 
 export type GroupEventCreateFormData = {
@@ -36,21 +35,16 @@ export const GroupEventCreateForm = () => {
   });
 
   const onSubmit: SubmitHandler<GroupEventCreateFormData> = async (data) => {
-    const body: NewGroupEvent = {
+    const response = await postApiGroupEvent({
       owner: {
         name: data.name,
       },
       suggestedOptions: data.dates.map((dateObj) => ({
-        date: new Date(dateObj.date),
+        date: dateObj.date,
       })),
-    };
-
-    const response = await fetcher(routes.backend.groupEvent.post(), {
-      method: "POST",
-      body: JSON.stringify(body),
     });
 
-    router.push(routes.frontend.groupEvent.groupEvent(response.id));
+    router.push(routes.groupEvent.groupEvent(response.id));
   };
 
   return (
@@ -75,7 +69,7 @@ export const GroupEventCreateForm = () => {
       </div>
 
       {fields.map((field, index) => (
-        <div key={field.id} className="mb-20">
+        <div key={field.id} className="mb-8">
           <label
             htmlFor={`dates[${index}].date`}
             className="block mb-4 text-gray-700 text-md"
@@ -93,7 +87,7 @@ export const GroupEventCreateForm = () => {
               })}
               className="w-full px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
             />
-            <Button variant="red" onClick={() => remove(index)} className="p-4">
+            <Button variant="red" onClick={() => remove(index)} className="p-8">
               <IconRemove width={16} height={16} />
             </Button>
           </div>
@@ -108,7 +102,7 @@ export const GroupEventCreateForm = () => {
       <Button
         variant="blue"
         onClick={() => append({ date: "" })}
-        className="w-full mb-16 text-lg"
+        className="w-full mt-20 mb-8 text-lg"
       >
         Add Date
       </Button>

@@ -1,16 +1,13 @@
 "use client";
-import useSWR from "swr";
 
 import { routes } from "@/libs/constants";
+import { useGetApiGroupEventId } from "@/libs/data/default";
 import { GroupEventEditForm } from "@/libs/ui/forms/GroupEventEditForm";
-import { fetcher } from "@/libs/utilities/fetcher";
 import { classNames } from "@/libs/utilities/string";
 
 import { CopyUrl, Button } from "@/libs/ui/client-side";
 import { IconLoading, IconRefresh } from "@/libs/ui/icons";
 import { List, SuggestedOptionsStatus } from "@/libs/ui/server-side";
-
-import type { GroupEvent } from "@/libs/prisma/types";
 
 export interface GroupEventOwnerPageProps {
   params: { id: string };
@@ -25,25 +22,21 @@ export default function GroupEventOwnerPage({
     isLoading,
     isValidating,
     mutate,
-  } = useSWR<GroupEvent>(routes.backend.groupEvent.get(id), fetcher, {
-    refreshInterval: 10000,
-  });
+  } = useGetApiGroupEventId(id, { swr: { refreshInterval: 10000 } });
 
   if (error) throw error;
 
   const groupEventUrl = !groupEvent?.id
     ? null
-    : `${window.location.origin}${routes.frontend.groupEvent.join(
-        groupEvent?.id,
-      )}`;
+    : `${window.location.origin}${routes.groupEvent.join(groupEvent?.id)}`;
 
-  return !groupEventUrl ? null : (
+  return !groupEventUrl || !groupEvent ? null : (
     <div className="w-full max-w-400 md:max-w-764">
       <CopyUrl url={groupEventUrl} />
 
       <div className="flex flex-col w-full mt-24 md:flex-row">
         <div className="w-full md:w-320">
-          {!groupEvent?.invitees.length ? null : (
+          {!groupEvent.invitees.length ? null : (
             <>
               <h3 className="mb-8 text-lg">Invitees</h3>
               <List

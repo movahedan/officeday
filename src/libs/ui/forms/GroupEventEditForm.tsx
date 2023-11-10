@@ -1,20 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
-import useSWR from "swr";
 
 import { routes } from "@/libs/constants";
+import { putApiGroupEventId, useGetApiGroupEventId } from "@/libs/data/default";
 import { dateFormatter } from "@/libs/utilities/date";
-import { fetcher } from "@/libs/utilities/fetcher";
 import { classNames } from "@/libs/utilities/string";
 
 import { Button } from "../client-side/Button";
 import { IconRemove } from "../icons";
 
-import type {
-  EditGroupEventSuggestedOptions,
-  GroupEvent,
-} from "@/libs/prisma/types";
 import type { SubmitHandler } from "react-hook-form";
 
 export type GroupEventEditFormData = {
@@ -28,10 +23,7 @@ export type GroupEventEditFormProps = {
 export const GroupEventEditForm = ({ id }: GroupEventEditFormProps) => {
   const router = useRouter();
 
-  const { data: groupEvent, mutate } = useSWR<GroupEvent>(
-    routes.backend.groupEvent.get(id),
-    fetcher,
-  );
+  const { data: groupEvent, mutate } = useGetApiGroupEventId(id);
 
   const {
     register,
@@ -52,20 +44,15 @@ export const GroupEventEditForm = ({ id }: GroupEventEditFormProps) => {
   });
 
   const onSubmit: SubmitHandler<GroupEventEditFormData> = async (data) => {
-    const body: EditGroupEventSuggestedOptions = {
+    const response = await putApiGroupEventId(id, {
       id,
       suggestedOptions: data.dates.map((dateObj) => ({
-        date: new Date(dateObj.date),
+        date: dateObj.date,
       })),
-    };
-
-    const response = await fetcher(routes.backend.groupEvent.get(id), {
-      method: "PUT",
-      body: JSON.stringify(body),
     });
 
     mutate();
-    router.push(routes.frontend.groupEvent.groupEvent(response.id));
+    router.push(routes.groupEvent.groupEvent(response.id));
   };
 
   return (

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --project tsconfig.json"
+    "type-check": "tsc --project tsconfig.json",
+    "generate-prisma": "yarn prisma generate --schema src/libs/data/prisma/schema.prisma",
+    "generate-apis": "yarn next-swagger-doc-cli next-swagger-doc.json && yarn orval && yarn lint --fix"
   },
   "browserslist": [
     "chrome 64",
@@ -38,11 +40,14 @@
     "eslint-config-next": "^14.0.1",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsdoc": "^46.9.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-tailwind": "^0.2.1",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
+    "next-swagger-doc": "^0.4.0",
+    "orval": "^6.20.0",
     "postcss": "^8",
     "prettier": "^3.0.3",
     "prisma": "^5.5.2",

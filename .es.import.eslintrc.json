@@ -1,7 +1,7 @@
 {
   "plugins": ["import"],
   "settings": {
-    "import/internal-regex": "^(?:@officeday/)",
+    "import/internal-regex": "^(?:@/)",
     "import/resolver": { "node": { "paths": ["."] } }
   },
   "extends": [
@@ -52,7 +52,7 @@
     "import/no-unassigned-import": ["error", { "allow": ["**/*.css"] }],
     "import/max-dependencies": [
       "error",
-      { "max": 10, "ignoreTypeImports": true }
+      { "max": 15, "ignoreTypeImports": true }
     ],
     "import/no-anonymous-default-export": [
       "error",
@@ -90,7 +90,7 @@
       }
     },
     {
-      "files": ["src/index.ts"],
+      "files": ["src/libs/data/**/*.ts"],
       "rules": {
         "import/max-dependencies": [
           "off",

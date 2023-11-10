@@ -1,9 +1,360 @@
-import { prisma } from "@/libs/prisma/client";
+import { prisma } from "@/libs/data/prisma/client";
 import { errorHandlerApiRoute } from "@/libs/utilities/error-handlers";
 
-import type { EditGroupEventSuggestedOptions } from "@/libs/prisma/types";
+import type { PutApiGroupEventIdBody } from "@/libs/data/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+/**
+ * @swagger
+ * /api/group-event/{id}:
+ *   get:
+ *     summary: Get a specific group event
+ *     description: Retrieves a group event based on the provided ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the group event
+ *     responses:
+ *       200:
+ *         description: Group event retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - id
+ *                 - ownerId
+ *                 - owner
+ *                 - suggestedOptions
+ *                 - invitees
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: Unique identifier of the group event
+ *                 ownerId:
+ *                   type: string
+ *                   description: Identifier of the owner of the group event
+ *                 owner:
+ *                   type: object
+ *                   required:
+ *                     - id
+ *                     - name
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                       description: Name of the owner
+ *                 suggestedOptions:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     required:
+ *                       - id
+ *                       - date
+ *                       - eventId
+ *                       - invitees
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Unique identifier of the group event option
+ *                       date:
+ *                         type: string
+ *                         format: date-time
+ *                         description: Suggested date for the event
+ *                       eventId:
+ *                         type: string
+ *                         description: Identifier of the related group event
+ *                       invitees:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                 invitees:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     required:
+ *                       - id
+ *                       - personId
+ *                       - groupEventId
+ *                       - possibleOptionIds
+ *                       - person
+ *                       - possibleOptions
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Identifier of the invitee
+ *                       personId:
+ *                         type: string
+ *                         description: Identifier of the person invited
+ *                       groupEventId:
+ *                         type: string
+ *                         description: Identifier of the related group event
+ *                       possibleOptionIds:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                         description: Array of IDs for the possible options for this invitee
+ *                       person:
+ *                         type: object
+ *                         required:
+ *                           - id
+ *                           - name
+ *                         properties:
+ *                           id:
+ *                             type: string
+ *                           name:
+ *                             type: string
+ *                             description: Name of the invited person
+ *                       possibleOptions:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           required:
+ *                             - id
+ *                             - date
+ *                             - eventId
+ *                           properties:
+ *                             id:
+ *                               type: string
+ *                             date:
+ *                               type: string
+ *                               format: date-time
+ *                             eventId:
+ *                               type: string
+ *       400:
+ *         description: Event ID is required
+ *       404:
+ *         description: No event with this ID exists
+ *       500:
+ *         description: Server error
+ *   put:
+ *     summary: Update a group event's suggested options
+ *     description: Updates the suggested options for a group event based on the provided ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the group event
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *               - suggestedOptions
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: Unique identifier of the group event
+ *               ownerId:
+ *                 type: string
+ *                 description: Identifier of the owner of the group event
+ *               owner:
+ *                 type: object
+ *                 required:
+ *                   - id
+ *                   - name
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                     description: Name of the owner
+ *               suggestedOptions:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - date
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       description: Unique identifier of the group event option
+ *                     date:
+ *                       type: string
+ *                       format: date-time
+ *                       description: Suggested date for the event
+ *                     eventId:
+ *                       type: string
+ *                       description: Identifier of the related group event
+ *                     invitees:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *               invitees:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - id
+ *                     - personId
+ *                     - groupEventId
+ *                     - possibleOptionIds
+ *                     - person
+ *                     - possibleOptions
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       description: Identifier of the invitee
+ *                     personId:
+ *                       type: string
+ *                       description: Identifier of the person invited
+ *                     groupEventId:
+ *                       type: string
+ *                       description: Identifier of the related group event
+ *                     possibleOptionIds:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       description: Array of IDs for the possible options for this invitee
+ *                     person:
+ *                       type: object
+ *                       required:
+ *                         - id
+ *                         - name
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                         name:
+ *                           type: string
+ *                           description: Name of the invited person
+ *                     possibleOptions:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         required:
+ *                           - id
+ *                           - date
+ *                           - eventId
+ *                         properties:
+ *                           id:
+ *                             type: string
+ *                           date:
+ *                             type: string
+ *                             format: date-time
+ *                           eventId:
+ *                             type: string
+ *     responses:
+ *       200:
+ *         description: Group event updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - id
+ *                 - ownerId
+ *                 - owner
+ *                 - suggestedOptions
+ *                 - invitees
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: Unique identifier of the group event
+ *                 ownerId:
+ *                   type: string
+ *                   description: Identifier of the owner of the group event
+ *                 owner:
+ *                   type: object
+ *                   required:
+ *                     - id
+ *                     - name
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                       description: Name of the owner
+ *                 suggestedOptions:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     required:
+ *                       - id
+ *                       - date
+ *                       - eventId
+ *                       - invitees
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Unique identifier of the group event option
+ *                       date:
+ *                         type: string
+ *                         format: date-time
+ *                         description: Suggested date for the event
+ *                       eventId:
+ *                         type: string
+ *                         description: Identifier of the related group event
+ *                       invitees:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                 invitees:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     required:
+ *                       - id
+ *                       - personId
+ *                       - groupEventId
+ *                       - possibleOptionIds
+ *                       - person
+ *                       - possibleOptions
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Identifier of the invitee
+ *                       personId:
+ *                         type: string
+ *                         description: Identifier of the person invited
+ *                       groupEventId:
+ *                         type: string
+ *                         description: Identifier of the related group event
+ *                       possibleOptionIds:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                         description: Array of IDs for the possible options for this invitee
+ *                       person:
+ *                         type: object
+ *                         required:
+ *                           - id
+ *                           - name
+ *                         properties:
+ *                           id:
+ *                             type: string
+ *                           name:
+ *                             type: string
+ *                             description: Name of the invited person
+ *                       possibleOptions:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           required:
+ *                             - id
+ *                             - date
+ *                             - eventId
+ *                           properties:
+ *                             id:
+ *                               type: string
+ *                             date:
+ *                               type: string
+ *                               format: date-time
+ *                             eventId:
+ *                               type: string
+ *       400:
+ *         description: Invalid input, object invalid
+ *       500:
+ *         description: Server error
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -81,7 +432,7 @@ async function handlePUT(
   res: NextApiResponse,
   id: string,
 ) {
-  const { suggestedOptions } = req.body as EditGroupEventSuggestedOptions;
+  const { suggestedOptions } = req.body as PutApiGroupEventIdBody;
 
   if (!suggestedOptions?.length) {
     return res.status(400).json({ error: "Please enter at least one option." });

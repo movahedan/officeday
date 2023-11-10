@@ -19,7 +19,7 @@ export const ErrorComponent = ({ error, className }: ErrorComponentProps) => (
         : error?.message || error?.digest || "An unexpected error ocurred."}
     </p>
 
-    <Link href={routes.frontend.groupEvent.create()} className="mx-auto mt-16">
+    <Link href={routes.groupEvent.create()} className="mx-auto mt-16">
       <Button variant="green" className="px-12 py-8 bg-green-400 rounded-md">
         Create an event
       </Button>

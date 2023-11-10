@@ -10,7 +10,7 @@ export default function NotFound() {
       <h1 className="mb-16 text-3xl">404</h1>
       <h3 className="mb-16 text-xl">Not Found!</h3>
 
-      <Link href={routes.frontend.index()}>
+      <Link href={routes.index()}>
         <Button variant="green" className="px-16 py-8">
           Return Home
         </Button>

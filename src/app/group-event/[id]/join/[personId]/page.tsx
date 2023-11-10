@@ -1,15 +1,11 @@
 "use client";
-import useSWR from "swr";
 
-import { routes } from "@/libs/constants";
+import { useGetApiGroupEventId } from "@/libs/data/default";
 import { GroupEventSelectOptionsForm } from "@/libs/ui/forms/GroupEventSelectOptions";
-import { fetcher } from "@/libs/utilities/fetcher";
 import { classNames } from "@/libs/utilities/string";
 
 import { IconLoading } from "@/libs/ui/icons";
 import { SuggestedOptionsStatus } from "@/libs/ui/server-side";
-
-import type { GroupEvent } from "@/libs/prisma/types";
 
 export type GroupEventSelectOptionsPageProps = {
   params: {
@@ -17,18 +13,19 @@ export type GroupEventSelectOptionsPageProps = {
     personId: string;
   };
 };
-const error = "error";
 
 export default function GroupEventSelectOptionsPage({
   params: { id, personId },
 }: GroupEventSelectOptionsPageProps) {
   const {
     data: groupEvent,
-    // error,
+    error,
     isLoading,
     isValidating,
-  } = useSWR<GroupEvent>(routes.backend.groupEvent.get(id), fetcher, {
-    refreshInterval: 1000,
+  } = useGetApiGroupEventId(id, {
+    swr: {
+      refreshInterval: 10000,
+    },
   });
 
   if (error) {
@@ -44,9 +41,9 @@ export default function GroupEventSelectOptionsPage({
         <GroupEventSelectOptionsForm
           id={id}
           personId={personId}
-          suggestedOptions={groupEvent?.suggestedOptions || []}
+          suggestedOptions={groupEvent.suggestedOptions || []}
           possibleOptionsIds={
-            groupEvent?.invitees
+            groupEvent.invitees
               .find((i) => i.person.id === personId)
               ?.possibleOptions.map((o) => o.id) || []
           }
@@ -67,8 +64,8 @@ export default function GroupEventSelectOptionsPage({
         </div>
 
         <SuggestedOptionsStatus
-          suggestedOptions={groupEvent?.suggestedOptions}
-          invitees={groupEvent?.invitees}
+          suggestedOptions={groupEvent.suggestedOptions}
+          invitees={groupEvent.invitees}
         />
       </div>
     </div>

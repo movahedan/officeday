@@ -3,6 +3,7 @@ import { errorHandlerApi } from "./error-handlers";
 export const fetcher = (input: RequestInfo, init?: RequestInit | undefined) =>
   fetch(input, {
     ...init,
+    body: init?.body ? JSON.stringify(init.body) : undefined,
     headers: {
       "Content-Type": "application/json",
       ...(init?.headers || {}),

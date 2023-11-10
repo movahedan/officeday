@@ -1,16 +1,12 @@
 "use client";
 import { useForm } from "react-hook-form";
 
-import { routes } from "@/libs/constants";
+import { putApiGroupEventIdJoinPersonId } from "@/libs/data/default";
 import { dateFormatter } from "@/libs/utilities/date";
-import { fetcher } from "@/libs/utilities/fetcher";
 
 import { Button } from "../client-side/Button";
 
-import type {
-  GroupEventOption,
-  GroupEventSelectOptions,
-} from "@/libs/prisma/types";
+import type { GetApiGroupEventId200SuggestedOptionsItem } from "@/libs/data/schema";
 import type { SubmitHandler } from "react-hook-form";
 
 export type GroupEventSelectOptionsFormData = {
@@ -20,7 +16,7 @@ export type GroupEventSelectOptionsFormData = {
 export type GroupEventSelectOptionsFormProps = {
   id: string;
   personId: string;
-  suggestedOptions: GroupEventOption[];
+  suggestedOptions: GetApiGroupEventId200SuggestedOptionsItem[];
   possibleOptionsIds: string[];
 };
 
@@ -42,17 +38,10 @@ export const GroupEventSelectOptionsForm = ({
 
   const onSubmit: SubmitHandler<GroupEventSelectOptionsFormData> = async (
     data,
-  ) => {
-    const body: GroupEventSelectOptions = {
-      id,
+  ) =>
+    await putApiGroupEventIdJoinPersonId(id, personId, {
       possibleOptions: data.options,
-    };
-
-    await fetcher(routes.backend.groupEvent.join.put(id, personId), {
-      method: "PUT",
-      body: JSON.stringify(body),
     });
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
