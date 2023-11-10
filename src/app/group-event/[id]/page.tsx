@@ -1,5 +1,4 @@
 "use client";
-import dynamic from "next/dynamic";
 import useSWR from "swr";
 
 import { routes } from "@/libs/constants";
@@ -12,16 +11,6 @@ import { IconLoading, IconRefresh } from "@/libs/ui/icons";
 import { List, SuggestedOptionsStatus } from "@/libs/ui/server-side";
 
 import type { GroupEvent } from "@/libs/prisma/types";
-
-const ErrorComponent = dynamic(
-  () =>
-    import("@/libs/ui/server-side/ErrorComponent").then(
-      (module) => module.ErrorComponent,
-    ),
-  {
-    loading: () => <IconLoading width={32} height={32} />,
-  },
-);
 
 export interface GroupEventOwnerPageProps {
   params: { id: string };
@@ -40,76 +29,72 @@ export default function GroupEventOwnerPage({
     refreshInterval: 10000,
   });
 
+  if (error) throw error;
+
   const groupEventUrl = !groupEvent?.id
     ? null
     : `${window.location.origin}${routes.frontend.groupEvent.join(
         groupEvent?.id,
       )}`;
 
-  return (
-    <>
-      {!!error && <ErrorComponent error={error} />}
+  return !groupEventUrl ? null : (
+    <div className="w-full max-w-400 md:max-w-764">
+      <CopyUrl url={groupEventUrl} />
 
-      {!!groupEventUrl && !error && (
-        <div className="w-full max-w-400 md:max-w-764">
-          <CopyUrl url={groupEventUrl} />
+      <div className="flex flex-col w-full mt-24 md:flex-row">
+        <div className="w-full md:w-320">
+          {!groupEvent?.invitees.length ? null : (
+            <>
+              <h3 className="mb-8 text-lg">Invitees</h3>
+              <List
+                keys={(name) => name}
+                items={groupEvent.invitees.map(
+                  (invitee) => invitee.person.name,
+                )}
+                className="mb-20 md:mb-16"
+              />
+            </>
+          )}
 
-          <div className="flex flex-col w-full mt-24 md:flex-row">
-            <div className="w-full md:w-320">
-              {!groupEvent?.invitees.length ? null : (
-                <>
-                  <h3 className="mb-8 text-lg">Invitees</h3>
-                  <List
-                    keys={(name) => name}
-                    items={groupEvent.invitees.map(
-                      (invitee) => invitee.person.name,
-                    )}
-                    className="mb-20 md:mb-16"
-                  />
-                </>
-              )}
-
-              <h3 className="mb-8 text-lg">Edit suggestions</h3>
-              <GroupEventEditForm id={id} />
-            </div>
-
-            <div className="w-full mt-20 md:mt-0 md:ml-16">
-              {!!groupEvent && (
-                <>
-                  <div className="flex mb-8">
-                    <h3 className="mr-auto text-lg">Suggested dates</h3>
-                    <Button
-                      variant="white"
-                      onClick={() => mutate()}
-                      className="px-8 py-4 border"
-                    >
-                      {isLoading || isValidating ? (
-                        <IconLoading width={16} height={16} />
-                      ) : (
-                        <IconRefresh
-                          width={16}
-                          height={16}
-                          className={classNames([
-                            "transition-all duration-300",
-                            !(isLoading || isValidating)
-                              ? "-rotate-180"
-                              : "rotate-180",
-                          ])}
-                        />
-                      )}
-                    </Button>
-                  </div>
-
-                  <SuggestedOptionsStatus
-                    invitees={groupEvent?.invitees}
-                    suggestedOptions={groupEvent?.suggestedOptions}
-                  />
-                </>
-              )}
-            </div>
-          </div>
+          <h3 className="mb-8 text-lg">Edit suggestions</h3>
+          <GroupEventEditForm id={id} />
         </div>
-      )}
-    </>
+
+        <div className="w-full mt-20 md:mt-0 md:ml-16">
+          {!!groupEvent && (
+            <>
+              <div className="flex mb-8">
+                <h3 className="mr-auto text-lg">Suggested dates</h3>
+                <Button
+                  variant="white"
+                  onClick={() => mutate()}
+                  className="px-8 py-4 border"
+                >
+                  {isLoading || isValidating ? (
+                    <IconLoading width={16} height={16} />
+                  ) : (
+                    <IconRefresh
+                      width={16}
+                      height={16}
+                      className={classNames([
+                        "transition-all duration-300",
+                        !(isLoading || isValidating)
+                          ? "-rotate-180"
+                          : "rotate-180",
+                      ])}
+                    />
+                  )}
+                </Button>
+              </div>
+
+              <SuggestedOptionsStatus
+                invitees={groupEvent?.invitees}
+                suggestedOptions={groupEvent?.suggestedOptions}
+              />
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

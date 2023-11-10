@@ -1,5 +1,4 @@
 "use client";
-import dynamic from "next/dynamic";
 import useSWR from "swr";
 
 import { routes } from "@/libs/constants";
@@ -12,80 +11,66 @@ import { SuggestedOptionsStatus } from "@/libs/ui/server-side";
 
 import type { GroupEvent } from "@/libs/prisma/types";
 
-const ErrorComponent = dynamic(
-  () =>
-    import("@/libs/ui/server-side/ErrorComponent").then(
-      (module) => module.ErrorComponent,
-    ),
-  {
-    loading: () => <IconLoading width={32} height={32} />,
-  },
-);
-
 export type GroupEventSelectOptionsPageProps = {
   params: {
     id: string;
     personId: string;
   };
 };
+const error = "error";
 
 export default function GroupEventSelectOptionsPage({
   params: { id, personId },
 }: GroupEventSelectOptionsPageProps) {
   const {
     data: groupEvent,
-    error,
+    // error,
     isLoading,
     isValidating,
   } = useSWR<GroupEvent>(routes.backend.groupEvent.get(id), fetcher, {
     refreshInterval: 1000,
   });
 
-  return (
-    <>
-      {error ? (
-        <ErrorComponent error={error} />
-      ) : groupEvent ? (
-        <div className="flex flex-col w-full md:flex-row max-w-400 md:max-w-764">
-          <div className="w-full m-auto md:w-320">
-            {!!groupEvent && (
-              <>
-                <h3 className="mb-16 text-lg">Select possible options</h3>
+  if (error) {
+    const cloned = error;
+    throw cloned;
+  }
 
-                <GroupEventSelectOptionsForm
-                  id={id}
-                  personId={personId}
-                  suggestedOptions={groupEvent?.suggestedOptions || []}
-                  possibleOptionsIds={
-                    groupEvent?.invitees
-                      .find((i) => i.person.id === personId)
-                      ?.possibleOptions.map((o) => o.id) || []
-                  }
-                />
-              </>
-            )}
-          </div>
+  return !groupEvent ? null : (
+    <div className="flex flex-col w-full md:flex-row max-w-400 md:max-w-764">
+      <div className="w-full m-auto md:w-320">
+        <h3 className="mb-16 text-lg">Select possible options</h3>
 
-          <div className="flex-1 mt-20 md:mt-0 md:ml-16">
-            <div className="flex mb-8">
-              <h3 className="mr-auto text-lg">Status of suggested options</h3>
-              <IconLoading
-                width={32}
-                height={32}
-                className={classNames([
-                  "ml-auto mr-0",
-                  !(isLoading || isValidating) ? "opacity-0" : "",
-                ])}
-              />
-            </div>
+        <GroupEventSelectOptionsForm
+          id={id}
+          personId={personId}
+          suggestedOptions={groupEvent?.suggestedOptions || []}
+          possibleOptionsIds={
+            groupEvent?.invitees
+              .find((i) => i.person.id === personId)
+              ?.possibleOptions.map((o) => o.id) || []
+          }
+        />
+      </div>
 
-            <SuggestedOptionsStatus
-              suggestedOptions={groupEvent?.suggestedOptions}
-              invitees={groupEvent?.invitees}
-            />
-          </div>
+      <div className="flex-1 mt-20 md:mt-0 md:ml-16">
+        <div className="flex mb-8">
+          <h3 className="mr-auto text-lg">Status of suggested options</h3>
+          <IconLoading
+            width={32}
+            height={32}
+            className={classNames([
+              "ml-auto mr-0",
+              !(isLoading || isValidating) ? "opacity-0" : "",
+            ])}
+          />
         </div>
-      ) : null}
-    </>
+
+        <SuggestedOptionsStatus
+          suggestedOptions={groupEvent?.suggestedOptions}
+          invitees={groupEvent?.invitees}
+        />
+      </div>
+    </div>
   );
 }

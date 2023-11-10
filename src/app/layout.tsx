@@ -13,14 +13,11 @@ import { Footer } from "@/libs/ui/server-side";
 import { WebVitals } from "./WebVitals";
 
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
