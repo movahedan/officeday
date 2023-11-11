@@ -128,15 +128,3 @@ This project has been deployed on vercel, here's [the domain](https://officeday.
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-
-## TODO
-
-### Issues
-
-[] issues with options, after editing options as admin, all the voted options will be gone.
-
-### Suggested things to do:
-
-[] New features? location for each option.
-[] Stylings? making it like a production-level application?
