@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IE",
     siteName: websiteName,
-    images: "/favicon.ico",
+    images: "/icons/favicon.ico",
   },
   manifest: "/manifest.json",
   appleWebApp: {
@@ -72,31 +72,31 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
   },
   icons: [
-    { rel: "shortcut icon", url: "/favicon.ico" },
-    { rel: "apple-touch-icon", sizes: "180x180", url: "/favicon.ico" },
+    { rel: "shortcut icon", url: "/icons/favicon.ico" },
+    { rel: "apple-touch-icon", sizes: "180x180", url: "/icons/favicon.ico" },
     {
       rel: "icon",
       type: "image/png",
       sizes: "96x96",
-      url: "/calendar-android-96x96.png",
+      url: "/icons/calendar-android-96x96.png",
     },
     {
       rel: "icon",
       type: "image/png",
       sizes: "72x72",
-      url: "/calendar-android-72x72.png",
+      url: "/icons/calendar-android-72x72.png",
     },
     {
       rel: "icon",
       type: "image/png",
       sizes: "32x32",
-      url: "/calendar-web-32x32.png",
+      url: "/icons/calendar-web-32x32.png",
     },
     {
       rel: "icon",
       type: "image/png",
       sizes: "16x16",
-      url: "/calendar-web-16x16.png",
+      url: "/icons/calendar-web-16x16.png",
     },
   ],
 };
