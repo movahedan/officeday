@@ -6,8 +6,9 @@
  */
 import useSwr from "swr";
 
-import { fetcherInstance } from "../utilities/fetcher-instance";
+import { fetcher } from "./fetcher";
 
+import type { ErrorType, BodyType } from "./fetcher";
 import type {
   GetApiGroupEventId200,
   PostApiGroupEvent201,
@@ -19,7 +20,6 @@ import type {
   PutApiGroupEventIdJoinPersonId201,
   PutApiGroupEventIdJoinPersonIdBody,
 } from "./schema";
-import type { ErrorType, BodyType } from "../utilities/fetcher-instance";
 import type { Key, SWRConfiguration } from "swr";
 
 /**
@@ -27,7 +27,7 @@ import type { Key, SWRConfiguration } from "swr";
  * @summary Get a specific group event
  */
 export const getApiGroupEventId = (id: string) => {
-  return fetcherInstance<GetApiGroupEventId200>({
+  return fetcher<GetApiGroupEventId200>({
     url: `/api/group-event/${id}`,
     method: "get",
   });
@@ -81,7 +81,7 @@ export const putApiGroupEventId = (
   id: string,
   putApiGroupEventIdBody: BodyType<PutApiGroupEventIdBody>,
 ) => {
-  return fetcherInstance<PutApiGroupEventId200>({
+  return fetcher<PutApiGroupEventId200>({
     url: `/api/group-event/${id}`,
     method: "put",
     headers: { "Content-Type": "application/json" },
@@ -98,7 +98,7 @@ export const putApiGroupEventIdJoinPersonId = (
   personId: string,
   putApiGroupEventIdJoinPersonIdBody: BodyType<PutApiGroupEventIdJoinPersonIdBody>,
 ) => {
-  return fetcherInstance<PutApiGroupEventIdJoinPersonId201>({
+  return fetcher<PutApiGroupEventIdJoinPersonId201>({
     url: `/api/group-event/${id}/join/${personId}`,
     method: "put",
     headers: { "Content-Type": "application/json" },
@@ -114,7 +114,7 @@ export const postApiGroupEventIdJoin = (
   id: string,
   postApiGroupEventIdJoinBody: BodyType<PostApiGroupEventIdJoinBody>,
 ) => {
-  return fetcherInstance<PostApiGroupEventIdJoin201>({
+  return fetcher<PostApiGroupEventIdJoin201>({
     url: `/api/group-event/${id}/join`,
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -129,7 +129,7 @@ export const postApiGroupEventIdJoin = (
 export const postApiGroupEvent = (
   postApiGroupEventBody: BodyType<PostApiGroupEventBody>,
 ) => {
-  return fetcherInstance<PostApiGroupEvent201>({
+  return fetcher<PostApiGroupEvent201>({
     url: `/api/group-event`,
     method: "post",
     headers: { "Content-Type": "application/json" },
