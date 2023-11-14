@@ -8,8 +8,6 @@ import {
 } from "@/libs/constants";
 import { classNames } from "@/libs/utilities/string";
 
-import { Footer } from "@/libs/ui/server-side";
-
 import { WebVitals } from "./WebVitals";
 
 import type { Metadata } from "next";
@@ -30,10 +28,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body
         className={classNames(["flex flex-col min-h-screen", inter.className])}
       >
-        <main className="flex flex-col items-center justify-between flex-1 p-24">
+        <div className="flex flex-col items-center justify-between flex-1">
           {children}
-        </main>
-        <Footer />
+        </div>
         <WebVitals />
       </body>
     </html>
