@@ -1,5 +1,5 @@
 import { prisma } from "@/libs/data/prisma/client";
-import { errorHandlerApiRoute } from "@/libs/utilities/error-handlers";
+import { apiHandler } from "@/libs/utilities/api-handler";
 
 import type { PutApiGroupEventIdBody } from "@/libs/data/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -365,16 +365,10 @@ export default async function handler(
     return res.status(400).json({ error: "Event ID is required" });
   }
 
-  switch (req.method) {
-    case "GET":
-      return handleGET(req, res, id as string);
-    case "PUT":
-      return handlePUT(req, res, id as string);
-    default:
-      res.setHeader("Allow", ["GET", "PUT"]);
-
-      return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
+  return apiHandler(req, res, {
+    GET: handleGET(req, res, id as string),
+    PUT: handlePUT(req, res, id as string),
+  });
 }
 
 async function handleGET(
@@ -382,49 +376,43 @@ async function handleGET(
   res: NextApiResponse,
   id: string,
 ) {
-  try {
-    const groupEvent = await prisma.groupEvent.findUnique({
-      where: { id },
-      include: {
-        owner: true,
-        suggestedOptions: true,
-        invitees: {
-          include: {
-            person: true,
-          },
+  const groupEvent = await prisma.groupEvent.findUnique({
+    where: { id },
+    include: {
+      owner: true,
+      suggestedOptions: true,
+      invitees: {
+        include: {
+          person: true,
         },
       },
-    });
+    },
+  });
 
-    if (!groupEvent) {
-      return res.status(404).json({ error: "No event with this ID exists." });
-    }
-
-    const suggestedOptions = await prisma.groupEventOption.findMany({
-      where: {
-        eventId: id,
-      },
-    });
-
-    const invitees = await Promise.all(
-      groupEvent.invitees.map(async (invitee) => {
-        const inviteeOptions = suggestedOptions.filter(
-          (option) => invitee.possibleOptionIds?.some((id) => id === option.id),
-        );
-
-        return {
-          ...invitee,
-          possibleOptions: inviteeOptions,
-        };
-      }),
-    );
-
-    return res.status(200).json({ ...groupEvent, invitees });
-  } catch (error) {
-    errorHandlerApiRoute(error);
-
-    return res.status(500).json({ error: "Failed to retrieve the event." });
+  if (!groupEvent) {
+    return res.status(404).json({ error: "No event with this ID exists." });
   }
+
+  const suggestedOptions = await prisma.groupEventOption.findMany({
+    where: {
+      eventId: id,
+    },
+  });
+
+  const invitees = await Promise.all(
+    groupEvent.invitees.map(async (invitee) => {
+      const inviteeOptions = suggestedOptions.filter(
+        (option) => invitee.possibleOptionIds?.some((id) => id === option.id),
+      );
+
+      return {
+        ...invitee,
+        possibleOptions: inviteeOptions,
+      };
+    }),
+  );
+
+  return res.status(200).json({ ...groupEvent, invitees });
 }
 
 async function handlePUT(
@@ -442,30 +430,24 @@ async function handlePUT(
     return res.status(400).json({ error: "Date cannot be in the past." });
   }
 
-  try {
-    await prisma.groupEvent.update({
-      where: { id },
-      data: {
-        suggestedOptions: {
-          deleteMany: {}, // Delete all existing options
-          createMany: {
-            data: suggestedOptions.map((option) => ({
-              date: new Date(option.date),
-            })),
-          },
+  await prisma.groupEvent.update({
+    where: { id },
+    data: {
+      suggestedOptions: {
+        deleteMany: {}, // Delete all existing options
+        createMany: {
+          data: suggestedOptions.map((option) => ({
+            date: new Date(option.date),
+          })),
         },
       },
-    });
+    },
+  });
 
-    const updatedGroupEvent = await prisma.groupEvent.findUnique({
-      where: { id },
-      include: { suggestedOptions: true },
-    });
+  const updatedGroupEvent = await prisma.groupEvent.findUnique({
+    where: { id },
+    include: { suggestedOptions: true },
+  });
 
-    return res.status(200).json(updatedGroupEvent);
-  } catch (error) {
-    errorHandlerApiRoute(error);
-
-    return res.status(500).json({ error: "Failed to update the event." });
-  }
+  return res.status(200).json(updatedGroupEvent);
 }

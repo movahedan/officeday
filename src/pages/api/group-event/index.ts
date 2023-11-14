@@ -1,5 +1,5 @@
 import { prisma } from "@/libs/data/prisma/client";
-import { errorHandlerApiRoute } from "@/libs/utilities/error-handlers";
+import { apiHandler } from "@/libs/utilities/api-handler";
 
 import type { PostApiGroupEventBody } from "@/libs/data/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -91,14 +91,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  switch (req.method) {
-    case "POST":
-      return handlePOST(req, res);
-    default:
-      res.setHeader("Allow", ["POST"]);
-
-      return res.status(405).end(`Method ${req.method} Not Allowed`);
-  }
+  return apiHandler(req, res, { POST: handlePOST(req, res) });
 }
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
@@ -114,29 +107,23 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     return res.status(400).json({ error: "Date cannot be in the past" });
   }
 
-  try {
-    const groupEvent = await prisma.groupEvent.create({
-      data: {
-        owner: {
-          connectOrCreate: {
-            where: { name: owner.name },
-            create: { name: owner.name },
-          },
-        },
-        suggestedOptions: {
-          createMany: {
-            data: suggestedOptions.map((option) => ({
-              date: new Date(option.date),
-            })),
-          },
+  const groupEvent = await prisma.groupEvent.create({
+    data: {
+      owner: {
+        connectOrCreate: {
+          where: { name: owner.name },
+          create: { name: owner.name },
         },
       },
-    });
+      suggestedOptions: {
+        createMany: {
+          data: suggestedOptions.map((option) => ({
+            date: new Date(option.date),
+          })),
+        },
+      },
+    },
+  });
 
-    return res.status(201).json(groupEvent);
-  } catch (error) {
-    errorHandlerApiRoute(error);
-
-    return res.status(500).json({ error: "Failed to create group event" });
-  }
+  return res.status(201).json(groupEvent);
 }
