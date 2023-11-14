@@ -108,7 +108,8 @@
       "files": [
         "./src/pages/**/*.{js,jsx,ts,tsx}",
         "./src/app/**/*.{js,jsx,ts,tsx}",
-        "./tailwind.config.ts"
+        "./tailwind.config.ts",
+        "./orval.config.ts"
       ],
       "rules": {
         "import/no-default-export": "off"
