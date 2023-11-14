@@ -5,7 +5,7 @@ import { classNames } from "@/libs/utilities/string";
 import type { ButtonHTMLAttributes } from "react";
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "green" | "blue" | "red" | "white" | "transparent";
+  variant?: "green" | "blue" | "red" | "white" | "dark" | "transparent";
 };
 
 export const Button = ({
@@ -32,6 +32,8 @@ export const Button = ({
             "text-white bg-red-500 hover:bg-red-700 focus:border-red-500",
           variant === "white" &&
             "text-gray-800 bg-slate-50 hover:bg-slate-100 focus:border-slate-100",
+          variant === "dark" &&
+            "text-slate-100 bg-gray-900 hover:bg-gray-900 focus:border-gray-900",
           className,
         ]),
       )}
