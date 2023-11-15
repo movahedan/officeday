@@ -1,6 +1,123 @@
 {
   "document": {
-    "title": "Office Day",
-    "description": "Let's vote for date!"
+    "title": "Kantoordag",
+    "description": "Laten we stemmen voor de datum!"
+  },
+  "apis": {
+    "general": {
+      "method-not-allowed": "Methode {method} Niet Toegestaan",
+      "no-handler-passed": "Geen handler voorzien voor dit eindpunt",
+      "internal-server-error": "Interne serverfout."
+    },
+    "group-event": {
+      "post": {
+        "name-and-options-required": "Eigenaarsnaam en opties zijn vereist",
+        "date-cannot-be-in-the-past": "Datum kan niet in het verleden zijn"
+      }
+    },
+    "group-event-id": {
+      "group-event-id": {
+        "get": {
+          "no-event-exist": "Geen evenement met deze ID bestaat."
+        }
+      },
+      "put": {
+        "select-at-least-one-option": "Gelieve ten minste één optie in te voeren.",
+        "date-cannot-be-in-the-past": "Datum kan niet in het verleden zijn"
+      }
+    },
+    "group-event-id-join-person-id": {
+      "put": {
+        "invalid-possible-options-ids": "Ongeldige possibleOptionsIds, moet een array zijn",
+        "invalid-possible-options-ids-field": "Ongeldige possibleOptionsIds, het moet ten minste één optie bevatten",
+        "invitee-not-found": "Genodigde niet gevonden"
+      }
+    }
+  },
+  "general": {
+    "create-an-event": "Creëer een evenement",
+    "try-again": "Probeer opnieuw",
+    "go-home": "Ga naar huis",
+    "required-field": "Dit veld is verplicht",
+    "submit": "Indienen"
+  },
+  "components": {
+    "footer": "Gemaakt als een demoproject © 2023.",
+    "suggested-options-status": {
+      "not-possible": "Niet mogelijk"
+    },
+    "copy-url": {
+      "error": "Fout",
+      "copied": "Gekopieerd",
+      "copy": "Kopiëren"
+    },
+    "error-component": {
+      "unexpected-error": "Een onverwachte fout is opgetreden."
+    }
+  },
+  "forms": {
+    "group-event-create-form": {
+      "fields": {
+        "name": {
+          "label": "Naam"
+        },
+        "date": {
+          "label": "Datum",
+          "errors": {
+            "date-cannot-be-in-the-past": "Datum kan niet in het verleden zijn"
+          }
+        }
+      },
+      "add-date": "Datum toevoegen"
+    },
+    "group-event-edit-form": {
+      "fields": {
+        "date": {
+          "label": "Datum",
+          "errors": {
+            "date-cannot-be-in-the-past": "Datum kan niet in het verleden zijn"
+          }
+        }
+      },
+      "add-date": "Datum toevoegen"
+    },
+    "group-event-join-form": {
+      "fields": {
+        "name": {
+          "label": "Naam"
+        }
+      },
+      "add-date": "Datum toevoegen"
+    }
+  },
+  "pages": {
+    "not-found": {
+      "status": "404",
+      "title": "Niet Gevonden!"
+    },
+    "home": {
+      "title": "Schema's Harmoniseren!",
+      "description": "Snel, Eenvoudig Groepsplanning. Stem moeiteloos over data en tijden, waardoor elke bijeenkomst een fluitje van een cent wordt!",
+      "get-started": "Beginnen"
+    },
+    "group-event": {
+      "title": "Creëer een groepsevenement"
+    },
+    "group-event-id": {
+      "titles": {
+        "invitees": "Genodigden",
+        "edit-suggestions": "Suggesties bewerken",
+        "suggested-dates": "Voorgestelde data"
+      }
+    },
+    "group-event-id-join": {
+      "title": "Doe mee aan het groepsevenement"
+    },
+    "group-event-id-join-person-id": {
+      "titles": {
+        "select-possible-options": "Selecteer mogelijke opties",
+        "status-of-suggested-options": "Status van voorgestelde opties"
+      }
+    }
   }
 }

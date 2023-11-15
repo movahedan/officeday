@@ -2,5 +2,120 @@
   "document": {
     "title": "Office Day",
     "description": "Let's vote for date!"
+  },
+  "apis": {
+    "general": {
+      "method-not-allowed": "Method {method} Not Allowed",
+      "no-handler-passed": "No handler provided for this endpoint",
+      "internal-server-error": "Internal server error."
+    },
+    "group-event": {
+      "post": {
+        "name-and-options-required": "Owner name and options are required",
+        "date-cannot-be-in-the-past": "Date cannot be in the past"
+      }
+    },
+    "group-event-id": {
+      "get": {
+        "no-event-exist": "No event with this ID exists."
+      },
+      "put": {
+        "select-at-least-one-option": "Please enter at least one option.",
+        "date-cannot-be-in-the-past": "Date cannot be in the past"
+      }
+    },
+    "group-event-id-join-person-id": {
+      "put": {
+        "invalid-possible-options-ids": "Invalid possibleOptionsIds, must be an array",
+        "invalid-possible-options-ids-field": "Invalid possibleOptionsIds, it should contain at least one option",
+        "invitee-not-found": "Invitee not found"
+      }
+    }
+  },
+  "general": {
+    "create-an-event": "Create an event",
+    "try-again": "Try again",
+    "go-home": "Go home",
+    "required-field": "This field is required",
+    "submit": "Submit"
+  },
+  "components": {
+    "footer": "Created as a demo project © 2023.",
+    "suggested-options-status": {
+      "not-possible": "Not possible"
+    },
+    "copy-url": {
+      "error": "Error",
+      "copied": "Copied",
+      "copy": "Copy"
+    },
+    "error-component": {
+      "unexpected-error": "An unexpected error ocurred."
+    }
+  },
+  "forms": {
+    "group-event-create-form": {
+      "fields": {
+        "name": {
+          "label": "Name"
+        },
+        "date": {
+          "label": "Date",
+          "errors": {
+            "date-cannot-be-in-the-past": "Date cannot be in the past"
+          }
+        }
+      },
+      "add-date": "Add Date"
+    },
+    "group-event-edit-form": {
+      "fields": {
+        "date": {
+          "label": "Date",
+          "errors": {
+            "date-cannot-be-in-the-past": "Date cannot be in the past"
+          }
+        }
+      },
+      "add-date": "Add Date"
+    },
+    "group-event-join-form": {
+      "fields": {
+        "name": {
+          "label": "Name"
+        }
+      },
+      "add-date": "Add Date"
+    }
+  },
+  "pages": {
+    "not-found": {
+      "status": "404",
+      "title": "Not Found!"
+    },
+    "home": {
+      "title": "Harmonizing Schedules!",
+      "description": "Quick, Easy Group Scheduling. Vote on dates and times effortlessly, making every meet-up a breeze!",
+      "get-started": "Get started"
+    },
+    "group-event": {
+      "title": "Create a group event"
+    },
+    "group-event-id": {
+      "titles": {
+        "invitees": "Invitees",
+        "edit-suggestions": "Edit suggestions",
+        "suggested-dates": "Suggested dates"
+      }
+    },
+    "group-event-id-join": {
+      "title": "Join the group event"
+    },
+    "group-event-id-join-person-id": {
+      "titles": {
+        "select-possible-options": "Select possible options",
+        "status-of-suggested-options": "Status of suggested options"
+      }
+    }
   }
 }
