@@ -18,13 +18,6 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="use-credentials"
-        />
-      </head>
       <body
         className={classNames(["flex flex-col min-h-screen", inter.className])}
       >
