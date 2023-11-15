@@ -1,7 +1,6 @@
 "use client";
-import Link from "next/link";
 
-import { routes } from "@/libs/constants";
+import { Link, routes } from "@/libs/router";
 import { classNames } from "@/libs/utilities/string";
 
 import { Button } from "./Button";

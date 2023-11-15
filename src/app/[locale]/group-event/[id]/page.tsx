@@ -1,7 +1,7 @@
 "use client";
 
-import { routes } from "@/libs/constants";
 import { useGetApiGroupEventId } from "@/libs/data/default";
+import { routes } from "@/libs/router";
 import { GroupEventEditForm } from "@/libs/ui/forms/GroupEventEditForm";
 import { classNames } from "@/libs/utilities/string";
 

@@ -1,9 +1,8 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { routes } from "@/libs/constants";
 import { postApiGroupEventIdJoin } from "@/libs/data/default";
+import { routes, useRouter } from "@/libs/router";
 
 import { Button } from "../client-side/Button";
 

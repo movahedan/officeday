@@ -1,9 +1,8 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 
-import { routes } from "@/libs/constants";
 import { putApiGroupEventId, useGetApiGroupEventId } from "@/libs/data/default";
+import { routes, useRouter } from "@/libs/router";
 import { dateFormatter } from "@/libs/utilities/date";
 import { classNames } from "@/libs/utilities/string";
 

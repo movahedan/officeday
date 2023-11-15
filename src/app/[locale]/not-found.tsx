@@ -1,15 +1,10 @@
-"use client";
-
-// Do not use @/libs/router since at this point there's no locale
-import Link from "next/link";
-
-import { routes } from "@/libs/router";
+import { Link, routes } from "@/libs/router";
 
 import { Button } from "@/libs/ui/client-side";
 
-// Render the default Next.js 404 page when a route
-// is requested that doesn't match the middleware and
-// therefore doesn't have a locale associated with it.
+// Note that `app/[locale]/[...rest]/page.tsx`
+// is necessary for this page to render.
+
 export default function NotFound() {
   return (
     <div className="flex flex-col items-center w-full my-auto">

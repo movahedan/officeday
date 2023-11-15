@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {}
+/* :root {}
 
 html {
   @apply h-full;
@@ -11,4 +11,4 @@ html {
 body {
   @apply h-full text-black bg-white;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-}
+} */

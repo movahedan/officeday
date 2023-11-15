@@ -1,3 +1,4 @@
+const withNextIntl = require("next-intl/plugin")("./src/libs/router/i18n.ts");
 const withPWA = require("next-pwa")({
   dest: "public",
   register: true,
@@ -6,13 +7,15 @@ const withPWA = require("next-pwa")({
 });
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withPWA({
-  reactStrictMode: true,
-  swcMinify: true,
-  distDir: "out/build",
-  experimental: {
-    webpackBuildWorker: true,
-  },
-});
+const nextConfig = withNextIntl(
+  withPWA({
+    reactStrictMode: true,
+    swcMinify: true,
+    distDir: "out/build",
+    experimental: {
+      webpackBuildWorker: true,
+    },
+  }),
+);
 
 module.exports = nextConfig;
