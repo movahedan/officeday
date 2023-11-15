@@ -1,9 +1,9 @@
-# *
 User-agent: *
-Allow: /
+Allow: *
 
 # Host
-Host: https://www.officeday.dev/
+Host: https://officeday.vercel.com/
 
 # Sitemaps
-Sitemap: https://www.officeday.dev/sitemap.xml
+Sitemap: https://officeday.vercel.com/sitemap.xml
+
