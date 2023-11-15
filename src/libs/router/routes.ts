@@ -16,6 +16,7 @@ export const routes = {
 // you add a new page to the application
 export type Locales = "en" | "nl";
 export const locales = ["en", "nl"] as const;
+export const defaultLocale = "en";
 export const pathnames = {
   "/": "/",
   "/group-event": {

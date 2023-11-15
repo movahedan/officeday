@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/data/prisma/client";
+import { createTranslator } from "@/libs/router/create-translator";
 import { apiHandler } from "@/libs/utilities/api-handler";
 
 import type { PostApiGroupEventBody } from "@/libs/data/schema";
@@ -95,16 +96,15 @@ export default async function handler(
 }
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
-  const { owner, suggestedOptions } = req.body as PostApiGroupEventBody;
+  const t = await createTranslator(req, "apis.group-event.post");
 
+  const { owner, suggestedOptions } = req.body as PostApiGroupEventBody;
   if (!owner?.name || !suggestedOptions?.length) {
-    return res
-      .status(400)
-      .json({ error: "Owner name and options are required" });
+    return res.status(400).json({ error: t("name-and-options-required") });
   }
 
   if (suggestedOptions.some((option) => new Date(option.date) < new Date())) {
-    return res.status(400).json({ error: "Date cannot be in the past" });
+    return res.status(400).json({ error: t("date-cannot-be-in-the-past") });
   }
 
   const groupEvent = await prisma.groupEvent.create({

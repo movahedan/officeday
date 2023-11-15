@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/data/prisma/client";
+import { createTranslator } from "@/libs/router/create-translator";
 import { apiHandler } from "@/libs/utilities/api-handler";
 
 import type { PutApiGroupEventIdJoinPersonIdBody } from "@/libs/data/schema";
@@ -73,20 +74,24 @@ export default async function handler(
 }
 
 async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
+  const t = await createTranslator(
+    req,
+    "apis.group-event-id-join-person-id.put",
+  );
+
   const { id, personId } = req.query as { id: string; personId: string };
   const { possibleOptions: possibleOptionsIds } =
     req.body as unknown as PutApiGroupEventIdJoinPersonIdBody;
 
   if (!Array.isArray(possibleOptionsIds)) {
-    return res
-      .status(400)
-      .json({ message: "Invalid possibleOptionsIds, must be an array" });
+    return res.status(400).json({
+      message: t("invalid-possible-options-ids"),
+    });
   }
 
   if (possibleOptionsIds.length === 0) {
     return res.status(400).json({
-      message:
-        "Invalid possibleOptionsIds, it should contain at least one option",
+      message: t("invalid-possible-options-ids-field"),
     });
   }
 
@@ -98,7 +103,9 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
   });
 
   if (!invitee) {
-    return res.status(400).json({ message: "Invitee not found" });
+    return res.status(400).json({
+      message: t("invitee-not-found"),
+    });
   }
 
   const updatedInvitee = await prisma.groupEventInvitee.update({

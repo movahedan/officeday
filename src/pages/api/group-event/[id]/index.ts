@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/data/prisma/client";
+import { createTranslator } from "@/libs/router/create-translator";
 import { apiHandler } from "@/libs/utilities/api-handler";
 
 import type { PutApiGroupEventIdBody } from "@/libs/data/schema";
@@ -376,6 +377,8 @@ async function handleGET(
   res: NextApiResponse,
   id: string,
 ) {
+  const t = await createTranslator(req, "apis.group-event-id.get");
+
   const groupEvent = await prisma.groupEvent.findUnique({
     where: { id },
     include: {
@@ -390,7 +393,7 @@ async function handleGET(
   });
 
   if (!groupEvent) {
-    return res.status(404).json({ error: "No event with this ID exists." });
+    return res.status(404).json({ error: t("no-event-exist") });
   }
 
   const suggestedOptions = await prisma.groupEventOption.findMany({
@@ -420,14 +423,16 @@ async function handlePUT(
   res: NextApiResponse,
   id: string,
 ) {
+  const t = await createTranslator(req, "apis.group-event-id.put");
+
   const { suggestedOptions } = req.body as PutApiGroupEventIdBody;
 
   if (!suggestedOptions?.length) {
-    return res.status(400).json({ error: "Please enter at least one option." });
+    return res.status(400).json({ error: t("select-at-least-one-option") });
   }
 
   if (suggestedOptions.some((option) => new Date(option.date) < new Date())) {
-    return res.status(400).json({ error: "Date cannot be in the past." });
+    return res.status(400).json({ error: t("date-cannot-be-in-the-past") });
   }
 
   await prisma.groupEvent.update({
