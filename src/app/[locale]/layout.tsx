@@ -18,6 +18,8 @@ export default async function LocaleLayout({
   params: { locale },
   children,
 }: LocaleLayoutProps) {
+  unstable_setRequestLocale(locale);
+
   if (!locales.includes(locale)) notFound();
 
   let messages;
@@ -26,9 +28,6 @@ export default async function LocaleLayout({
   } catch (error) {
     notFound();
   }
-
-  // Enable static rendering
-  unstable_setRequestLocale(locale);
 
   return (
     <NextIntlClientProvider messages={messages}>

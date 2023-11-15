@@ -1,10 +1,17 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 
 import { Link, routes } from "@/libs/router";
 
 import { ChangeLocale, Button } from "@/libs/ui/client-side";
 
-export default async function Home() {
+import type { Locales } from "@/libs/router";
+
+export type HomeProps = {
+  params: { locale: Locales };
+};
+
+export default async function Home({ params: { locale } }: HomeProps) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations("pages.home");
 
   return (

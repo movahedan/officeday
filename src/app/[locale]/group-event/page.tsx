@@ -1,8 +1,17 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 
 import { GroupEventCreateForm } from "@/libs/ui/forms/GroupEventCreateForm";
 
-export default async function GroupEventCreatePage() {
+import type { Locales } from "@/libs/router";
+
+export type GroupEventCreatePageProps = {
+  params: { locale: Locales };
+};
+
+export default async function GroupEventCreatePage({
+  params: { locale },
+}: GroupEventCreatePageProps) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations("pages.group-event");
 
   return (

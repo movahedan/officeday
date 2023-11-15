@@ -1,16 +1,20 @@
-import { getTranslations } from "next-intl/server";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 
 import { GroupEventJoinForm } from "@/libs/ui/forms/GroupEventJoinForm";
+
+import type { Locales } from "@/libs/router";
 
 export type GroupEventJoinPageProps = {
   params: {
     id: string;
+    locale: Locales;
   };
 };
 
 export default async function GroupEventJoinPage({
-  params: { id },
+  params: { id, locale },
 }: GroupEventJoinPageProps) {
+  unstable_setRequestLocale(locale);
   const t = await getTranslations("pages.group-event-id-join");
 
   return (
