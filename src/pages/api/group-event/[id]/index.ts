@@ -366,8 +366,8 @@ export default async function handler(
   }
 
   return apiHandler(req, res, {
-    GET: handleGET(req, res, id as string),
-    PUT: handlePUT(req, res, id as string),
+    GET: () => handleGET(req, res, id as string),
+    PUT: () => handlePUT(req, res, id as string),
   });
 }
 

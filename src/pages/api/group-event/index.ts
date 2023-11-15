@@ -91,7 +91,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  return apiHandler(req, res, { POST: handlePOST(req, res) });
+  return apiHandler(req, res, { POST: () => handlePOST(req, res) });
 }
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {

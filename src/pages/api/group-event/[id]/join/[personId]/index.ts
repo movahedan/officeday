@@ -69,7 +69,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  return apiHandler(req, res, { PUT: handlePUT(req, res) });
+  return apiHandler(req, res, { PUT: () => handlePUT(req, res) });
 }
 
 async function handlePUT(req: NextApiRequest, res: NextApiResponse) {

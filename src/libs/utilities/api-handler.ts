@@ -3,7 +3,7 @@ import { errorHandlerApiRoute } from "./error-handlers";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export type MethodNames = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-export type MethodHandler = Promise<void>;
+export type MethodHandler = () => Promise<void>;
 export type Methods = Record<MethodNames, MethodHandler>;
 
 export const apiHandler = async (
@@ -19,7 +19,12 @@ export const apiHandler = async (
     res.status(405).end(`Method ${req.method} Not Allowed`);
   } else {
     try {
-      return methodHandlers[req.method as MethodNames];
+      const handler = methodHandlers[req.method as MethodNames];
+      if (handler === undefined) {
+        throw Error("No handler provided for this endpoint");
+      }
+
+      return handler();
     } catch (error) {
       errorHandlerApiRoute(error);
 
