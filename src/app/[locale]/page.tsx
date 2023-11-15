@@ -23,16 +23,16 @@ export default async function Home({ params: { locale } }: HomeProps) {
         <p className="mb-24 text-xl text-center text-gray-900 md:text-2xl leading-6 md:leading-8 md:max-w-764 max-w-400">
           {t("description")}
         </p>
-        <div className="flex gap-16">
+        <div className="flex items-center gap-16">
           <Link href={routes.groupEvent.create()}>
             <Button
               variant="green"
-              className="px-32 py-12 rounded-full md:text-lg md:px-40 md:py-16"
+              className="h-48 px-32 py-12 rounded-full md:text-lg md:px-40 md:py-16 md:h-64"
             >
               {t("get-started")}
             </Button>
           </Link>
-          <ChangeLocale />
+          <ChangeLocale className="w-48 h-48 md:w-64 md:h-64" />
         </div>
       </main>
     </div>
