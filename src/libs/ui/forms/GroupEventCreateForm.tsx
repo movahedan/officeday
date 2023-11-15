@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useForm, useFieldArray } from "react-hook-form";
 
 import { postApiGroupEvent } from "@/libs/data/default";
@@ -15,6 +16,9 @@ export type GroupEventCreateFormData = {
 };
 
 export const GroupEventCreateForm = () => {
+  const t = useTranslations("forms.group-event-create-form");
+  const tGeneral = useTranslations("general");
+
   const router = useRouter();
 
   const {
@@ -53,11 +57,11 @@ export const GroupEventCreateForm = () => {
     >
       <div className="mb-20">
         <label htmlFor="name" className="block mb-4 text-gray-700 text-md">
-          Name
+          {t("fields.name.label")}
         </label>
         <input
           id="name"
-          {...register("name", { required: "This field is required" })}
+          {...register("name", { required: tGeneral("required-field") })}
           className="w-full px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
         />
         {errors.name && (
@@ -73,16 +77,17 @@ export const GroupEventCreateForm = () => {
             htmlFor={`dates[${index}].date`}
             className="block mb-4 text-gray-700 text-md"
           >
-            Date
+            {t("fields.date.label")}
           </label>
           <div className="flex">
             <input
               type="date"
               id={`dates[${index}].date`}
               {...register(`dates.${index}.date`, {
-                required: "This field is required",
+                required: tGeneral("required-field"),
                 validate: (value) =>
-                  new Date(value) >= new Date() || "Date cannot be in the past",
+                  new Date(value) >= new Date() ||
+                  t("fields.date.errors.date-cannot-be-in-the-past"),
               })}
               className="w-full px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
             />
@@ -103,11 +108,11 @@ export const GroupEventCreateForm = () => {
         onClick={() => append({ date: "" })}
         className="w-full mt-20 mb-8 text-lg"
       >
-        Add Date
+        {t("add-date")}
       </Button>
 
       <Button type="submit" variant="green" className="w-full text-lg">
-        Submit
+        {tGeneral("submit")}
       </Button>
     </form>
   );

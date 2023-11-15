@@ -1,6 +1,9 @@
+import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 
 import { notFound, locales } from "@/libs/router";
+
+import { WebVitals } from "../WebVitals";
 
 import type { Locales } from "@/libs/router";
 import type { Metadata } from "next";
@@ -11,16 +14,28 @@ export type LocaleLayoutProps = {
   params: { locale: Locales };
 };
 
-export default function LocaleLayout({
+export default async function LocaleLayout({
   params: { locale },
   children,
 }: LocaleLayoutProps) {
   if (!locales.includes(locale)) notFound();
 
+  let messages;
+  try {
+    messages = (await import(`../../../public/locales/${locale}.json`)).default;
+  } catch (error) {
+    notFound();
+  }
+
   // Enable static rendering
   unstable_setRequestLocale(locale);
 
-  return children;
+  return (
+    <NextIntlClientProvider messages={messages}>
+      {children}
+      <WebVitals />
+    </NextIntlClientProvider>
+  );
 }
 
 export function generateStaticParams() {

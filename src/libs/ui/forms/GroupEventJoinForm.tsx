@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { postApiGroupEventIdJoin } from "@/libs/data/default";
@@ -17,6 +18,9 @@ export type GroupEventJoinFormProps = {
 };
 
 export const GroupEventJoinForm = ({ id }: GroupEventJoinFormProps) => {
+  const t = useTranslations("forms.group-event-join-form");
+  const tGeneral = useTranslations("general");
+
   const router = useRouter();
 
   const {
@@ -42,11 +46,11 @@ export const GroupEventJoinForm = ({ id }: GroupEventJoinFormProps) => {
     >
       <div className="mb-20">
         <label htmlFor="name" className="block mb-4 text-gray-700 text-md">
-          Name
+          {t("fields.name.label")}
         </label>
         <input
           id="name"
-          {...register("name", { required: "This field is required" })}
+          {...register("name", { required: tGeneral("required-field") })}
           className="w-full px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
         />
         {!!errors.name && (
@@ -57,7 +61,7 @@ export const GroupEventJoinForm = ({ id }: GroupEventJoinFormProps) => {
       </div>
 
       <Button type="submit" variant="green" className="w-full text-lg">
-        Submit
+        {tGeneral("submit")}
       </Button>
     </form>
   );

@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 import { dateFormatter } from "@/libs/utilities/date";
 
 import { List } from "./List";
@@ -34,6 +36,8 @@ const Item = ({
   option: GetApiGroupEventId200SuggestedOptionsItem;
   invitees: GetApiGroupEventId200InviteesItem[];
 }) => {
+  const t = useTranslations("components.suggested-options-status");
+
   const votedPeople = invitees
     .filter(
       (invitee) =>
@@ -47,7 +51,7 @@ const Item = ({
         {dateFormatter(new Date(option.date || ""))}:
       </span>
       <span>
-        {votedPeople.length === 0 ? "Not possible" : votedPeople.join("-")}
+        {votedPeople.length === 0 ? t("not-possible") : votedPeople.join("-")}
       </span>
     </>
   );

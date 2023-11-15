@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useGetApiGroupEventId } from "@/libs/data/default";
 import { GroupEventSelectOptionsForm } from "@/libs/ui/forms/GroupEventSelectOptions";
 import { classNames } from "@/libs/utilities/string";
@@ -17,6 +19,8 @@ export type GroupEventSelectOptionsPageProps = {
 export default function GroupEventSelectOptionsPage({
   params: { id, personId },
 }: GroupEventSelectOptionsPageProps) {
+  const t = useTranslations("pages.group-event-id-join-person-id");
+
   const {
     data: groupEvent,
     error,
@@ -36,7 +40,7 @@ export default function GroupEventSelectOptionsPage({
   return !groupEvent ? null : (
     <div className="flex flex-col w-full md:flex-row max-w-400 md:max-w-764">
       <div className="w-full m-auto md:w-320">
-        <h3 className="mb-16 text-lg">Select possible options</h3>
+        <h3 className="mb-16 text-lg">{t("titles.select-possible-options")}</h3>
 
         <GroupEventSelectOptionsForm
           id={id}
@@ -52,7 +56,9 @@ export default function GroupEventSelectOptionsPage({
 
       <div className="flex-1 mt-20 md:mt-0 md:ml-16">
         <div className="flex mb-8">
-          <h3 className="mr-auto text-lg">Status of suggested options</h3>
+          <h3 className="mr-auto text-lg">
+            {t("titles.status-of-suggested-options")}
+          </h3>
           <IconLoading
             width={32}
             height={32}

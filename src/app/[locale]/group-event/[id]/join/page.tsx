@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import { GroupEventJoinForm } from "@/libs/ui/forms/GroupEventJoinForm";
 
 export type GroupEventJoinPageProps = {
@@ -6,12 +8,14 @@ export type GroupEventJoinPageProps = {
   };
 };
 
-export default function GroupEventJoinPage({
+export default async function GroupEventJoinPage({
   params: { id },
 }: GroupEventJoinPageProps) {
+  const t = await getTranslations("pages.group-event-id-join");
+
   return (
     <div className="m-auto max-w-400">
-      <h1 className="text-xl text-center">Join the group event</h1>
+      <h1 className="text-xl text-center">{t("title")}</h1>
       <GroupEventJoinForm id={id} />
     </div>
   );

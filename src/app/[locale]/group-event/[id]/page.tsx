@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { useGetApiGroupEventId } from "@/libs/data/default";
 import { routes } from "@/libs/router";
 import { GroupEventEditForm } from "@/libs/ui/forms/GroupEventEditForm";
@@ -16,6 +18,8 @@ export interface GroupEventOwnerPageProps {
 export default function GroupEventOwnerPage({
   params: { id },
 }: GroupEventOwnerPageProps) {
+  const t = useTranslations("pages.group-event-id");
+
   const {
     data: groupEvent,
     error,
@@ -38,7 +42,7 @@ export default function GroupEventOwnerPage({
         <div className="w-full md:w-320">
           {!groupEvent.invitees.length ? null : (
             <>
-              <h3 className="mb-8 text-lg">Invitees</h3>
+              <h3 className="mb-8 text-lg">{t("invitees")}</h3>
               <List
                 keys={(name) => name}
                 items={groupEvent.invitees.map(
@@ -49,7 +53,7 @@ export default function GroupEventOwnerPage({
             </>
           )}
 
-          <h3 className="mb-8 text-lg">Edit suggestions</h3>
+          <h3 className="mb-8 text-lg">{t("edit-suggestions")}</h3>
           <GroupEventEditForm id={id} />
         </div>
 
@@ -57,7 +61,7 @@ export default function GroupEventOwnerPage({
           {!!groupEvent && (
             <>
               <div className="flex mb-8">
-                <h3 className="mr-auto text-lg">Suggested dates</h3>
+                <h3 className="mr-auto text-lg">{t("suggested-dates")}</h3>
                 <Button
                   variant="white"
                   onClick={() => mutate()}

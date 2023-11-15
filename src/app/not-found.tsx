@@ -18,7 +18,7 @@ export default function NotFound() {
 
       <Link href={routes.index()}>
         <Button variant="green" className="px-16 py-8">
-          Return Home
+          Go Home
         </Button>
       </Link>
     </div>

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useCopyToClipboard, useTimeoutFn } from "react-use";
 import { twMerge } from "tailwind-merge";
@@ -11,6 +12,8 @@ export type CopyUrlProps = {
 };
 
 export const CopyUrl = ({ url, className }: CopyUrlProps) => {
+  const t = useTranslations("components.copy-url");
+
   const [copyState, copy] = useCopyToClipboard();
   const [copyButtonDisabled, setCopyButtonDisabled] = useState(false);
   const [, , reset] = useTimeoutFn(() => {
@@ -50,7 +53,11 @@ export const CopyUrl = ({ url, className }: CopyUrlProps) => {
           ]),
         )}
       >
-        {copyState.error ? "Error!" : copyButtonDisabled ? "Copied" : "Copy"}
+        {copyState.error
+          ? t("error")
+          : copyButtonDisabled
+          ? t("copied")
+          : t("copy")}
       </button>
     </div>
   );

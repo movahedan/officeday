@@ -1,8 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 
-import { WebVitals } from "./WebVitals";
-
 import type { ReactNode } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,7 +16,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <div className="flex flex-col items-center justify-between flex-1">
           {children}
         </div>
-        <WebVitals />
       </body>
     </html>
   );

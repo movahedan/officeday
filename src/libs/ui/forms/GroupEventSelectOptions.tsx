@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
 import { putApiGroupEventIdJoinPersonId } from "@/libs/data/default";
@@ -26,6 +27,8 @@ export const GroupEventSelectOptionsForm = ({
   suggestedOptions,
   possibleOptionsIds,
 }: GroupEventSelectOptionsFormProps) => {
+  const tGeneral = useTranslations("general");
+
   const {
     register,
     handleSubmit,
@@ -71,7 +74,7 @@ export const GroupEventSelectOptionsForm = ({
       )}
 
       <Button type="submit" variant="green" className="w-full">
-        Submit
+        {tGeneral("submit")}
       </Button>
     </form>
   );
