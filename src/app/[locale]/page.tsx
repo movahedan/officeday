@@ -15,7 +15,7 @@ export default async function Home({ params: { locale } }: HomeProps) {
   const t = await getTranslations("pages.home");
 
   return (
-    <div className="flex items-center justify-center w-full h-full bg-cover bg-[url(/images/home-bg-large.webp)] bg-[50%_50%] xl:bg-[50%_70%]">
+    <div className="flex items-center justify-center w-full h-full">
       <main className="inline-flex flex-col items-center justify-center mt-[-32px]">
         <p className="mb-40 text-4xl font-bold leading-tight text-center text-gray-900 md:text-5xl max-w-400 md:max-w-764">
           {t("title")}
