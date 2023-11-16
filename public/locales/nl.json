@@ -16,10 +16,8 @@
       }
     },
     "group-event-id": {
-      "group-event-id": {
-        "get": {
-          "no-event-exist": "Geen evenement met deze ID bestaat."
-        }
+      "get": {
+        "no-event-exist": "Geen evenement met deze ID bestaat."
       },
       "put": {
         "select-at-least-one-option": "Gelieve ten minste één optie in te voeren.",

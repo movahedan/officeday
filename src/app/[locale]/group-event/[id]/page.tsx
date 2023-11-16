@@ -12,11 +12,11 @@ import { IconLoading, IconRefresh } from "@/libs/ui/icons";
 import { List, SuggestedOptionsStatus } from "@/libs/ui/server-side";
 
 export interface GroupEventOwnerPageProps {
-  params: { id: string };
+  params: { id: string; locale: string };
 }
 
 export default function GroupEventOwnerPage({
-  params: { id },
+  params: { id, locale },
 }: GroupEventOwnerPageProps) {
   const t = useTranslations("pages.group-event-id");
 
@@ -32,7 +32,9 @@ export default function GroupEventOwnerPage({
 
   const groupEventUrl = !groupEvent?.id
     ? null
-    : `${window.location.origin}${routes.groupEvent.join(groupEvent?.id)}`;
+    : `${window.location.origin}/${locale}${routes.groupEvent.join(
+        groupEvent?.id,
+      )}`;
 
   return !groupEventUrl || !groupEvent ? null : (
     <div className="w-full max-w-400 md:max-w-764">
@@ -42,7 +44,7 @@ export default function GroupEventOwnerPage({
         <div className="w-full md:w-320">
           {!groupEvent.invitees.length ? null : (
             <>
-              <h3 className="mb-8 text-lg">{t("invitees")}</h3>
+              <h3 className="mb-8 text-lg">{t("titles.invitees")}</h3>
               <List
                 keys={(name) => name}
                 items={groupEvent.invitees.map(
@@ -53,7 +55,7 @@ export default function GroupEventOwnerPage({
             </>
           )}
 
-          <h3 className="mb-8 text-lg">{t("edit-suggestions")}</h3>
+          <h3 className="mb-8 text-lg">{t("titles.edit-suggestions")}</h3>
           <GroupEventEditForm id={id} />
         </div>
 
@@ -61,7 +63,9 @@ export default function GroupEventOwnerPage({
           {!!groupEvent && (
             <>
               <div className="flex mb-8">
-                <h3 className="mr-auto text-lg">{t("suggested-dates")}</h3>
+                <h3 className="mr-auto text-lg">
+                  {t("titles.suggested-dates")}
+                </h3>
                 <Button
                   variant="white"
                   onClick={() => mutate()}
