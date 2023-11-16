@@ -44,11 +44,6 @@
     "suggested-options-status": {
       "not-possible": "Niet mogelijk"
     },
-    "copy-url": {
-      "error": "Fout",
-      "copied": "Gekopieerd",
-      "copy": "Kopiëren"
-    },
     "error-component": {
       "unexpected-error": "Een onverwachte fout is opgetreden."
     }
