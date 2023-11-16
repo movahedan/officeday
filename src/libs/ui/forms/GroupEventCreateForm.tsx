@@ -91,7 +91,11 @@ export const GroupEventCreateForm = () => {
               })}
               className="w-full px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
             />
-            <Button variant="red" onClick={() => remove(index)} className="p-8">
+            <Button
+              variant="red"
+              onClick={() => remove(index)}
+              className="p-8 ml-4"
+            >
               <IconRemove width={16} height={16} />
             </Button>
           </div>

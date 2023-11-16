@@ -6,7 +6,8 @@ import { useGetApiGroupEventId } from "@/libs/data/default";
 import { GroupEventSelectOptionsForm } from "@/libs/ui/forms/GroupEventSelectOptions";
 import { classNames } from "@/libs/utilities/string";
 
-import { IconLoading } from "@/libs/ui/icons";
+import { Button } from "@/libs/ui/client-side";
+import { IconLoading, IconRefresh } from "@/libs/ui/icons";
 import { SuggestedOptionsStatus } from "@/libs/ui/server-side";
 
 export type GroupEventSelectOptionsPageProps = {
@@ -24,6 +25,7 @@ export default function GroupEventSelectOptionsPage({
   const {
     data: groupEvent,
     error,
+    mutate,
     isLoading,
     isValidating,
   } = useGetApiGroupEventId(id, {
@@ -59,14 +61,25 @@ export default function GroupEventSelectOptionsPage({
           <h3 className="mr-auto text-lg">
             {t("titles.status-of-suggested-options")}
           </h3>
-          <IconLoading
-            width={32}
-            height={32}
-            className={classNames([
-              "ml-auto mr-0",
-              !(isLoading || isValidating) ? "opacity-0" : "",
-            ])}
-          />
+
+          <Button
+            variant="white"
+            onClick={() => mutate()}
+            className="px-8 py-4 border"
+          >
+            {isLoading || isValidating ? (
+              <IconLoading width={16} height={16} />
+            ) : (
+              <IconRefresh
+                width={16}
+                height={16}
+                className={classNames([
+                  "transition-all duration-300",
+                  !(isLoading || isValidating) ? "-rotate-180" : "rotate-180",
+                ])}
+              />
+            )}
+          </Button>
         </div>
 
         <SuggestedOptionsStatus

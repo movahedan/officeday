@@ -44,7 +44,7 @@ export const CopyUrl = ({ url, className }: CopyUrlProps) => {
         className={twMerge(
           classNames([
             "w-full md:w-128",
-            "px-40 py-6 border outline-0",
+            "py-6 border outline-0",
             "hover:bg-slate-100 hover:shadow-sm",
             "rounded-l-md rounded-b-md rounded-t-none md:rounded-md md:rounded-l-none",
             copyState.error && "bg-red-500 border-red-500 text-white",
