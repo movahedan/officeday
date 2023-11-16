@@ -91,13 +91,16 @@ export const GroupEventCreateForm = () => {
               })}
               className="w-full px-4 py-2 text-lg border rounded focus:border-blue-500 focus:outline-none"
             />
-            <Button
-              variant="red"
-              onClick={() => remove(index)}
-              className="p-8 ml-4"
-            >
-              <IconRemove width={16} height={16} />
-            </Button>
+            {index !== 0 && (
+              <Button
+                variant="red"
+                disabled={index === 0}
+                onClick={() => index !== 0 && remove(index)}
+                className="p-8 ml-4"
+              >
+                <IconRemove width={16} height={16} />
+              </Button>
+            )}
           </div>
           {errors.dates?.[index]?.date && (
             <p className="mt-2 text-sm italic text-red-500">
