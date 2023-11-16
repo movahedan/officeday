@@ -6,7 +6,7 @@ import { postApiGroupEvent } from "@/libs/data/default";
 import { routes, useRouter } from "@/libs/router";
 
 import { Button } from "../client-side/Button";
-import { IconRemove } from "../icons";
+import { IconLoading, IconRemove } from "../icons";
 
 import type { SubmitHandler } from "react-hook-form";
 
@@ -25,7 +25,7 @@ export const GroupEventCreateForm = () => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<GroupEventCreateFormData>({
     defaultValues: {
       dates: [{ date: "" }],
@@ -53,16 +53,16 @@ export const GroupEventCreateForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="px-20 py-24 bg-white rounded-lg"
+      className="px-20 py-24 rounded-lg dark:bg-slate-700 bg-slate-200"
     >
       <div className="mb-20">
-        <label htmlFor="name" className="block mb-4 text-gray-700 text-md">
+        <label htmlFor="name" className="block mb-4 text-md">
           {t("fields.name.label")}
         </label>
         <input
           id="name"
           {...register("name", { required: tGeneral("required-field") })}
-          className="w-full px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
+          className="w-full px-4 py-2 text-lg border rounded focus:border-blue-500 focus:outline-none"
         />
         {errors.name && (
           <p className="mt-2 text-sm italic text-red-500">
@@ -75,7 +75,7 @@ export const GroupEventCreateForm = () => {
         <div key={field.id} className="mb-8">
           <label
             htmlFor={`dates[${index}].date`}
-            className="block mb-4 text-gray-700 text-md"
+            className="block mb-4 text-md"
           >
             {t("fields.date.label")}
           </label>
@@ -89,7 +89,7 @@ export const GroupEventCreateForm = () => {
                   new Date(value) >= new Date() ||
                   t("fields.date.errors.date-cannot-be-in-the-past"),
               })}
-              className="w-full px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 text-lg border rounded focus:border-blue-500 focus:outline-none"
             />
             <Button
               variant="red"
@@ -115,8 +115,17 @@ export const GroupEventCreateForm = () => {
         {t("add-date")}
       </Button>
 
-      <Button type="submit" variant="green" className="w-full text-lg">
-        {tGeneral("submit")}
+      <Button
+        type="submit"
+        variant="green"
+        disabled={isSubmitting}
+        className="w-full text-lg"
+      >
+        {isSubmitting ? (
+          <IconLoading width={28} height={28} />
+        ) : (
+          tGeneral("submit")
+        )}
       </Button>
     </form>
   );

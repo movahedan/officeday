@@ -42,16 +42,16 @@ export const GroupEventJoinForm = ({ id }: GroupEventJoinFormProps) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="px-20 py-24 bg-white rounded-lg"
+      className="px-20 py-24 rounded-lg dark:bg-slate-700 bg-slate-200"
     >
       <div className="mb-20">
-        <label htmlFor="name" className="block mb-4 text-gray-700 text-md">
+        <label htmlFor="name" className="block mb-4 text-md">
           {t("fields.name.label")}
         </label>
         <input
           id="name"
           {...register("name", { required: tGeneral("required-field") })}
-          className="w-full px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
+          className="w-full px-4 py-2 text-lg border rounded focus:border-blue-500 focus:outline-none"
         />
         {!!errors.name && (
           <p className="mt-2 text-sm italic text-red-500">

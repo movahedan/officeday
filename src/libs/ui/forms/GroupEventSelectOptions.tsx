@@ -2,7 +2,10 @@
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 
-import { putApiGroupEventIdJoinPersonId } from "@/libs/data/default";
+import {
+  putApiGroupEventIdJoinPersonId,
+  useGetApiGroupEventId,
+} from "@/libs/data/default";
 import { dateFormatter } from "@/libs/utilities/date";
 
 import { Button } from "../client-side/Button";
@@ -29,6 +32,8 @@ export const GroupEventSelectOptionsForm = ({
 }: GroupEventSelectOptionsFormProps) => {
   const tGeneral = useTranslations("general");
 
+  const { mutate } = useGetApiGroupEventId(id);
+
   const {
     register,
     handleSubmit,
@@ -42,9 +47,9 @@ export const GroupEventSelectOptionsForm = ({
   const onSubmit: SubmitHandler<GroupEventSelectOptionsFormData> = async (
     data,
   ) =>
-    await putApiGroupEventIdJoinPersonId(id, personId, {
+    putApiGroupEventIdJoinPersonId(id, personId, {
       possibleOptions: data.options,
-    });
+    }).then(() => mutate());
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,12 +61,9 @@ export const GroupEventSelectOptionsForm = ({
               id={option.id}
               {...register("options")}
               value={option.id}
-              className="px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
+              className="px-4 py-2 text-lg border rounded focus:border-blue-500 focus:outline-none"
             />
-            <label
-              htmlFor={option.id}
-              className="ml-8 text-sm font-medium text-gray-900 dark:text-gray-300"
-            >
+            <label htmlFor={option.id} className="ml-8 text-sm font-medium">
               {dateFormatter(new Date(option.date))}
             </label>
           </div>

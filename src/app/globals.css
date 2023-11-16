@@ -2,13 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {}
+:root {}
 
-html {
+html,body {
   @apply h-full;
 }
 
 body {
-  @apply h-full text-black bg-white;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-} */
+}
+
+body {
+  @apply text-gray-800 bg-slate-100;
+}
+
+body.dark {
+  @apply text-slate-200 bg-gray-800;
+}
+
+body.dark input,textarea,select {
+  @apply bg-gray-600 text-slate-200 border-gray-500;
+}
+

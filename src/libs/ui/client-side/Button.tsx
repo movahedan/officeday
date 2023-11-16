@@ -31,9 +31,7 @@ export const Button = ({
           variant === "red" &&
             "text-white bg-red-500 hover:bg-red-700 focus:border-red-500",
           variant === "white" &&
-            "text-gray-800 bg-slate-50 hover:bg-slate-100 focus:border-slate-100",
-          variant === "dark" &&
-            "text-slate-100 bg-gray-900 hover:bg-gray-900 focus:border-gray-900",
+            "text-gray-800 bg-slate-50 hover:bg-slate-100 focus:border-slate-100 dark:text-slate-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:border-gray-700",
           className,
         ]),
       )}

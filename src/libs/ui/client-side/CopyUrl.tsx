@@ -26,7 +26,7 @@ export const CopyUrl = ({ url, className }: CopyUrlProps) => {
     >
       <p
         className={classNames([
-          "flex-1 px-24 py-8 break-words bg-gray-100 ",
+          "flex-1 px-24 py-8 break-words bg-slate-200 dark:bg-gray-600",
           "border border-gray-400 border-dotted border-b-0 rounded-b-none rounded-t-md",
           "md:border-b md:border-r-0 md:rounded-r-none md:rounded-l-md",
         ])}
@@ -43,13 +43,13 @@ export const CopyUrl = ({ url, className }: CopyUrlProps) => {
         disabled={copyButtonDisabled}
         className={twMerge(
           classNames([
-            "w-full md:w-128",
-            "py-6 border outline-0",
-            "hover:bg-slate-100 hover:shadow-sm",
-            "rounded-l-md rounded-b-md rounded-t-none md:rounded-md md:rounded-l-none",
-            copyState.error && "bg-red-500 border-red-500 text-white",
-            copyButtonDisabled &&
-              "bg-green-500 border-green-500 hover:bg-green-600 hover:border-green-600 text-white",
+            "w-full md:w-128 py-6 transition-all duration-100",
+            " border outline-0 rounded-l-md rounded-b-md rounded-t-none md:rounded-md md:rounded-l-none",
+            copyButtonDisabled
+              ? "bg-green-500 border-green-500 hover:bg-green-600 hover:border-green-600 text-slate-200"
+              : copyState.error
+              ? "bg-red-500 border-red-500 text-slate-200"
+              : "border-gray-300 bg-slate-50 hover:bg-slate-200 dark:border-gray-500 dark:bg-gray-600 dark:hover:bg-gray-500",
           ]),
         )}
       >

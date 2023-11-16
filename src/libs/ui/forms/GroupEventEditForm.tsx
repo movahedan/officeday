@@ -64,7 +64,7 @@ export const GroupEventEditForm = ({ id }: GroupEventEditFormProps) => {
         <div key={field.id} className="mb-8">
           <label
             htmlFor={`dates[${index}].date`}
-            className="block mb-4 text-gray-700 sr-only text-md"
+            className="block mb-4 sr-only text-md"
           >
             {t("fields.date.label")}
           </label>
@@ -78,7 +78,7 @@ export const GroupEventEditForm = ({ id }: GroupEventEditFormProps) => {
                   new Date(value) >= new Date() ||
                   t("fields.date.errors.date-cannot-be-in-the-past"),
               })}
-              className="w-full px-4 py-2 text-lg text-gray-700 border rounded focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 text-lg border rounded focus:border-blue-500 focus:outline-none"
             />
             <Button
               variant="red"

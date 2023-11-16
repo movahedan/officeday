@@ -24,7 +24,9 @@ export function List<ItemType = unknown>({
       className={twMerge(
         classNames([
           "w-full rounded-md overflow-hidden",
-          "[&>*:nth-child(odd)]:bg-slate-200 [&>*:nth-child(even)]:bg-slate-100 ",
+          "[&>*:nth-child(odd)]:bg-slate-200 [&>*:nth-child(even)]:bg-slate-300",
+          "dark:[&>*:nth-child(odd)]:bg-gray-600 dark:[&>*:nth-child(even)]:bg-gray-500",
+
           className,
         ]),
       )}
