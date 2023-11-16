@@ -12,3 +12,8 @@ export function parseCookies(cookieString: string | undefined, key: string) {
 
   return cookies[key];
 }
+
+export const cookieNames = {
+  NEXT_LOCALE: "NEXT_LOCALE",
+  NEXT_DARK_MODE: "NEXT_DARK_MODE",
+};

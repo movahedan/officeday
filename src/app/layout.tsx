@@ -1,5 +1,9 @@
 import "./globals.css";
+
 import { Inter } from "next/font/google";
+import { cookies } from "next/headers";
+
+import { cookieNames } from "@/libs/utilities/cookie";
 
 import type { ReactNode } from "react";
 
@@ -10,9 +14,15 @@ export type RootLayoutProps = {
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const cookieStore = cookies();
+  const darkMode =
+    cookieStore.get(cookieNames.NEXT_DARK_MODE)?.value === "true";
+
   return (
     <html lang="en">
-      <body className={`flex min-h-screen ${inter.className}`}>
+      <body
+        className={`flex min-h-screen ${inter.className} ${darkMode && "dark"}`}
+      >
         <div className="flex flex-col items-center justify-between flex-1">
           {children}
         </div>

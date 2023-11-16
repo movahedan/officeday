@@ -2,7 +2,7 @@
 import { createTranslator as nextIntlCreateTranslator } from "next-intl";
 
 import { defaultLocale } from "./routes";
-import { parseCookies } from "../utilities/cookie";
+import { cookieNames, parseCookies } from "../utilities/cookie";
 
 import type { NextApiRequest } from "next";
 
@@ -11,7 +11,7 @@ export const createTranslator = async (
   namespace: string,
 ) => {
   const locale =
-    parseCookies(req.headers.cookie, "NEXT_LOCALE") || defaultLocale;
+    parseCookies(req.headers.cookie, cookieNames.NEXT_LOCALE) || defaultLocale;
 
   return nextIntlCreateTranslator({
     locale,
