@@ -9,7 +9,7 @@ export type GroupEventLayoutProps = {
 export default function GroupEventLayout({ children }: GroupEventLayoutProps) {
   return (
     <>
-      <main className="flex flex-col items-center justify-between flex-1 p-24">
+      <main className="flex flex-col items-center justify-between flex-1 w-full p-24">
         {children}
       </main>
       <Footer />

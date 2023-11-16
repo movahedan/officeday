@@ -19,7 +19,7 @@ export default async function GroupEventJoinPage({
 
   return (
     <div className="m-auto max-w-400">
-      <h1 className="text-xl text-center">{t("title")}</h1>
+      <h1 className="mb-16 text-xl text-center">{t("title")}</h1>
       <GroupEventJoinForm id={id} />
     </div>
   );

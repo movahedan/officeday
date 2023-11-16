@@ -41,7 +41,7 @@ export default function GroupEventSelectOptionsPage({
 
   return !groupEvent ? null : (
     <div className="flex flex-col w-full md:flex-row max-w-400 md:max-w-764">
-      <div className="w-full m-auto md:w-320">
+      <div className="w-full m-auto md:w-[300px]">
         <h3 className="mb-16 text-lg">{t("titles.select-possible-options")}</h3>
 
         <GroupEventSelectOptionsForm
