@@ -1,6 +1,7 @@
 import { prisma } from "@/libs/data/prisma/client";
 import { createTranslator } from "@/libs/router/create-translator";
 import { apiHandler } from "@/libs/utilities/api-handler";
+import { dateFormatter } from "@/libs/utilities/date";
 
 import type { PutApiGroupEventIdBody } from "@/libs/data/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -417,37 +418,77 @@ async function handleGET(
 
   return res.status(200).json({ ...groupEvent, invitees });
 }
-
 async function handlePUT(
   req: NextApiRequest,
   res: NextApiResponse,
   id: string,
 ) {
-  const t = await createTranslator(req, "apis.group-event-id.put");
-
   const { suggestedOptions } = req.body as PutApiGroupEventIdBody;
 
-  if (!suggestedOptions?.length) {
-    return res.status(400).json({ error: t("select-at-least-one-option") });
+  const currentOptions = await prisma.groupEventOption.findMany({
+    where: { eventId: id },
+  });
+
+  const optionsToAdd = suggestedOptions.filter(
+    (suggestedOption) =>
+      !currentOptions.some(
+        (currentOption) => currentOption.id === suggestedOption.id,
+      ),
+  );
+  const optionsToUpdate = suggestedOptions.filter((suggestedOption) =>
+    currentOptions.some(
+      (currentOption) =>
+        currentOption.id === suggestedOption.id &&
+        dateFormatter(new Date(currentOption.date)) !== suggestedOption.date,
+    ),
+  );
+  const optionsToDelete = currentOptions.filter(
+    (currentOption) =>
+      !suggestedOptions.some(
+        (suggestedOption) => suggestedOption.id === currentOption.id,
+      ),
+  );
+
+  if (optionsToAdd.length > 0) {
+    await prisma.groupEventOption.createMany({
+      data: optionsToAdd.map((option) => ({
+        eventId: id,
+        date: new Date(option.date),
+      })),
+    });
   }
 
-  if (suggestedOptions.some((option) => new Date(option.date) < new Date())) {
-    return res.status(400).json({ error: t("date-cannot-be-in-the-past") });
-  }
-
-  await prisma.groupEvent.update({
-    where: { id },
-    data: {
-      suggestedOptions: {
-        deleteMany: {}, // Delete all existing options
-        createMany: {
-          data: suggestedOptions.map((option) => ({
-            date: new Date(option.date),
-          })),
+  for (const option of optionsToUpdate) {
+    const inviteesToUpdate = await prisma.groupEventInvitee.findMany({
+      where: {
+        groupEventId: id,
+        possibleOptionIds: {
+          has: option.id,
         },
       },
-    },
-  });
+    });
+
+    for (const invitee of inviteesToUpdate) {
+      const updatedPossibleOptions = invitee.possibleOptionIds.filter(
+        (optionId) => optionId !== option.id,
+      );
+      await prisma.groupEventInvitee.update({
+        where: { id: invitee.id },
+        data: { possibleOptionIds: updatedPossibleOptions },
+      });
+    }
+
+    await prisma.groupEventOption.update({
+      where: { id: option.id },
+      data: { date: new Date(option.date), invitees: { set: [] } },
+    });
+  }
+
+  if (optionsToDelete.length > 0) {
+    await prisma.groupEventOption.deleteMany({
+      where: { id: { in: optionsToDelete.map((option) => option.id) } },
+    });
+  }
 
   const updatedGroupEvent = await prisma.groupEvent.findUnique({
     where: { id },
