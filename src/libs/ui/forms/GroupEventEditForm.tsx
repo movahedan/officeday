@@ -35,6 +35,7 @@ export const GroupEventEditForm = ({ id }: GroupEventEditFormProps) => {
   } = useForm<GroupEventEditFormData>({
     defaultValues: {
       dates: groupEvent?.suggestedOptions.map((option) => ({
+        id: option.id,
         date: dateFormatter(new Date(option.date)),
       })),
     },
@@ -48,9 +49,7 @@ export const GroupEventEditForm = ({ id }: GroupEventEditFormProps) => {
   const onSubmit: SubmitHandler<GroupEventEditFormData> = async (data) => {
     const response = await putApiGroupEventId(id, {
       id,
-      suggestedOptions: data.dates.map((dateObj) => ({
-        date: dateObj.date,
-      })),
+      suggestedOptions: data.dates,
     });
 
     mutate();
