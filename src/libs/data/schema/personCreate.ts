@@ -5,8 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PutApiGroupEventIdBodyOwner = {
-  id: string;
-  /** Name of the owner */
+/**
+ * The owner of the event
+ */
+export interface PersonCreate {
+  /** Name of the event owner */
   name: string;
-};
+}

@@ -10,29 +10,33 @@ import { dateFormatter } from "@/libs/utilities/date";
 
 import { Button } from "../client-side/Button";
 
-import type { GetApiGroupEventId200SuggestedOptionsItem } from "@/libs/data/schema";
+import type {
+  GroupEventOption,
+  PutApiGroupEventIdJoinPersonIdBody,
+} from "@/libs/data/schema";
 import type { SubmitHandler } from "react-hook-form";
 
 export type GroupEventSelectOptionsFormData = {
-  options: string[];
+  optionStatuses: PutApiGroupEventIdJoinPersonIdBody["optionStatuses"];
 };
 
 export type GroupEventSelectOptionsFormProps = {
   id: string;
   personId: string;
-  suggestedOptions: GetApiGroupEventId200SuggestedOptionsItem[];
-  possibleOptionsIds: string[];
+  suggestedOptions: GroupEventOption[];
+
+  onSubmit: () => void | Promise<void | unknown>;
 };
 
 export const GroupEventSelectOptionsForm = ({
   id,
   personId,
   suggestedOptions,
-  possibleOptionsIds,
+
+  onSubmit: onSubmitProps,
 }: GroupEventSelectOptionsFormProps) => {
   const tGeneral = useTranslations("general");
-
-  const { mutate } = useGetApiGroupEventId(id);
+  const tStatus = useTranslations("components.suggested-options-status");
 
   const {
     register,
@@ -40,26 +44,35 @@ export const GroupEventSelectOptionsForm = ({
     formState: { errors },
   } = useForm<GroupEventSelectOptionsFormData>({
     defaultValues: {
-      options: possibleOptionsIds,
+      optionStatuses: suggestedOptions.map((option) => ({
+        optionId: option.id,
+        status: "Not possible",
+      })),
     },
   });
 
   const onSubmit: SubmitHandler<GroupEventSelectOptionsFormData> = async (
     data,
-  ) =>
-    putApiGroupEventIdJoinPersonId(id, personId, {
-      possibleOptions: data.options,
-    }).then(() => mutate());
+  ) => {
+    return putApiGroupEventIdJoinPersonId(id, personId, {
+      optionStatuses: data.optionStatuses.map((optionStatus) => ({
+        optionId: optionStatus.optionId,
+        status: optionStatus.status
+          ? tStatus("possible")
+          : tStatus("not-possible"),
+      })),
+    }).then(() => onSubmitProps());
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {suggestedOptions.map((option) => (
+      {suggestedOptions.map((option, index) => (
         <div key={option.id} className="mb-20">
           <div className="flex items-center">
             <input
               type="checkbox"
               id={option.id}
-              {...register("options")}
+              {...register(`optionStatuses.${index}.status`)}
               value={option.id}
               className="px-4 py-2 text-lg border rounded focus:border-blue-500 focus:outline-none"
             />
@@ -69,9 +82,9 @@ export const GroupEventSelectOptionsForm = ({
           </div>
         </div>
       ))}
-      {errors.options && (
+      {errors.optionStatuses && (
         <p className="mt-2 text-sm italic text-red-500">
-          {errors.options?.message}
+          {errors.optionStatuses?.message}
         </p>
       )}
 

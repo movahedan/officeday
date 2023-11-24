@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/data/prisma/client";
+import { getGroupEventInvitee } from "@/libs/data/prisma/get-group-event-invitee";
 import { createTranslator } from "@/libs/router/create-translator";
 import { apiHandler } from "@/libs/utilities/api-handler";
 
@@ -31,13 +32,12 @@ import type { NextApiRequest, NextApiResponse } from "next";
  *           schema:
  *             type: object
  *             required:
- *               - possibleOptions
+ *               - optionStatuses
  *             properties:
- *               possibleOptions:
+ *               optionStatuses:
  *                 type: array
  *                 items:
- *                   type: string
- *                 description: Array of possible option IDs that the person is interested in
+ *                   $ref: '#/components/schemas/GroupEventOptionStatusCreate'
  *     responses:
  *       201:
  *         description: Participation options updated successfully
@@ -48,7 +48,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
  *               required:
  *                 - id
  *                 - personId
- *                 - possibleOptionIds
+ *                 - optionStatuses
  *               properties:
  *                 id:
  *                   type: string
@@ -56,11 +56,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
  *                 personId:
  *                   type: string
  *                   description: Identifier of the person (invitee)
- *                 possibleOptionIds:
+ *                 optionStatuses:
  *                   type: array
  *                   items:
- *                     type: string
- *                   description: Updated array of possible option IDs for the invitee
+ *                     $ref: '#/components/schemas/GroupEventOptionStatus'
  *       400:
  *         description: Invalid input, object invalid or invitee not found
  *       500:
@@ -80,18 +79,41 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
   );
 
   const { id, personId } = req.query as { id: string; personId: string };
-  const { possibleOptions: possibleOptionsIds } =
+  const { optionStatuses } =
     req.body as unknown as PutApiGroupEventIdJoinPersonIdBody;
 
-  if (!Array.isArray(possibleOptionsIds)) {
+  const invalidOptionStatuses =
+    !Array.isArray(optionStatuses) ||
+    (Array.isArray(optionStatuses) && optionStatuses.length === 0) ||
+    (Array.isArray(optionStatuses) &&
+      optionStatuses.some(
+        (optionStatus) =>
+          !["Not voted", "Not possible", "Possible", "Reluctant"].includes(
+            optionStatus.status,
+          ),
+      ));
+
+  if (invalidOptionStatuses) {
     return res.status(400).json({
-      message: t("invalid-possible-options-ids"),
+      message: t("invalid-option-statuses"),
     });
   }
 
-  if (possibleOptionsIds.length === 0) {
-    return res.status(400).json({
-      message: t("invalid-possible-options-ids-field"),
+  for (const optionStatus of optionStatuses) {
+    const currentOptionStatus = await prisma.groupEventOptionStatus.findFirst({
+      where: { optionId: optionStatus.optionId },
+    });
+    if (!currentOptionStatus) {
+      return res.status(404).json({
+        message: t("option-not-found"),
+      });
+    }
+
+    await prisma.groupEventOptionStatus.update({
+      where: { id: currentOptionStatus.id },
+      data: {
+        status: optionStatus.status,
+      },
     });
   }
 
@@ -101,19 +123,18 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
       groupEventId: id,
     },
   });
-
   if (!invitee) {
-    return res.status(400).json({
+    return res.status(404).json({
       message: t("invitee-not-found"),
     });
   }
 
-  const updatedInvitee = await prisma.groupEventInvitee.update({
-    where: { id: invitee.id },
-    data: {
-      possibleOptionIds: { set: possibleOptionsIds.map((id) => id) },
-    },
-  });
+  const updatedInvitee = await getGroupEventInvitee(invitee.id);
+  if (!updatedInvitee) {
+    return res.status(404).json({
+      message: t("invitee-not-found"),
+    });
+  }
 
   return res.status(201).json(updatedInvitee);
 }

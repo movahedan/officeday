@@ -10,20 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Person {
-  id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  name              String              @unique
-  ownedGroupEvents  GroupEvent[]        @relation("groupEventOwner")
-  GroupEventInvitee GroupEventInvitee[]
-}
-
-model GroupEventOption {
-  id       String               @id @default(auto()) @map("_id") @db.ObjectId
-  date     DateTime
-  event    GroupEvent           @relation(fields: [eventId], references: [id])
-  eventId  String               @db.ObjectId
-  invitees String[]
-}
 
 model GroupEvent {
   id               String              @id @default(auto()) @map("_id") @db.ObjectId
@@ -33,11 +19,33 @@ model GroupEvent {
   invitees         GroupEventInvitee[]
 }
 
+model Person {
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  name              String              @unique
+  ownedGroupEvents  GroupEvent[]        @relation("groupEventOwner")
+  GroupEventInvitee GroupEventInvitee[]
+}
+
 model GroupEventInvitee {
   id              String             @id @default(auto()) @map("_id") @db.ObjectId
   personId        String             @db.ObjectId
   person          Person             @relation(fields: [personId], references: [id])
   groupEventId    String             @db.ObjectId
   groupEvent      GroupEvent         @relation(fields: [groupEventId], references: [id])
-  possibleOptionIds String[]         // Store the IDs of GroupEventOptions
+  optionStatusIds String[]
+}
+
+model GroupEventOption {
+  id              String               @id @default(auto()) @map("_id") @db.ObjectId
+  date            DateTime
+  event           GroupEvent           @relation(fields: [eventId], references: [id])
+  eventId         String               @db.ObjectId
+  optionStatusIds String[]
+}
+
+model GroupEventOptionStatus {
+  id        String              @id @default(auto()) @map("_id") @db.ObjectId
+  optionId  String              @db.ObjectId
+  status    String              // 'Not voted',  'Not possible', 'Possible', 'Reluctant'
+  inviteeId String              @db.ObjectId
 }

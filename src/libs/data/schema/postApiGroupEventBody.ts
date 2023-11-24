@@ -4,11 +4,10 @@
  * Next Swagger API Example
  * OpenAPI spec version: 1.0
  */
-import type { PostApiGroupEventBodyOwner } from "./postApiGroupEventBodyOwner";
-import type { PostApiGroupEventBodySuggestedOptionsItem } from "./postApiGroupEventBodySuggestedOptionsItem";
+import type { GroupEventOptionCreate } from "./groupEventOptionCreate";
+import type { PersonCreate } from "./personCreate";
 
 export type PostApiGroupEventBody = {
-  /** The owner of the event */
-  owner: PostApiGroupEventBodyOwner;
-  suggestedOptions: PostApiGroupEventBodySuggestedOptionsItem[];
+  owner: PersonCreate;
+  suggestedOptions: GroupEventOptionCreate[];
 };

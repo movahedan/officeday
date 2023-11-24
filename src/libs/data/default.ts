@@ -10,12 +10,10 @@ import { fetcher } from "./fetcher";
 
 import type { ErrorType, BodyType } from "./fetcher";
 import type {
-  GetApiGroupEventId200,
-  PostApiGroupEvent201,
+  GroupEvent,
+  Person,
   PostApiGroupEventBody,
-  PostApiGroupEventIdJoin201,
   PostApiGroupEventIdJoinBody,
-  PutApiGroupEventId200,
   PutApiGroupEventIdBody,
   PutApiGroupEventIdJoinPersonId201,
   PutApiGroupEventIdJoinPersonIdBody,
@@ -23,14 +21,11 @@ import type {
 import type { Key, SWRConfiguration } from "swr";
 
 /**
- * Retrieves a group event based on the provided ID.
+ * Retrieves a group event based on the provided ID including the status of options for each invitee.
  * @summary Get a specific group event
  */
 export const getApiGroupEventId = (id: string) => {
-  return fetcher<GetApiGroupEventId200>({
-    url: `/api/group-event/${id}`,
-    method: "get",
-  });
+  return fetcher<GroupEvent>({ url: `/api/group-event/${id}`, method: "get" });
 };
 
 export const getGetApiGroupEventIdKey = (id: string) =>
@@ -74,14 +69,14 @@ export const useGetApiGroupEventId = <TError = ErrorType<void>>(
 };
 
 /**
- * Updates the suggested options for a group event based on the provided ID.
- * @summary Update a group event's suggested options
+ * Updates the details for a group event based on the provided ID, including updating the status of options for each invitee.
+ * @summary Update a group event's details
  */
 export const putApiGroupEventId = (
   id: string,
   putApiGroupEventIdBody: BodyType<PutApiGroupEventIdBody>,
 ) => {
-  return fetcher<PutApiGroupEventId200>({
+  return fetcher<GroupEvent>({
     url: `/api/group-event/${id}`,
     method: "put",
     headers: { "Content-Type": "application/json" },
@@ -114,7 +109,7 @@ export const postApiGroupEventIdJoin = (
   id: string,
   postApiGroupEventIdJoinBody: BodyType<PostApiGroupEventIdJoinBody>,
 ) => {
-  return fetcher<PostApiGroupEventIdJoin201>({
+  return fetcher<Person>({
     url: `/api/group-event/${id}/join`,
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -129,7 +124,7 @@ export const postApiGroupEventIdJoin = (
 export const postApiGroupEvent = (
   postApiGroupEventBody: BodyType<PostApiGroupEventBody>,
 ) => {
-  return fetcher<PostApiGroupEvent201>({
+  return fetcher<GroupEvent>({
     url: `/api/group-event`,
     method: "post",
     headers: { "Content-Type": "application/json" },

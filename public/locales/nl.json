@@ -26,9 +26,9 @@
     },
     "group-event-id-join-person-id": {
       "put": {
-        "invalid-possible-options-ids": "Ongeldige possibleOptionsIds, moet een array zijn",
-        "invalid-possible-options-ids-field": "Ongeldige possibleOptionsIds, het moet ten minste één optie bevatten",
-        "invitee-not-found": "Genodigde niet gevonden"
+        "invalid-option-statuses": "Ongeldige optiestatus, moet een van de volgende zijn: ['Niet gestemd', 'Niet mogelijk', 'Mogelijk', 'Tegenstrijdig']",
+        "invitee-not-found": "Genodigde niet gevonden",
+        "option-not-found": "Optie niet gevonden"
       }
     }
   },
@@ -101,7 +101,8 @@
         "invitees": "Genodigden",
         "edit-suggestions": "Suggesties bewerken",
         "suggested-dates": "Voorgestelde data"
-      }
+      },
+      "lets-invite-others": "Laten we eerst anderen uitnodigen!"
     },
     "group-event-id-join": {
       "title": "Doe mee aan het groepsevenement"

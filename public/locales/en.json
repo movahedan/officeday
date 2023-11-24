@@ -26,9 +26,9 @@
     },
     "group-event-id-join-person-id": {
       "put": {
-        "invalid-possible-options-ids": "Invalid possibleOptionsIds, must be an array",
-        "invalid-possible-options-ids-field": "Invalid possibleOptionsIds, it should contain at least one option",
-        "invitee-not-found": "Invitee not found"
+        "invalid-option-statuses": "Invalid option status, must be one of ['Not voted', 'Not possible', 'Possible', 'Reluctant']",
+        "invitee-not-found": "Invitee not found",
+        "option-not-found": "Option not found"
       }
     }
   },
@@ -42,7 +42,10 @@
   "components": {
     "footer": "Created as a demo project © 2023.",
     "suggested-options-status": {
-      "not-possible": "Not possible"
+      "not-voted": "Not voted",
+      "not-possible": "Not possible",
+      "possible": "Possible",
+      "reluctant": "Tentative"
     },
     "error-component": {
       "unexpected-error": "An unexpected error ocurred."
@@ -101,7 +104,8 @@
         "invitees": "Invitees",
         "edit-suggestions": "Edit suggestions",
         "suggested-dates": "Suggested dates"
-      }
+      },
+      "lets-invite-others": "Let's invite others first!"
     },
     "group-event-id-join": {
       "title": "Join the group event"

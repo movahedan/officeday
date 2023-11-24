@@ -4,9 +4,8 @@
  * Next Swagger API Example
  * OpenAPI spec version: 1.0
  */
-import type { PostApiGroupEventIdJoinBodyPerson } from "./postApiGroupEventIdJoinBodyPerson";
+import type { PersonCreate } from "./personCreate";
 
 export type PostApiGroupEventIdJoinBody = {
-  /** The person joining the event */
-  person: PostApiGroupEventIdJoinBodyPerson;
+  person: PersonCreate;
 };

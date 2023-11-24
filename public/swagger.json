@@ -8,7 +8,7 @@
     "/api/group-event/{id}": {
       "get": {
         "summary": "Get a specific group event",
-        "description": "Retrieves a group event based on the provided ID.",
+        "description": "Retrieves a group event based on the provided ID including the status of options for each invitee.",
         "parameters": [
           {
             "in": "path",
@@ -26,147 +26,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "ownerId",
-                    "owner",
-                    "suggestedOptions",
-                    "invitees"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "Unique identifier of the group event"
-                    },
-                    "ownerId": {
-                      "type": "string",
-                      "description": "Identifier of the owner of the group event"
-                    },
-                    "owner": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "name"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string",
-                          "description": "Name of the owner"
-                        }
-                      }
-                    },
-                    "suggestedOptions": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "required": [
-                          "id",
-                          "date",
-                          "eventId",
-                          "invitees"
-                        ],
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "description": "Unique identifier of the group event option"
-                          },
-                          "date": {
-                            "type": "string",
-                            "format": "date-time",
-                            "description": "Suggested date for the event"
-                          },
-                          "eventId": {
-                            "type": "string",
-                            "description": "Identifier of the related group event"
-                          },
-                          "invitees": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "invitees": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "required": [
-                          "id",
-                          "personId",
-                          "groupEventId",
-                          "possibleOptionIds",
-                          "person",
-                          "possibleOptions"
-                        ],
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "description": "Identifier of the invitee"
-                          },
-                          "personId": {
-                            "type": "string",
-                            "description": "Identifier of the person invited"
-                          },
-                          "groupEventId": {
-                            "type": "string",
-                            "description": "Identifier of the related group event"
-                          },
-                          "possibleOptionIds": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Array of IDs for the possible options for this invitee"
-                          },
-                          "person": {
-                            "type": "object",
-                            "required": [
-                              "id",
-                              "name"
-                            ],
-                            "properties": {
-                              "id": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string",
-                                "description": "Name of the invited person"
-                              }
-                            }
-                          },
-                          "possibleOptions": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "id",
-                                "date",
-                                "eventId"
-                              ],
-                              "properties": {
-                                "id": {
-                                  "type": "string"
-                                },
-                                "date": {
-                                  "type": "string",
-                                  "format": "date-time"
-                                },
-                                "eventId": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/GroupEvent"
                 }
               }
             }
@@ -183,8 +43,8 @@
         }
       },
       "put": {
-        "summary": "Update a group event's suggested options",
-        "description": "Updates the suggested options for a group event based on the provided ID.",
+        "summary": "Update a group event's details",
+        "description": "Updates the details for a group event based on the provided ID, including updating the status of options for each invitee.",
         "parameters": [
           {
             "in": "path",
@@ -211,128 +71,10 @@
                     "type": "string",
                     "description": "Unique identifier of the group event"
                   },
-                  "ownerId": {
-                    "type": "string",
-                    "description": "Identifier of the owner of the group event"
-                  },
-                  "owner": {
-                    "type": "object",
-                    "required": [
-                      "id",
-                      "name"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string",
-                        "description": "Name of the owner"
-                      }
-                    }
-                  },
                   "suggestedOptions": {
                     "type": "array",
                     "items": {
-                      "type": "object",
-                      "required": [
-                        "date"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "Unique identifier of the group event option"
-                        },
-                        "date": {
-                          "type": "string",
-                          "format": "date-time",
-                          "description": "Suggested date for the event"
-                        },
-                        "eventId": {
-                          "type": "string",
-                          "description": "Identifier of the related group event"
-                        },
-                        "invitees": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "invitees": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "personId",
-                        "groupEventId",
-                        "possibleOptionIds",
-                        "person",
-                        "possibleOptions"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "Identifier of the invitee"
-                        },
-                        "personId": {
-                          "type": "string",
-                          "description": "Identifier of the person invited"
-                        },
-                        "groupEventId": {
-                          "type": "string",
-                          "description": "Identifier of the related group event"
-                        },
-                        "possibleOptionIds": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          },
-                          "description": "Array of IDs for the possible options for this invitee"
-                        },
-                        "person": {
-                          "type": "object",
-                          "required": [
-                            "id",
-                            "name"
-                          ],
-                          "properties": {
-                            "id": {
-                              "type": "string"
-                            },
-                            "name": {
-                              "type": "string",
-                              "description": "Name of the invited person"
-                            }
-                          }
-                        },
-                        "possibleOptions": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "required": [
-                              "id",
-                              "date",
-                              "eventId"
-                            ],
-                            "properties": {
-                              "id": {
-                                "type": "string"
-                              },
-                              "date": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "eventId": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      }
+                      "$ref": "#/components/schemas/GroupEventOptionCreate"
                     }
                   }
                 }
@@ -346,147 +88,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "ownerId",
-                    "owner",
-                    "suggestedOptions",
-                    "invitees"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "Unique identifier of the group event"
-                    },
-                    "ownerId": {
-                      "type": "string",
-                      "description": "Identifier of the owner of the group event"
-                    },
-                    "owner": {
-                      "type": "object",
-                      "required": [
-                        "id",
-                        "name"
-                      ],
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string",
-                          "description": "Name of the owner"
-                        }
-                      }
-                    },
-                    "suggestedOptions": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "required": [
-                          "id",
-                          "date",
-                          "eventId",
-                          "invitees"
-                        ],
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "description": "Unique identifier of the group event option"
-                          },
-                          "date": {
-                            "type": "string",
-                            "format": "date-time",
-                            "description": "Suggested date for the event"
-                          },
-                          "eventId": {
-                            "type": "string",
-                            "description": "Identifier of the related group event"
-                          },
-                          "invitees": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "invitees": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "required": [
-                          "id",
-                          "personId",
-                          "groupEventId",
-                          "possibleOptionIds",
-                          "person",
-                          "possibleOptions"
-                        ],
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "description": "Identifier of the invitee"
-                          },
-                          "personId": {
-                            "type": "string",
-                            "description": "Identifier of the person invited"
-                          },
-                          "groupEventId": {
-                            "type": "string",
-                            "description": "Identifier of the related group event"
-                          },
-                          "possibleOptionIds": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            },
-                            "description": "Array of IDs for the possible options for this invitee"
-                          },
-                          "person": {
-                            "type": "object",
-                            "required": [
-                              "id",
-                              "name"
-                            ],
-                            "properties": {
-                              "id": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string",
-                                "description": "Name of the invited person"
-                              }
-                            }
-                          },
-                          "possibleOptions": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "required": [
-                                "id",
-                                "date",
-                                "eventId"
-                              ],
-                              "properties": {
-                                "id": {
-                                  "type": "string"
-                                },
-                                "date": {
-                                  "type": "string",
-                                  "format": "date-time"
-                                },
-                                "eventId": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/GroupEvent"
                 }
               }
             }
@@ -531,15 +133,14 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "possibleOptions"
+                  "optionStatuses"
                 ],
                 "properties": {
-                  "possibleOptions": {
+                  "optionStatuses": {
                     "type": "array",
                     "items": {
-                      "type": "string"
-                    },
-                    "description": "Array of possible option IDs that the person is interested in"
+                      "$ref": "#/components/schemas/GroupEventOptionStatusCreate"
+                    }
                   }
                 }
               }
@@ -556,7 +157,7 @@
                   "required": [
                     "id",
                     "personId",
-                    "possibleOptionIds"
+                    "optionStatuses"
                   ],
                   "properties": {
                     "id": {
@@ -567,12 +168,11 @@
                       "type": "string",
                       "description": "Identifier of the person (invitee)"
                     },
-                    "possibleOptionIds": {
+                    "optionStatuses": {
                       "type": "array",
                       "items": {
-                        "type": "string"
-                      },
-                      "description": "Updated array of possible option IDs for the invitee"
+                        "$ref": "#/components/schemas/GroupEventOptionStatus"
+                      }
                     }
                   }
                 }
@@ -614,17 +214,7 @@
                 ],
                 "properties": {
                   "person": {
-                    "type": "object",
-                    "description": "The person joining the event",
-                    "required": [
-                      "name"
-                    ],
-                    "properties": {
-                      "name": {
-                        "type": "string",
-                        "description": "Name of the person"
-                      }
-                    }
+                    "$ref": "#/components/schemas/PersonCreate"
                   }
                 }
               }
@@ -637,21 +227,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "name"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "Id of the person who joined"
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "Name of the person who joined"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Person"
                 }
               }
             }
@@ -681,32 +257,12 @@
                 ],
                 "properties": {
                   "owner": {
-                    "type": "object",
-                    "description": "The owner of the event",
-                    "required": [
-                      "name"
-                    ],
-                    "properties": {
-                      "name": {
-                        "type": "string",
-                        "description": "Name of the event owner"
-                      }
-                    }
+                    "$ref": "#/components/schemas/PersonCreate"
                   },
                   "suggestedOptions": {
                     "type": "array",
                     "items": {
-                      "type": "object",
-                      "required": [
-                        "date"
-                      ],
-                      "properties": {
-                        "date": {
-                          "type": "string",
-                          "format": "date-time",
-                          "description": "Suggested date for the event"
-                        }
-                      }
+                      "$ref": "#/components/schemas/GroupEventOptionCreate"
                     }
                   }
                 }
@@ -720,56 +276,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "ownerId",
-                    "owner",
-                    "suggestedOptions"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "Unique identifier of the group event"
-                    },
-                    "ownerId": {
-                      "type": "string",
-                      "description": "Identifier of the owner of the group event"
-                    },
-                    "owner": {
-                      "type": "object",
-                      "required": [
-                        "name"
-                      ],
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Name of the owner"
-                        }
-                      }
-                    },
-                    "suggestedOptions": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "required": [
-                          "id",
-                          "date"
-                        ],
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "description": "Unique identifier of the group event option"
-                          },
-                          "date": {
-                            "type": "string",
-                            "format": "date-time",
-                            "description": "Suggested date for the event"
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/GroupEvent"
                 }
               }
             }
@@ -784,6 +291,249 @@
       }
     }
   },
-  "components": {},
+  "components": {
+    "schemas": {
+      "PersonCreate": {
+        "type": "object",
+        "description": "The owner of the event",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the event owner"
+          }
+        }
+      },
+      "Person": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of the person"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the person"
+          }
+        }
+      },
+      "GroupEventOptionCreate": {
+        "type": "object",
+        "description": "The owner of the event",
+        "required": [
+          "date"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the group event option"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Suggested date for the event"
+          }
+        }
+      },
+      "GroupEventOption": {
+        "type": "object",
+        "required": [
+          "id",
+          "date",
+          "eventId",
+          "optionStatusIds"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the group event option"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Suggested date for the event"
+          },
+          "eventId": {
+            "type": "string",
+            "description": "Identifier of the related group event"
+          },
+          "optionStatusIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Status": {
+        "type": "string",
+        "enum": [
+          "Not voted",
+          "Not possible",
+          "Possible",
+          "Reluctant"
+        ],
+        "description": "Updated status of the invitee for this option"
+      },
+      "GroupEventOptionStatusCreate": {
+        "type": "object",
+        "required": [
+          "optionId",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the status option"
+          },
+          "optionId": {
+            "type": "string",
+            "description": "Identifier of the group event option"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        }
+      },
+      "GroupEventOptionStatus": {
+        "type": "object",
+        "required": [
+          "id",
+          "optionId",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the status option"
+          },
+          "optionId": {
+            "type": "string",
+            "description": "Identifier of the group event option"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        }
+      },
+      "GroupEventInvitee": {
+        "type": "object",
+        "required": [
+          "id",
+          "person",
+          "personId",
+          "groupEventId",
+          "optionStatuses"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the invitee"
+          },
+          "personId": {
+            "type": "string",
+            "description": "Identifier of the person invited"
+          },
+          "person": {
+            "$ref": "#/components/schemas/Person"
+          },
+          "groupEventId": {
+            "type": "string",
+            "description": "Identifier of the related group event"
+          },
+          "optionStatuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupEventOptionStatus"
+            }
+          }
+        }
+      },
+      "GroupEvent": {
+        "type": "object",
+        "required": [
+          "id",
+          "ownerId",
+          "owner",
+          "suggestedOptions",
+          "invitees"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the group event"
+          },
+          "ownerId": {
+            "type": "string",
+            "description": "Identifier of the owner of the group event"
+          },
+          "owner": {
+            "type": "object",
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the owner"
+              }
+            }
+          },
+          "suggestedOptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GroupEventOption"
+            }
+          },
+          "invitees": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "person",
+                "personId",
+                "groupEventId",
+                "optionStatuses"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Identifier of the invitee"
+                },
+                "personId": {
+                  "type": "string",
+                  "description": "Identifier of the person invited"
+                },
+                "person": {
+                  "$ref": "#/components/schemas/Person"
+                },
+                "groupEventId": {
+                  "type": "string",
+                  "description": "Identifier of the related group event"
+                },
+                "optionStatuses": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GroupEventOptionStatus"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "tags": []
 }

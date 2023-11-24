@@ -27,31 +27,14 @@ import type { NextApiRequest, NextApiResponse } from "next";
  *               - person
  *             properties:
  *               person:
- *                 type: object
- *                 description: The person joining the event
- *                 required:
- *                   - name
- *                 properties:
- *                   name:
- *                     type: string
- *                     description: Name of the person
+ *                 $ref: '#/components/schemas/PersonCreate'
  *     responses:
  *       201:
  *         description: Person joined the event successfully
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               required:
- *                 - id
- *                 - name
- *               properties:
- *                 id:
- *                   type: string
- *                   description: Id of the person who joined
- *                 name:
- *                   type: string
- *                   description: Name of the person who joined
+ *               $ref: '#/components/schemas/Person'
  *       400:
  *         description: Invalid input, object invalid
  *       500:
@@ -80,7 +63,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
-  const newInvitee = await prisma.groupEventInvitee.create({
+  const invitee = await prisma.groupEventInvitee.create({
     data: {
       personId: person.id,
       groupEventId: id,
@@ -88,5 +71,23 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     include: { person: true },
   });
 
-  return res.status(201).json(newInvitee.person);
+  const options = await prisma.groupEventOption.findMany({
+    where: { eventId: id },
+  });
+
+  const optionStatusIds = [];
+  for (const option of options) {
+    const optionStatus = await prisma.groupEventOptionStatus.create({
+      data: { inviteeId: invitee.id, optionId: option.id, status: "Not voted" },
+    });
+
+    optionStatusIds.push(optionStatus.id);
+  }
+
+  await prisma.groupEventInvitee.update({
+    where: { id: invitee.id },
+    data: { optionStatusIds },
+  });
+
+  return res.status(201).json(invitee.person);
 }

@@ -4,16 +4,10 @@
  * Next Swagger API Example
  * OpenAPI spec version: 1.0
  */
-import type { PutApiGroupEventIdBodyInviteesItem } from "./putApiGroupEventIdBodyInviteesItem";
-import type { PutApiGroupEventIdBodyOwner } from "./putApiGroupEventIdBodyOwner";
-import type { PutApiGroupEventIdBodySuggestedOptionsItem } from "./putApiGroupEventIdBodySuggestedOptionsItem";
+import type { GroupEventOptionCreate } from "./groupEventOptionCreate";
 
 export type PutApiGroupEventIdBody = {
   /** Unique identifier of the group event */
   id: string;
-  invitees?: PutApiGroupEventIdBodyInviteesItem[];
-  owner?: PutApiGroupEventIdBodyOwner;
-  /** Identifier of the owner of the group event */
-  ownerId?: string;
-  suggestedOptions: PutApiGroupEventIdBodySuggestedOptionsItem[];
+  suggestedOptions: GroupEventOptionCreate[];
 };

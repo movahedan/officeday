@@ -88,10 +88,14 @@ export default function GroupEventOwnerPage({
                 </Button>
               </div>
 
-              <SuggestedOptionsStatus
-                invitees={groupEvent?.invitees}
-                suggestedOptions={groupEvent?.suggestedOptions}
-              />
+              {!groupEvent.invitees.length ? (
+                <p>{t("lets-invite-others")}</p>
+              ) : (
+                <SuggestedOptionsStatus
+                  invitees={groupEvent?.invitees}
+                  suggestedOptions={groupEvent?.suggestedOptions}
+                />
+              )}
             </>
           )}
         </div>

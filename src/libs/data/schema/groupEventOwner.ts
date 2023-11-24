@@ -5,7 +5,8 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PostApiGroupEventBodySuggestedOptionsItem = {
-  /** Suggested date for the event */
-  date: string;
+export type GroupEventOwner = {
+  id: string;
+  /** Name of the owner */
+  name: string;
 };

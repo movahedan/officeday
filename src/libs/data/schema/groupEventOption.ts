@@ -5,9 +5,12 @@
  * OpenAPI spec version: 1.0
  */
 
-export type PostApiGroupEvent201SuggestedOptionsItem = {
+export interface GroupEventOption {
   /** Suggested date for the event */
   date: string;
+  /** Identifier of the related group event */
+  eventId: string;
   /** Unique identifier of the group event option */
   id: string;
-};
+  optionStatusIds: string[];
+}

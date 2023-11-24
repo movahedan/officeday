@@ -5,11 +5,15 @@
  * OpenAPI spec version: 1.0
  */
 import type { GroupEventOptionStatus } from "./groupEventOptionStatus";
+import type { Person } from "./person";
 
-export type PutApiGroupEventIdJoinPersonId201 = {
-  /** Identifier of the updated invitee */
+export type GroupEventInviteesItem = {
+  /** Identifier of the related group event */
+  groupEventId: string;
+  /** Identifier of the invitee */
   id: string;
   optionStatuses: GroupEventOptionStatus[];
-  /** Identifier of the person (invitee) */
+  person: Person;
+  /** Identifier of the person invited */
   personId: string;
 };

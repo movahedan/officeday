@@ -22,67 +22,18 @@ import type { NextApiRequest, NextApiResponse } from "next";
  *               - suggestedOptions
  *             properties:
  *               owner:
- *                 type: object
- *                 description: The owner of the event
- *                 required:
- *                   - name
- *                 properties:
- *                   name:
- *                     type: string
- *                     description: Name of the event owner
+ *                 $ref: '#/components/schemas/PersonCreate'
  *               suggestedOptions:
  *                 type: array
  *                 items:
- *                   type: object
- *                   required:
- *                     - date
- *                   properties:
- *                     date:
- *                       type: string
- *                       format: date-time
- *                       description: Suggested date for the event
+ *                   $ref: '#/components/schemas/GroupEventOptionCreate'
  *     responses:
  *       201:
  *         description: Group event created successfully
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               required:
- *                 - id
- *                 - ownerId
- *                 - owner
- *                 - suggestedOptions
- *               properties:
- *                 id:
- *                   type: string
- *                   description: Unique identifier of the group event
- *                 ownerId:
- *                   type: string
- *                   description: Identifier of the owner of the group event
- *                 owner:
- *                   type: object
- *                   required:
- *                     - name
- *                   properties:
- *                     name:
- *                       type: string
- *                       description: Name of the owner
- *                 suggestedOptions:
- *                   type: array
- *                   items:
- *                     type: object
- *                     required:
- *                       - id
- *                       - date
- *                     properties:
- *                       id:
- *                         type: string
- *                         description: Unique identifier of the group event option
- *                       date:
- *                         type: string
- *                         format: date-time
- *                         description: Suggested date for the event
+ *               $ref: '#/components/schemas/GroupEvent'
  *       400:
  *         description: Invalid input, object invalid
  *       500:
