@@ -1,7 +1,8 @@
 import { prisma } from "@/libs/data/prisma/client";
-import { getGroupEventInvitee } from "@/libs/data/prisma/get-group-event-invitee";
+import { RSVPResponse } from "@/libs/data/schema";
 import { createTranslator } from "@/libs/router/create-translator";
 import { apiHandler } from "@/libs/utilities/api-handler";
+import { dateFormatter } from "@/libs/utilities/date";
 
 import type { PutApiGroupEventIdJoinPersonIdBody } from "@/libs/data/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -32,12 +33,12 @@ import type { NextApiRequest, NextApiResponse } from "next";
  *           schema:
  *             type: object
  *             required:
- *               - optionStatuses
+ *               - rsvps
  *             properties:
- *               optionStatuses:
+ *               rsvps:
  *                 type: array
  *                 items:
- *                   $ref: '#/components/schemas/GroupEventOptionStatusCreate'
+ *                   $ref: '#/components/schemas/RSVP'
  *     responses:
  *       201:
  *         description: Participation options updated successfully
@@ -56,10 +57,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
  *                 personId:
  *                   type: string
  *                   description: Identifier of the person (invitee)
- *                 optionStatuses:
+ *                 rsvps:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/GroupEventOptionStatus'
+ *                     $ref: '#/components/schemas/RSVP'
  *       400:
  *         description: Invalid input, object invalid or invitee not found
  *       500:
@@ -79,62 +80,48 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
   );
 
   const { id, personId } = req.query as { id: string; personId: string };
-  const { optionStatuses } =
-    req.body as unknown as PutApiGroupEventIdJoinPersonIdBody;
+  const { rsvps } = req.body as PutApiGroupEventIdJoinPersonIdBody;
 
-  const invalidOptionStatuses =
-    !Array.isArray(optionStatuses) ||
-    (Array.isArray(optionStatuses) && optionStatuses.length === 0) ||
-    (Array.isArray(optionStatuses) &&
-      optionStatuses.some(
-        (optionStatus) =>
-          !["Not voted", "Not possible", "Possible", "Reluctant"].includes(
-            optionStatus.status,
-          ),
-      ));
+  const isValidRsvps =
+    Array.isArray(rsvps) &&
+    rsvps.length !== 0 &&
+    rsvps.some((r) => Object.keys(RSVPResponse).includes(r.response));
 
-  if (invalidOptionStatuses) {
+  if (!isValidRsvps) {
     return res.status(400).json({
       message: t("invalid-option-statuses"),
     });
   }
 
-  for (const optionStatus of optionStatuses) {
-    const currentOptionStatus = await prisma.groupEventOptionStatus.findFirst({
-      where: { optionId: optionStatus.optionId },
-    });
-    if (!currentOptionStatus) {
-      return res.status(404).json({
-        message: t("option-not-found"),
-      });
+  return prisma.$transaction(async (tx) => {
+    const { options } = await tx.groupEvent
+      .findFirstOrThrow({ where: { id } })
+      .catch(() => ({ options: [] }));
+
+    const rsvpDates = rsvps.map((r) => dateFormatter(new Date(r.date)));
+    const dates = options.map((o) => dateFormatter(o.date));
+    const optionExist = dates.some((d1) => !!rsvpDates.find((d2) => d2 === d1));
+    if (!optionExist) {
+      return res.status(400).json({ error: t("option-not-found") });
     }
 
-    await prisma.groupEventOptionStatus.update({
-      where: { id: currentOptionStatus.id },
-      data: {
-        status: optionStatus.status,
-      },
-    });
-  }
-
-  const invitee = await prisma.groupEventInvitee.findFirst({
-    where: {
-      personId: personId,
-      groupEventId: id,
-    },
+    return prisma.groupEvent
+      .update({
+        where: { id },
+        data: {
+          invitees: {
+            updateMany: {
+              where: { id: personId },
+              data: { rsvps },
+            },
+          },
+        },
+      })
+      .then(({ invitees }) => {
+        return res.status(201).json(invitees.find((i) => i.id === personId));
+      })
+      .catch(() => {
+        return res.status(400).json({ error: t("no-event-exist") });
+      });
   });
-  if (!invitee) {
-    return res.status(404).json({
-      message: t("invitee-not-found"),
-    });
-  }
-
-  const updatedInvitee = await getGroupEventInvitee(invitee.id);
-  if (!updatedInvitee) {
-    return res.status(404).json({
-      message: t("invitee-not-found"),
-    });
-  }
-
-  return res.status(201).json(updatedInvitee);
 }

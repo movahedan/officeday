@@ -24,10 +24,16 @@
         "date-cannot-be-in-the-past": "Datum kan niet in het verleden zijn"
       }
     },
+    "group-event-id-join": {
+      "post": {
+        "invitee-name-exist": "Er bestaat een andere genodigde met de voornaam. Kies een andere naam."
+      }
+    },
     "group-event-id-join-person-id": {
       "put": {
         "invalid-option-statuses": "Ongeldige optiestatus, moet een van de volgende zijn: ['Niet gestemd', 'Niet mogelijk', 'Mogelijk', 'Tegenstrijdig']",
         "invitee-not-found": "Genodigde niet gevonden",
+        "invitee-name-exist": "Er bestaat een andere genodigde met de voornaam. Kies een andere naam.",
         "option-not-found": "Optie niet gevonden"
       }
     }

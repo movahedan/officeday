@@ -3,11 +3,9 @@
 import { useTranslations } from "next-intl";
 
 import { useGetApiGroupEventId } from "@/libs/data/default";
+import { ReloadButton } from "@/libs/ui/client-side/ReloadButton";
 import { GroupEventSelectOptionsForm } from "@/libs/ui/forms/GroupEventSelectOptions";
-import { classNames } from "@/libs/utilities/string";
 
-import { Button } from "@/libs/ui/client-side";
-import { IconLoading, IconRefresh } from "@/libs/ui/icons";
 import { SuggestedOptionsStatus } from "@/libs/ui/server-side";
 
 export type GroupEventSelectOptionsPageProps = {
@@ -34,57 +32,38 @@ export default function GroupEventSelectOptionsPage({
     },
   });
 
-  if (error) {
-    const cloned = error;
-    throw cloned;
-  }
+  if (error) throw error;
+
+  const invitee = groupEvent?.invitees.find((i) => i.id === personId);
 
   return !groupEvent ? null : (
-    <div className="flex flex-col w-full md:flex-row max-w-400 md:max-w-764">
-      <div className="w-full mx-auto md:w-[300px]">
+    <div className="flex flex-col w-full max-w-400 md:max-w-764">
+      <div className="w-full">
         <h3 className="mb-16 text-lg">{t("titles.select-possible-options")}</h3>
 
         <GroupEventSelectOptionsForm
           id={id}
           personId={personId}
-          suggestedOptions={groupEvent.suggestedOptions || []}
+          options={groupEvent.options || []}
+          currentRsvps={invitee?.rsvps || []}
           onSubmit={() => mutate()}
-          // possibleOptionsIds={
-          //   groupEvent.invitees
-          //     .find((i) => i.person.id === personId)
-          //     ?.possibleOptions.map((o) => o.id) || []
-          // }
         />
       </div>
 
-      <div className="flex-1 mt-20 md:mt-0 md:ml-16">
+      <div className="flex-1 mt-20">
         <div className="flex mb-8">
           <h3 className="mr-auto text-lg">
             {t("titles.status-of-suggested-options")}
           </h3>
 
-          <Button
-            variant="white"
-            onClick={() => mutate()}
-            className="px-8 py-4 border"
-          >
-            {isLoading || isValidating ? (
-              <IconLoading width={16} height={16} />
-            ) : (
-              <IconRefresh
-                width={16}
-                height={16}
-                className={classNames([
-                  "transition-all duration-300",
-                  !(isLoading || isValidating) ? "-rotate-180" : "rotate-180",
-                ])}
-              />
-            )}
-          </Button>
+          <ReloadButton
+            isLoading={isLoading || isValidating}
+            onReload={mutate}
+          />
         </div>
 
         <SuggestedOptionsStatus
-          suggestedOptions={groupEvent.suggestedOptions}
+          options={groupEvent.options}
           invitees={groupEvent.invitees}
         />
       </div>

@@ -4,10 +4,10 @@
  * Next Swagger API Example
  * OpenAPI spec version: 1.0
  */
-import type { GroupEventOptionCreate } from "./groupEventOptionCreate";
+import type { Option } from "./option";
 
 export type PutApiGroupEventIdBody = {
   /** Unique identifier of the group event */
   id: string;
-  suggestedOptions: GroupEventOptionCreate[];
+  options: Option[];
 };

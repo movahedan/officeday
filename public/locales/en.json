@@ -24,10 +24,16 @@
         "date-cannot-be-in-the-past": "Date cannot be in the past"
       }
     },
+    "group-event-id-join": {
+      "post": {
+        "invitee-name-exist": "Another invitee exists with given name, choose a different name."
+      }
+    },
     "group-event-id-join-person-id": {
       "put": {
         "invalid-option-statuses": "Invalid option status, must be one of ['Not voted', 'Not possible', 'Possible', 'Reluctant']",
         "invitee-not-found": "Invitee not found",
+        "invitee-name-exist": "Another invitee exists with given name, choose a different name.",
         "option-not-found": "Option not found"
       }
     }

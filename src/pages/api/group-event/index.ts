@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+
 import { prisma } from "@/libs/data/prisma/client";
 import { createTranslator } from "@/libs/router/create-translator";
 import { apiHandler } from "@/libs/utilities/api-handler";
@@ -19,14 +21,14 @@ import type { NextApiRequest, NextApiResponse } from "next";
  *             type: object
  *             required:
  *               - owner
- *               - suggestedOptions
+ *               - options
  *             properties:
  *               owner:
  *                 $ref: '#/components/schemas/PersonCreate'
- *               suggestedOptions:
+ *               options:
  *                 type: array
  *                 items:
- *                   $ref: '#/components/schemas/GroupEventOptionCreate'
+ *                   $ref: '#/components/schemas/Option'
  *     responses:
  *       201:
  *         description: Group event created successfully
@@ -48,33 +50,24 @@ export default async function handler(
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   const t = await createTranslator(req, "apis.group-event.post");
+  const { owner, options } = req.body as PostApiGroupEventBody;
 
-  const { owner, suggestedOptions } = req.body as PostApiGroupEventBody;
-  if (!owner?.name || !suggestedOptions?.length) {
+  if (!owner?.name || !options?.length)
     return res.status(400).json({ error: t("name-and-options-required") });
-  }
-
-  if (suggestedOptions.some((option) => new Date(option.date) < new Date())) {
+  if (options.some((option) => new Date(option.date) < new Date()))
     return res.status(400).json({ error: t("date-cannot-be-in-the-past") });
-  }
 
-  const groupEvent = await prisma.groupEvent.create({
-    data: {
-      owner: {
-        connectOrCreate: {
-          where: { name: owner.name },
-          create: { name: owner.name },
+  return prisma.groupEvent
+    .create({
+      data: {
+        owner: {
+          id: nanoid(10),
+          name: owner.name,
         },
+        options: options.map((option) => ({
+          date: new Date(option.date),
+        })),
       },
-      suggestedOptions: {
-        createMany: {
-          data: suggestedOptions.map((option) => ({
-            date: new Date(option.date),
-          })),
-        },
-      },
-    },
-  });
-
-  return res.status(201).json(groupEvent);
+    })
+    .then((groupEvent) => res.status(201).json(groupEvent));
 }

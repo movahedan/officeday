@@ -42,7 +42,7 @@ export const GroupEventCreateForm = () => {
       owner: {
         name: data.name,
       },
-      suggestedOptions: data.dates.map((dateObj) => ({
+      options: data.dates.map((dateObj) => ({
         date: dateObj.date,
       })),
     });

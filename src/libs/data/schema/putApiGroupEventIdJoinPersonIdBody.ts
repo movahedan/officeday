@@ -4,8 +4,8 @@
  * Next Swagger API Example
  * OpenAPI spec version: 1.0
  */
-import type { GroupEventOptionStatusCreate } from "./groupEventOptionStatusCreate";
+import type { Rsvp } from "./rsvp";
 
 export type PutApiGroupEventIdJoinPersonIdBody = {
-  optionStatuses: GroupEventOptionStatusCreate[];
+  rsvps: Rsvp[];
 };

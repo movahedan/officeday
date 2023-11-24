@@ -1,71 +1,55 @@
-import { useTranslations } from "next-intl";
-
-import { Status } from "@/libs/data/schema";
+import { RSVPResponse } from "@/libs/data/schema";
 import { dateFormatter } from "@/libs/utilities/date";
 import { classNames } from "@/libs/utilities/string";
 
 import { List } from "./List";
 
-import type { GroupEventInvitee, GroupEventOption } from "@/libs/data/schema";
+import type { Invitee, Option } from "@/libs/data/schema";
 
 export type SuggestedOptionsStatusProps = {
-  suggestedOptions: GroupEventOption[];
-  invitees: GroupEventInvitee[];
+  options: Option[];
+  invitees: Invitee[];
   className?: string;
 };
 
 export const SuggestedOptionsStatus = ({
-  suggestedOptions,
+  options,
   invitees,
   className,
 }: SuggestedOptionsStatusProps) => {
   return (
     <ul className={classNames(["flex flex-col gap-16", className])}>
-      {suggestedOptions.map((option) => {
-        const statusList = Object.values(Status)
-          .map((status) => ({
-            status,
+      {options.map((option) => {
+        const statusList = Object.values(RSVPResponse)
+          .map((response) => ({
+            response,
             invitees: invitees
               .filter((invitee) =>
-                invitee.optionStatuses.some(
-                  (optionStatus) =>
-                    optionStatus.optionId === option.id &&
-                    optionStatus.status === status,
+                invitee.rsvps.some(
+                  (rsvp) =>
+                    rsvp.date === option.date && rsvp.response === response,
                 ),
               )
-              .map((invitee) => invitee.person.name),
+              .map((invitee) => invitee.name),
           }))
-          .filter(({ invitees }) => !!invitees.length);
+          .filter(({ response, invitees }) => !!invitees.length || !!response);
 
         return (
           <section key={option.date}>
             <h3 className="mb-4">{dateFormatter(new Date(option.date))}</h3>
-            <List items={statusList} keys={(statusItem) => statusItem.status}>
-              {({ status, invitees }) => (
-                <Item status={status} invitees={invitees} />
+            <List items={statusList} keys={(statusItem) => statusItem.response}>
+              {({ response, invitees }) => (
+                <>
+                  <span className="mr-4">{response}:</span>
+                  <span>
+                    {invitees.length === 0 ? "-" : invitees.join("-")}
+                  </span>
+                </>
               )}
             </List>
           </section>
         );
       })}
     </ul>
-  );
-};
-
-type ItemProps = {
-  status: Status;
-  invitees: string[];
-};
-
-const Item = ({ status, invitees }: ItemProps) => {
-  const t = useTranslations("components.suggested-options-status");
-
-  return (
-    <>
-      <span className="mr-4">{status}:</span>
-      <span>
-        {invitees.length === 0 ? t("not-possible") : invitees.join("-")}
-      </span>
-    </>
   );
 };

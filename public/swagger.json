@@ -64,17 +64,17 @@
                 "type": "object",
                 "required": [
                   "id",
-                  "suggestedOptions"
+                  "options"
                 ],
                 "properties": {
                   "id": {
                     "type": "string",
                     "description": "Unique identifier of the group event"
                   },
-                  "suggestedOptions": {
+                  "options": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/GroupEventOptionCreate"
+                      "$ref": "#/components/schemas/Option"
                     }
                   }
                 }
@@ -133,13 +133,13 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "optionStatuses"
+                  "rsvps"
                 ],
                 "properties": {
-                  "optionStatuses": {
+                  "rsvps": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/GroupEventOptionStatusCreate"
+                      "$ref": "#/components/schemas/RSVP"
                     }
                   }
                 }
@@ -168,10 +168,10 @@
                       "type": "string",
                       "description": "Identifier of the person (invitee)"
                     },
-                    "optionStatuses": {
+                    "rsvps": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/GroupEventOptionStatus"
+                        "$ref": "#/components/schemas/RSVP"
                       }
                     }
                   }
@@ -253,16 +253,16 @@
                 "type": "object",
                 "required": [
                   "owner",
-                  "suggestedOptions"
+                  "options"
                 ],
                 "properties": {
                   "owner": {
                     "$ref": "#/components/schemas/PersonCreate"
                   },
-                  "suggestedOptions": {
+                  "options": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/GroupEventOptionCreate"
+                      "$ref": "#/components/schemas/Option"
                     }
                   }
                 }
@@ -323,7 +323,7 @@
           }
         }
       },
-      "GroupEventOptionCreate": {
+      "Option": {
         "type": "object",
         "description": "The owner of the event",
         "required": [
@@ -341,116 +341,51 @@
           }
         }
       },
-      "GroupEventOption": {
-        "type": "object",
-        "required": [
-          "id",
-          "date",
-          "eventId",
-          "optionStatusIds"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier of the group event option"
-          },
-          "date": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Suggested date for the event"
-          },
-          "eventId": {
-            "type": "string",
-            "description": "Identifier of the related group event"
-          },
-          "optionStatusIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "Status": {
+      "RSVPResponse": {
         "type": "string",
         "enum": [
-          "Not voted",
-          "Not possible",
-          "Possible",
-          "Reluctant"
+          "NOT_POSSIBLE",
+          "POSSIBLE",
+          "TENTATIVE"
         ],
-        "description": "Updated status of the invitee for this option"
+        "description": "Rsvp statuses"
       },
-      "GroupEventOptionStatusCreate": {
+      "RSVP": {
         "type": "object",
         "required": [
-          "optionId",
-          "status"
+          "date",
+          "response"
         ],
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "Identifier of the status option"
-          },
-          "optionId": {
+          "date": {
             "type": "string",
             "description": "Identifier of the group event option"
           },
-          "status": {
-            "$ref": "#/components/schemas/Status"
+          "response": {
+            "$ref": "#/components/schemas/RSVPResponse"
           }
         }
       },
-      "GroupEventOptionStatus": {
+      "Invitee": {
         "type": "object",
         "required": [
           "id",
-          "optionId",
-          "status"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Identifier of the status option"
-          },
-          "optionId": {
-            "type": "string",
-            "description": "Identifier of the group event option"
-          },
-          "status": {
-            "$ref": "#/components/schemas/Status"
-          }
-        }
-      },
-      "GroupEventInvitee": {
-        "type": "object",
-        "required": [
-          "id",
-          "person",
-          "personId",
-          "groupEventId",
-          "optionStatuses"
+          "name",
+          "rsvps"
         ],
         "properties": {
           "id": {
             "type": "string",
             "description": "Identifier of the invitee"
           },
-          "personId": {
+          "name": {
             "type": "string",
-            "description": "Identifier of the person invited"
+            "description": "Name of the invitee"
           },
-          "person": {
-            "$ref": "#/components/schemas/Person"
-          },
-          "groupEventId": {
-            "type": "string",
-            "description": "Identifier of the related group event"
-          },
-          "optionStatuses": {
+          "rsvps": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/GroupEventOptionStatus"
+              "$ref": "#/components/schemas/RSVP"
             }
           }
         }
@@ -459,9 +394,8 @@
         "type": "object",
         "required": [
           "id",
-          "ownerId",
           "owner",
-          "suggestedOptions",
+          "options",
           "invitees"
         ],
         "properties": {
@@ -469,66 +403,19 @@
             "type": "string",
             "description": "Unique identifier of the group event"
           },
-          "ownerId": {
-            "type": "string",
-            "description": "Identifier of the owner of the group event"
-          },
           "owner": {
-            "type": "object",
-            "required": [
-              "id",
-              "name"
-            ],
-            "properties": {
-              "id": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string",
-                "description": "Name of the owner"
-              }
-            }
+            "$ref": "#/components/schemas/Person"
           },
-          "suggestedOptions": {
+          "options": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/GroupEventOption"
+              "$ref": "#/components/schemas/Option"
             }
           },
           "invitees": {
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "id",
-                "person",
-                "personId",
-                "groupEventId",
-                "optionStatuses"
-              ],
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "description": "Identifier of the invitee"
-                },
-                "personId": {
-                  "type": "string",
-                  "description": "Identifier of the person invited"
-                },
-                "person": {
-                  "$ref": "#/components/schemas/Person"
-                },
-                "groupEventId": {
-                  "type": "string",
-                  "description": "Identifier of the related group event"
-                },
-                "optionStatuses": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GroupEventOptionStatus"
-                  }
-                }
-              }
+              "$ref": "#/components/schemas/Invitee"
             }
           }
         }

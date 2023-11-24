@@ -1,14 +1,12 @@
 "use client";
-
 import { useTranslations } from "next-intl";
 
 import { useGetApiGroupEventId } from "@/libs/data/default";
 import { routes } from "@/libs/router";
+import { ReloadButton } from "@/libs/ui/client-side/ReloadButton";
 import { GroupEventEditForm } from "@/libs/ui/forms/GroupEventEditForm";
-import { classNames } from "@/libs/utilities/string";
 
-import { CopyUrl, Button } from "@/libs/ui/client-side";
-import { IconLoading, IconRefresh } from "@/libs/ui/icons";
+import { CopyUrl } from "@/libs/ui/client-side";
 import { List, SuggestedOptionsStatus } from "@/libs/ui/server-side";
 
 export interface GroupEventOwnerPageProps {
@@ -42,21 +40,20 @@ export default function GroupEventOwnerPage({
 
       <div className="flex flex-col w-full mt-24 md:flex-row">
         <div className="w-full md:w-320">
+          <h3 className="mb-8 text-lg">{t("titles.edit-suggestions")}</h3>
+          <GroupEventEditForm id={id} />
+
           {!groupEvent.invitees.length ? null : (
             <>
-              <h3 className="mb-8 text-lg">{t("titles.invitees")}</h3>
+              <h3 className="mt-20 mb-8 text-lg md:mt-16">
+                {t("titles.invitees")}
+              </h3>
               <List
                 keys={(name) => name}
-                items={groupEvent.invitees.map(
-                  (invitee) => invitee.person.name,
-                )}
-                className="mb-20 md:mb-16"
+                items={groupEvent.invitees.map((invitee) => invitee.name)}
               />
             </>
           )}
-
-          <h3 className="mb-8 text-lg">{t("titles.edit-suggestions")}</h3>
-          <GroupEventEditForm id={id} />
         </div>
 
         <div className="w-full mt-20 md:mt-0 md:ml-16">
@@ -66,26 +63,11 @@ export default function GroupEventOwnerPage({
                 <h3 className="mr-auto text-lg">
                   {t("titles.suggested-dates")}
                 </h3>
-                <Button
-                  variant="white"
-                  onClick={() => mutate()}
-                  className="px-8 py-4 border"
-                >
-                  {isLoading || isValidating ? (
-                    <IconLoading width={16} height={16} />
-                  ) : (
-                    <IconRefresh
-                      width={16}
-                      height={16}
-                      className={classNames([
-                        "transition-all duration-300",
-                        !(isLoading || isValidating)
-                          ? "-rotate-180"
-                          : "rotate-180",
-                      ])}
-                    />
-                  )}
-                </Button>
+
+                <ReloadButton
+                  isLoading={isLoading || isValidating}
+                  onReload={mutate}
+                />
               </div>
 
               {!groupEvent.invitees.length ? (
@@ -93,7 +75,7 @@ export default function GroupEventOwnerPage({
               ) : (
                 <SuggestedOptionsStatus
                   invitees={groupEvent?.invitees}
-                  suggestedOptions={groupEvent?.suggestedOptions}
+                  options={groupEvent?.options}
                 />
               )}
             </>

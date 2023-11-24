@@ -6,13 +6,8 @@
  */
 
 export * from "./groupEvent";
-export * from "./groupEventInvitee";
-export * from "./groupEventInviteesItem";
-export * from "./groupEventOption";
-export * from "./groupEventOptionCreate";
-export * from "./groupEventOptionStatus";
-export * from "./groupEventOptionStatusCreate";
-export * from "./groupEventOwner";
+export * from "./invitee";
+export * from "./option";
 export * from "./person";
 export * from "./personCreate";
 export * from "./postApiGroupEventBody";
@@ -20,4 +15,5 @@ export * from "./postApiGroupEventIdJoinBody";
 export * from "./putApiGroupEventIdBody";
 export * from "./putApiGroupEventIdJoinPersonId201";
 export * from "./putApiGroupEventIdJoinPersonIdBody";
-export * from "./status";
+export * from "./rSVPResponse";
+export * from "./rsvp";

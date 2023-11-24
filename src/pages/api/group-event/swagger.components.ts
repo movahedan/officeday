@@ -23,7 +23,7 @@
  *         name:
  *           type: string
  *           description: Name of the person
- *     GroupEventOptionCreate:
+ *     Option:
  *       type: object
  *       description: The owner of the event
  *       required:
@@ -36,139 +36,57 @@
  *           type: string
  *           format: date-time
  *           description: Suggested date for the event
- *     GroupEventOption:
+ *     RSVPResponse:
+ *       type: string
+ *       enum: ['NOT_POSSIBLE', 'POSSIBLE', 'TENTATIVE']
+ *       description: Rsvp statuses
+ *     RSVP:
  *       type: object
  *       required:
- *         - id
  *         - date
- *         - eventId
- *         - optionStatusIds
+ *         - response
  *       properties:
- *         id:
- *           type: string
- *           description: Unique identifier of the group event option
  *         date:
  *           type: string
- *           format: date-time
- *           description: Suggested date for the event
- *         eventId:
- *           type: string
- *           description: Identifier of the related group event
- *         optionStatusIds:
- *           type: array
- *           items:
- *             type: string
- *     Status:
- *       type: string
- *       enum: ['Not voted', 'Not possible', 'Possible', 'Reluctant']
- *       description: Updated status of the invitee for this option
- *     GroupEventOptionStatusCreate:
- *       type: object
- *       required:
- *         - optionId
- *         - status
- *       properties:
- *         id:
- *           type: string
- *           description: Identifier of the status option
- *         optionId:
- *           type: string
  *           description: Identifier of the group event option
- *         status:
- *           $ref: '#/components/schemas/Status'
- *     GroupEventOptionStatus:
+ *         response:
+ *           $ref: '#/components/schemas/RSVPResponse'
+ *     Invitee:
  *       type: object
  *       required:
  *         - id
- *         - optionId
- *         - status
- *       properties:
- *         id:
- *           type: string
- *           description: Identifier of the status option
- *         optionId:
- *           type: string
- *           description: Identifier of the group event option
- *         status:
- *           $ref: '#/components/schemas/Status'
- *     GroupEventInvitee:
- *       type: object
- *       required:
- *         - id
- *         - person
- *         - personId
- *         - groupEventId
- *         - optionStatuses
+ *         - name
+ *         - rsvps
  *       properties:
  *         id:
  *           type: string
  *           description: Identifier of the invitee
- *         personId:
+ *         name:
  *           type: string
- *           description: Identifier of the person invited
- *         person:
- *           $ref: '#/components/schemas/Person'
- *         groupEventId:
- *           type: string
- *           description: Identifier of the related group event
- *         optionStatuses:
+ *           description: Name of the invitee
+ *         rsvps:
  *           type: array
  *           items:
- *             $ref: '#/components/schemas/GroupEventOptionStatus'
+ *             $ref: '#/components/schemas/RSVP'
  *     GroupEvent:
  *       type: object
  *       required:
  *         - id
- *         - ownerId
  *         - owner
- *         - suggestedOptions
+ *         - options
  *         - invitees
  *       properties:
  *         id:
  *           type: string
  *           description: Unique identifier of the group event
- *         ownerId:
- *           type: string
- *           description: Identifier of the owner of the group event
  *         owner:
- *           type: object
- *           required:
- *             - id
- *             - name
- *           properties:
- *             id:
- *               type: string
- *             name:
- *               type: string
- *               description: Name of the owner
- *         suggestedOptions:
+ *           $ref: '#/components/schemas/Person'
+ *         options:
  *           type: array
  *           items:
- *             $ref: '#/components/schemas/GroupEventOption'
+ *             $ref: '#/components/schemas/Option'
  *         invitees:
  *           type: array
  *           items:
- *             type: object
- *             required:
- *               - id
- *               - person
- *               - personId
- *               - groupEventId
- *               - optionStatuses
- *             properties:
- *               id:
- *                 type: string
- *                 description: Identifier of the invitee
- *               personId:
- *                 type: string
- *                 description: Identifier of the person invited
- *               person:
- *                 $ref: '#/components/schemas/Person'
- *               groupEventId:
- *                 type: string
- *                 description: Identifier of the related group event
- *               optionStatuses:
- *                 type: array
- *                 items:
- *                   $ref: '#/components/schemas/GroupEventOptionStatus'
+ *             $ref: '#/components/schemas/Invitee'
  */

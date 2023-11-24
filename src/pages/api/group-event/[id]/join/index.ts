@@ -1,4 +1,7 @@
+import { nanoid } from "nanoid";
+
 import { prisma } from "@/libs/data/prisma/client";
+import { createTranslator } from "@/libs/router/create-translator";
 import { apiHandler } from "@/libs/utilities/api-handler";
 
 import type { PostApiGroupEventIdJoinBody } from "@/libs/data/schema";
@@ -48,46 +51,31 @@ export default async function handler(
 }
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
+  const t = await createTranslator(req, "apis.group-event-id-join.post");
+
   const { id } = req.query as { id: string };
-  const {
-    person: { name },
-  } = req.body as PostApiGroupEventIdJoinBody;
+  const { person } = req.body as PostApiGroupEventIdJoinBody;
+  const invitee = { id: nanoid(10), name: person.name, rsvps: [] };
 
-  let person = await prisma.person.findUnique({
-    where: { name },
-  });
-
-  if (!person) {
-    person = await prisma.person.create({
-      data: { name },
-    });
-  }
-
-  const invitee = await prisma.groupEventInvitee.create({
-    data: {
-      personId: person.id,
-      groupEventId: id,
-    },
-    include: { person: true },
-  });
-
-  const options = await prisma.groupEventOption.findMany({
-    where: { eventId: id },
-  });
-
-  const optionStatusIds = [];
-  for (const option of options) {
-    const optionStatus = await prisma.groupEventOptionStatus.create({
-      data: { inviteeId: invitee.id, optionId: option.id, status: "Not voted" },
+  return prisma.$transaction(async (tx) => {
+    const nameExist = await tx.groupEvent.findFirst({
+      where: { id, invitees: { some: { name: invitee.name } } },
     });
 
-    optionStatusIds.push(optionStatus.id);
-  }
+    if (nameExist) {
+      return res.status(400).json({ message: t("invitee-name-exist") });
+    }
 
-  await prisma.groupEventInvitee.update({
-    where: { id: invitee.id },
-    data: { optionStatusIds },
+    return tx.groupEvent
+      .update({
+        where: { id },
+        data: { invitees: { push: invitee } },
+      })
+      .then(({ invitees }) => {
+        return res.status(201).json(invitees.find((i) => i.id === invitee.id));
+      })
+      .catch((e) => {
+        return res.status(400).json({ message: e });
+      });
   });
-
-  return res.status(201).json(invitee.person);
 }

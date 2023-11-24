@@ -10,42 +10,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model GroupEvent {
   id               String              @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId          String              @db.ObjectId
-  owner            Person              @relation(name: "groupEventOwner", fields: [ownerId], references: [id])
-  suggestedOptions GroupEventOption[]
-  invitees         GroupEventInvitee[]
+  owner            Person
+  options          Option[]
+  invitees         Invitee[]
+
+  @@unique([options.date])
+  @@unique([invitees.name])
 }
 
-model Person {
-  id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  name              String              @unique
-  ownedGroupEvents  GroupEvent[]        @relation("groupEventOwner")
-  GroupEventInvitee GroupEventInvitee[]
+type Person {
+  id      String
+  name    String
 }
 
-model GroupEventInvitee {
-  id              String             @id @default(auto()) @map("_id") @db.ObjectId
-  personId        String             @db.ObjectId
-  person          Person             @relation(fields: [personId], references: [id])
-  groupEventId    String             @db.ObjectId
-  groupEvent      GroupEvent         @relation(fields: [groupEventId], references: [id])
-  optionStatusIds String[]
+type Invitee {
+  id        String
+  name      String
+  rsvps     Rsvp[]   
 }
 
-model GroupEventOption {
-  id              String               @id @default(auto()) @map("_id") @db.ObjectId
-  date            DateTime
-  event           GroupEvent           @relation(fields: [eventId], references: [id])
-  eventId         String               @db.ObjectId
-  optionStatusIds String[]
+type Option {
+  date      DateTime
 }
 
-model GroupEventOptionStatus {
-  id        String              @id @default(auto()) @map("_id") @db.ObjectId
-  optionId  String              @db.ObjectId
-  status    String              // 'Not voted',  'Not possible', 'Possible', 'Reluctant'
-  inviteeId String              @db.ObjectId
+type Rsvp {
+  date       DateTime
+  response   RsvpResponse
 }
+
+enum RsvpResponse {
+  NOT_POSSIBLE
+  POSSIBLE
+  TENTATIVE
+}
+
+

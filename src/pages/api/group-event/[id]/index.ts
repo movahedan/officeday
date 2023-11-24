@@ -1,11 +1,6 @@
 import { prisma } from "@/libs/data/prisma/client";
-import { createOptions } from "@/libs/data/prisma/create-options";
-import { deleteOptions } from "@/libs/data/prisma/delete-options";
-import { getGroupEvent } from "@/libs/data/prisma/get-group-event";
-import { updateOptions } from "@/libs/data/prisma/update-options";
 import { createTranslator } from "@/libs/router/create-translator";
 import { apiHandler } from "@/libs/utilities/api-handler";
-import { dateFormatter } from "@/libs/utilities/date";
 
 import type { PutApiGroupEventIdBody } from "@/libs/data/schema";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -54,15 +49,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
  *             type: object
  *             required:
  *               - id
- *               - suggestedOptions
+ *               - options
  *             properties:
  *               id:
  *                 type: string
  *                 description: Unique identifier of the group event
- *               suggestedOptions:
+ *               options:
  *                 type: array
  *                 items:
- *                   $ref: '#/components/schemas/GroupEventOptionCreate'
+ *                   $ref: '#/components/schemas/Option'
  *     responses:
  *       200:
  *         description: Group event updated successfully
@@ -98,11 +93,11 @@ async function handleGET(
 ) {
   const t = await createTranslator(req, "apis.group-event-id.get");
 
-  const groupEvent = await getGroupEvent(id);
+  const groupEvent = await prisma.groupEvent.findUnique({
+    where: { id },
+  });
 
-  if (!groupEvent) {
-    return res.status(404).json({ error: t("no-event-exist") });
-  }
+  if (!groupEvent) return res.status(404).json({ error: t("no-event-exist") });
 
   return res.status(200).json(groupEvent);
 }
@@ -113,32 +108,13 @@ async function handlePUT(
   id: string,
 ) {
   const t = await createTranslator(req, "apis.group-event-id.get");
-  const { suggestedOptions } = req.body as PutApiGroupEventIdBody;
+  const { options } = req.body as PutApiGroupEventIdBody;
 
-  const currentOptions = await prisma.groupEventOption.findMany({
-    where: { eventId: id },
-  });
-
-  const optionsToAdd = suggestedOptions.filter(
-    (so) => !currentOptions.some((co) => co.id === so.id),
-  );
-  const optionsToUpdate = suggestedOptions.filter((so) =>
-    currentOptions.some(
-      (co) => co.id === so.id && dateFormatter(new Date(co.date)) !== so.date,
-    ),
-  );
-  const optionsToDeleteIds = currentOptions
-    .filter((co) => !suggestedOptions.some((so) => so.id === co.id))
-    .map((option) => option.id);
-
-  await createOptions(id, optionsToAdd);
-  await deleteOptions(id, optionsToDeleteIds);
-  await updateOptions(id, optionsToUpdate);
-
-  const groupEvent = await getGroupEvent(id);
-  if (!groupEvent) {
-    return res.status(404).json({ error: t("no-event-exist") });
-  }
-
-  return res.status(200).json(groupEvent);
+  return prisma.groupEvent
+    .update({
+      where: { id },
+      data: { options: options.map(({ date }) => ({ date: new Date(date) })) },
+    })
+    .then((groupEvent) => res.status(200).json(groupEvent))
+    .catch(() => res.status(404).json({ error: t("no-event-exist") }));
 }

@@ -4,16 +4,14 @@
  * Next Swagger API Example
  * OpenAPI spec version: 1.0
  */
-import type { GroupEventInviteesItem } from "./groupEventInviteesItem";
-import type { GroupEventOption } from "./groupEventOption";
-import type { GroupEventOwner } from "./groupEventOwner";
+import type { Invitee } from "./invitee";
+import type { Option } from "./option";
+import type { Person } from "./person";
 
 export interface GroupEvent {
   /** Unique identifier of the group event */
   id: string;
-  invitees: GroupEventInviteesItem[];
-  owner: GroupEventOwner;
-  /** Identifier of the owner of the group event */
-  ownerId: string;
-  suggestedOptions: GroupEventOption[];
+  invitees: Invitee[];
+  options: Option[];
+  owner: Person;
 }
