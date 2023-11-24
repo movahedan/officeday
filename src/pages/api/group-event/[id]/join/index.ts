@@ -63,7 +63,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     });
 
     if (nameExist) {
-      return res.status(400).json({ message: t("invitee-name-exist") });
+      return res.status(400).json({ error: t("invitee-name-exist") });
     }
 
     return tx.groupEvent
@@ -75,7 +75,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
         return res.status(201).json(invitees.find((i) => i.id === invitee.id));
       })
       .catch((e) => {
-        return res.status(400).json({ message: e });
+        return res.status(400).json({ error: e });
       });
   });
 }

@@ -19,7 +19,10 @@ export const apiHandler = async (
   const methodNames = Object.keys(methodHandlers);
   if (!methodNames.includes(req.method || "")) {
     res.setHeader("Allow", methodNames);
-    res.status(405).end(t("method-not-allowed", { method: req.method }));
+
+    return res
+      .status(405)
+      .json({ message: t("method-not-allowed"), method: req.method });
   } else {
     try {
       const handler = methodHandlers[req.method as MethodNames];

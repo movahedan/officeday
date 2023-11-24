@@ -89,7 +89,7 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
 
   if (!isValidRsvps) {
     return res.status(400).json({
-      message: t("invalid-option-statuses"),
+      error: t("invalid-option-statuses"),
     });
   }
 
