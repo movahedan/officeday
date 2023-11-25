@@ -65,6 +65,12 @@ export const GroupEventSelectOptionsForm = ({
           <div key={option.id} className="mb-20">
             <h4 className="mb-8 text-sm font-medium">{date}</h4>
             <div className="flex items-center gap-8">
+              <input
+                {...register(`rsvps.${index}.date`)}
+                value={date}
+                className="hidden"
+              />
+
               <div>
                 <input
                   {...register(`rsvps.${index}.response`)}
