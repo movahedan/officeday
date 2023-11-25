@@ -93,12 +93,17 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
     });
   }
 
+  const rsvpList = rsvps.map((r) => ({
+    date: new Date(r.date),
+    response: r.response,
+  }));
+
   return prisma.$transaction(async (tx) => {
     const { options } = await tx.groupEvent
       .findFirstOrThrow({ where: { id } })
       .catch(() => ({ options: [] }));
 
-    const rsvpDates = rsvps.map((r) => dateFormatter(new Date(r.date)));
+    const rsvpDates = rsvpList.map((r) => dateFormatter(r.date));
     const dates = options.map((o) => dateFormatter(o.date));
     const optionExist = dates.some((d1) => !!rsvpDates.find((d2) => d2 === d1));
     if (!optionExist) {
@@ -112,7 +117,7 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
           invitees: {
             updateMany: {
               where: { id: personId },
-              data: { rsvps },
+              data: { rsvps: rsvpList },
             },
           },
         },
