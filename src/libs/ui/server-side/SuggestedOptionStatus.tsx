@@ -1,7 +1,10 @@
 import { useTranslations } from "next-intl";
 
-import { RSVPResponse } from "@/libs/data/schema";
 import { dateFormatter } from "@/libs/utilities/date";
+import {
+  getDateRsvpEntries,
+  sortDateRsvpEntries,
+} from "@/libs/utilities/rsvps";
 import { classNames } from "@/libs/utilities/string";
 
 import { List } from "./List";
@@ -21,28 +24,17 @@ export const SuggestedOptionsStatus = ({
 }: SuggestedOptionsStatusProps) => {
   const t = useTranslations("components.suggested-options-status");
 
+  const dates = options.map((o) => o.date);
+  const rsvpsEntries = sortDateRsvpEntries(getDateRsvpEntries(dates, invitees));
+
   return (
     <ul className={classNames(["flex flex-col gap-16", className])}>
-      {options.map((option) => {
-        const statusList = Object.values(RSVPResponse)
-          .map((response) => ({
-            response,
-            invitees: invitees
-              .filter((invitee) =>
-                invitee.rsvps.some(
-                  (rsvp) =>
-                    rsvp.date === option.date && rsvp.response === response,
-                ),
-              )
-              .map((invitee) => invitee.name),
-          }))
-          .filter(({ response, invitees }) => !!invitees.length || !!response);
-
+      {rsvpsEntries.map(([date, statuses]) => {
         return (
-          <section key={option.date}>
-            <h3 className="mb-4">{dateFormatter(new Date(option.date))}</h3>
-            <List items={statusList} keys={(statusItem) => statusItem.response}>
-              {({ response, invitees }) => (
+          <section key={date}>
+            <h3 className="mb-4">{dateFormatter(new Date(date))}</h3>
+            <List items={Object.entries(statuses)} keys={(item) => item[0]}>
+              {([response, invitees]) => (
                 <>
                   <span className="mr-4">{t(response)}:</span>
                   <span>
