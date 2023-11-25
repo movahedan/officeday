@@ -32,12 +32,16 @@ export default function GroupEventSelectOptionsPage({
     },
   });
 
-  if (error) throw error;
-
   const invitee = groupEvent?.invitees.find((i) => i.id === personId);
 
-  return !groupEvent ? null : (
+  if (error) throw error;
+
+  return !groupEvent || !invitee ? null : (
     <div className="flex flex-col w-full max-w-400 md:max-w-764">
+      <h2 className="mb-16 text-xl">
+        {t("titles.name-title", { name: invitee.name })}
+      </h2>
+
       <div className="w-full">
         <h3 className="mb-16 text-lg">{t("titles.select-possible-options")}</h3>
 

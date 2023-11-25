@@ -119,6 +119,7 @@
     },
     "group-event-id-join-person-id": {
       "titles": {
+        "name-title": "Hallo {name}, we zijn blij dat je komt! Wat zouden jouw voorkeuren zijn?",
         "select-possible-options": "Selecteer mogelijke opties",
         "status-of-suggested-options": "Status van voorgestelde opties"
       }

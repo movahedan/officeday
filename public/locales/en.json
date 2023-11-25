@@ -119,6 +119,7 @@
     },
     "group-event-id-join-person-id": {
       "titles": {
+        "name-title": "Hi {name}, we are glad you are coming! What would be your preferences?",
         "select-possible-options": "Select possible options",
         "status-of-suggested-options": "Status of suggested options"
       }
