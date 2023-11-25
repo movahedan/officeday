@@ -65,7 +65,7 @@ export const GroupEventSelectOptionsForm = ({
         return (
           <div key={option.id} className="mb-20">
             <h4 className="mb-8 text-sm font-medium">{date}</h4>
-            <div className="flex items-center gap-8">
+            <div className="flex items-stretch gap-8">
               <input
                 {...register(`rsvps.${index}.date`)}
                 value={date}
@@ -139,7 +139,8 @@ const Label = ({
   <label
     htmlFor={htmlFor}
     className={classNames([
-      "px-16 py-4 border cursor-pointer rounded-md dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-700 peer-checked:text-blue-700 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700",
+      "px-16 py-4 cursor-pointer rounded-md break-words inline-flex items-center h-full text-xs md:text-base",
+      "border dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-700 peer-checked:text-blue-700 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700",
       className,
     ])}
   >
