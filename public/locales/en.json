@@ -31,6 +31,7 @@
     },
     "group-event-id-join-person-id": {
       "put": {
+        "no-event-exist": "No event with this ID exists.",
         "invalid-option-statuses": "Invalid option status, must be one of ['Not voted', 'Not possible', 'Possible', 'Reluctant']",
         "invitee-not-found": "Invitee not found",
         "invitee-name-exist": "Another invitee exists with given name, choose a different name.",
@@ -42,16 +43,16 @@
     "create-an-event": "Create an event",
     "try-again": "Try again",
     "go-home": "Go home",
+    "reload": "Reload",
     "required-field": "This field is required",
     "submit": "Submit"
   },
   "components": {
     "footer": "Created as a demo project © 2023.",
     "suggested-options-status": {
-      "not-voted": "Not voted",
-      "not-possible": "Not possible",
-      "possible": "Possible",
-      "reluctant": "Tentative"
+      "NOT_POSSIBLE": "Not possible",
+      "POSSIBLE": "Possible",
+      "TENTATIVE": "Tentative"
     },
     "error-component": {
       "unexpected-error": "An unexpected error ocurred."

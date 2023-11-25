@@ -32,6 +32,7 @@ export const GroupEventSelectOptionsForm = ({
   onSubmit: onSubmitProps,
 }: GroupEventSelectOptionsFormProps) => {
   const tGeneral = useTranslations("general");
+  const tStatus = useTranslations("components.suggested-options-status");
 
   const {
     register,
@@ -79,7 +80,9 @@ export const GroupEventSelectOptionsForm = ({
                   value="POSSIBLE"
                   className="hidden peer"
                 />
-                <Label htmlFor={`${date}-POSSIBLE`}>POSSIBLE</Label>
+                <Label htmlFor={`${date}-POSSIBLE`}>
+                  {tStatus("POSSIBLE")}
+                </Label>
               </div>
 
               <div>
@@ -90,7 +93,9 @@ export const GroupEventSelectOptionsForm = ({
                   value="NOT_POSSIBLE"
                   className="hidden peer"
                 />
-                <Label htmlFor={`${date}-NOT_POSSIBLE`}>NOT_POSSIBLE</Label>
+                <Label htmlFor={`${date}-NOT_POSSIBLE`}>
+                  {tStatus("NOT_POSSIBLE")}
+                </Label>
               </div>
 
               <div>
@@ -101,7 +106,9 @@ export const GroupEventSelectOptionsForm = ({
                   value="TENTATIVE"
                   className="hidden peer"
                 />
-                <Label htmlFor={`${date}-TENTATIVE`}>TENTATIVE</Label>
+                <Label htmlFor={`${date}-TENTATIVE`}>
+                  {tStatus("TENTATIVE")}
+                </Label>
               </div>
             </div>
           </div>

@@ -31,6 +31,7 @@
     },
     "group-event-id-join-person-id": {
       "put": {
+        "no-event-exist": "Geen evenement met deze ID bestaat.",
         "invalid-option-statuses": "Ongeldige optiestatus, moet een van de volgende zijn: ['Niet gestemd', 'Niet mogelijk', 'Mogelijk', 'Tegenstrijdig']",
         "invitee-not-found": "Genodigde niet gevonden",
         "invitee-name-exist": "Er bestaat een andere genodigde met de voornaam. Kies een andere naam.",
@@ -42,13 +43,16 @@
     "create-an-event": "Creëer een evenement",
     "try-again": "Probeer opnieuw",
     "go-home": "Ga naar huis",
+    "reload": "herladen",
     "required-field": "Dit veld is verplicht",
     "submit": "Indienen"
   },
   "components": {
     "footer": "Gemaakt als een demoproject © 2023.",
     "suggested-options-status": {
-      "not-possible": "Niet mogelijk"
+      "NOT_POSSIBLE": "Niet mogelijk",
+      "POSSIBLE": "Mogelijk",
+      "TENTATIVE": "Voorlopig"
     },
     "error-component": {
       "unexpected-error": "Een onverwachte fout is opgetreden."

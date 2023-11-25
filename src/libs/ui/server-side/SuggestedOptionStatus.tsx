@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 import { RSVPResponse } from "@/libs/data/schema";
 import { dateFormatter } from "@/libs/utilities/date";
 import { classNames } from "@/libs/utilities/string";
@@ -17,6 +19,8 @@ export const SuggestedOptionsStatus = ({
   invitees,
   className,
 }: SuggestedOptionsStatusProps) => {
+  const t = useTranslations("components.suggested-options-status");
+
   return (
     <ul className={classNames(["flex flex-col gap-16", className])}>
       {options.map((option) => {
@@ -40,7 +44,7 @@ export const SuggestedOptionsStatus = ({
             <List items={statusList} keys={(statusItem) => statusItem.response}>
               {({ response, invitees }) => (
                 <>
-                  <span className="mr-4">{response}:</span>
+                  <span className="mr-4">{t(response)}:</span>
                   <span>
                     {invitees.length === 0 ? "-" : invitees.join("-")}
                   </span>
